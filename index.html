@@ -224,21 +224,21 @@ select{cursor:pointer;padding-right:30px}
     <div class="field"><div class="lb"><span class="lb-z">不良现象<span class="req">*</span></span><span class="lb-e">Defect Symptom / Failure Mode</span></div>
       <select id="defectType" onchange="ct()"><option value="">— 请选择 Select —</option><option>Scratch (刮伤)</option><option>Dent (压伤)</option><option>Crack (裂痕)</option><option>Warpage (翘曲变形)</option><option>Delamination (分层/剥离)</option><option>Open (断路)</option><option>Short (短路)</option><option>Solder Ball (锡球)</option><option>焊接不良 (空焊/冷焊)</option><option>Contamination (污染)</option><option>Discoloration (变色/氧化)</option><option>Dimension NG (尺寸不良)</option><option>功能性失效 Function Fail</option><option>Other (其他)</option></select></div>
     <div class="field"><div class="lb"><span class="lb-z">表面观察</span><span class="lb-e">Surface Observation / Physical Evidence</span></div>
-      <div class="ig c2" id="g_surface">
-        <div class="io" onclick="pIo(this,'surface','断面粗糙→疑外力')"><div class="iz">粗糙→外力</div><div class="ie">Rough Surface → External Impact</div></div>
-        <div class="io" onclick="pIo(this,'surface','断面光滑→疑疲劳')"><div class="iz">光滑→疲劳</div><div class="ie">Smooth Surface → Fatigue Crack</div></div>
-        <div class="io" onclick="pIo(this,'surface','残胶→疑重工')"><div class="iz">残胶→重工</div><div class="ie">Adhesive Residue → Suspected Rework</div></div>
-        <div class="io" onclick="pIo(this,'surface','焊锡残留→疑已上线')"><div class="iz">焊锡→已上线</div><div class="ie">Solder Residue → Previously Used</div></div>
-        <div class="io" onclick="pIo(this,'surface','DDS')"><div class="iz">DDS</div><div class="ie">DDS (Dry/Dirty/Scratch)</div></div>
-        <div class="io" onclick="pIo(this,'surface','表面原始状态良好')"><div class="iz">原始良好</div><div class="ie">Original Surface: Good Condition</div></div>
+      <div class="ig c2" id="g_surface" style="position:relative"><div style="font-size:9px;color:var(--mut);margin-bottom:4px;grid-column:1/-1">可多选 Multi-select</div>
+        <div class="io" onclick="pIoM(this,'surface','断面粗糙→疑外力')"><div class="iz">粗糙→外力</div><div class="ie">Rough Surface → External Impact</div></div>
+        <div class="io" onclick="pIoM(this,'surface','断面光滑→疑疲劳')"><div class="iz">光滑→疲劳</div><div class="ie">Smooth Surface → Fatigue Crack</div></div>
+        <div class="io" onclick="pIoM(this,'surface','残胶→疑重工')"><div class="iz">残胶→重工</div><div class="ie">Adhesive Residue → Suspected Rework</div></div>
+        <div class="io" onclick="pIoM(this,'surface','焊锡残留→疑已上线')"><div class="iz">焊锡→已上线</div><div class="ie">Solder Residue → Previously Used</div></div>
+        <div class="io" onclick="pIoM(this,'surface','DDS')"><div class="iz">DDS</div><div class="ie">DDS (Dry/Dirty/Scratch)</div></div>
+        <div class="io" onclick="pIoM(this,'surface','表面原始状态良好')"><div class="iz">原始良好</div><div class="ie">Original Surface: Good Condition</div></div>
       </div>
     </div>
     <div class="field"><div class="lb"><span class="lb-z">良品vs不良品</span><span class="lb-e">Good vs Defective Comparison</span></div>
-      <div class="ig c2" id="g_compare">
-        <div class="io" onclick="pIo(this,'compare','材料本体缺陷')"><div class="iz">材料缺陷</div><div class="ie">Inherent Material Defect</div></div>
-        <div class="io" onclick="pIo(this,'compare','外力损伤')"><div class="iz">外力损伤</div><div class="ie">External Force Damage</div></div>
-        <div class="io" onclick="pIo(this,'compare','差异不明显')"><div class="iz">不明显</div><div class="ie">No Obvious Difference</div></div>
-        <div class="io" onclick="pIo(this,'compare','未对比')"><div class="iz">未对比</div><div class="ie">Not Yet Compared</div></div>
+      <div class="ig c2" id="g_compare"><div style="font-size:9px;color:var(--mut);margin-bottom:4px;grid-column:1/-1">可多选 Multi-select</div>
+        <div class="io" onclick="pIoM(this,'compare','材料本体缺陷')"><div class="iz">材料缺陷</div><div class="ie">Inherent Material Defect</div></div>
+        <div class="io" onclick="pIoM(this,'compare','外力损伤')"><div class="iz">外力损伤</div><div class="ie">External Force Damage</div></div>
+        <div class="io" onclick="pIoM(this,'compare','差异不明显')"><div class="iz">不明显</div><div class="ie">No Obvious Difference</div></div>
+        <div class="io" onclick="pIoM(this,'compare','未对比')"><div class="iz">未对比</div><div class="ie">Not Yet Compared</div></div>
       </div>
     </div>
   </div>
@@ -580,7 +580,7 @@ function ct(){
     var c=0;
     var fids=['iqcEngineer','model','line','vendor','qpn','dc'];
     for(var i=0;i<fids.length;i++){var el=$(fids[i]);if(el&&el.value&&el.value.trim())c++}
-    var dks=['placement','station','surface','compare','focus','crossline','t0'];
+    var dks=['placement','station','focus','crossline','t0'];if(D.surface&&D.surface.length)c++;if(D.compare&&D.compare.length)c++;
     for(var i=0;i<dks.length;i++){if(D[dks[i]])c++}
     if(D.verdict)c++;if(D.urgency)c++;
     var iq=$('inputQty');if(iq&&parseInt(iq.value)>0)c++;
@@ -607,6 +607,7 @@ function calcFR(){
 
 function pCh(el,key){try{var ch=el.parentElement.querySelectorAll('.ch');for(var i=0;i<ch.length;i++)ch[i].className='ch';el.className='ch picked';D[key]=el.textContent.trim();ct()}catch(x){}}
 function pIo(el,key,val){try{var g=el.parentElement;var ios=g.querySelectorAll('.io');for(var i=0;i<ios.length;i++)ios[i].className='io';el.className='io picked';D[key]=val;ct()}catch(x){}}
+function pIoM(el,key,val){try{var on=el.className.indexOf('picked')>=0;el.className=on?'io':'io picked';if(!D[key])D[key]=[];var arr=D[key];var idx=arr.indexOf(val);if(on){if(idx>=0)arr.splice(idx,1)}else{if(idx<0)arr.push(val)}ct()}catch(x){}}
 function pIoV(el,val,cls){try{var ios=document.querySelectorAll('#g_verdict .io');for(var i=0;i<ios.length;i++)ios[i].className='io';el.className='io '+cls;D.verdict=val;ct();calcProb()}catch(x){}}
 function pIoU(el,val,cls){try{var ios=document.querySelectorAll('#g_urgency .io');for(var i=0;i<ios.length;i++)ios[i].className='io';el.className='io '+cls;D.urgency=val;
   var p=$('urgP');p.className='urg-p show '+val;var m={normal:'🟢 一般',urgent:'🟡 紧急',stopline:'🔴 停线'};p.textContent=m[val]||'';ct()}catch(x){}}
@@ -651,7 +652,7 @@ function genRpt(){
     h+=S('基本');h+=R('IQC',gv('iqcEngineer'));h+=R('PE',gv('peEngineer'));h+=R('机种',gv('model'));h+=R('材料',mt);h+=R('P/N',gv('qpn'));h+=R('Vendor',gv('vendor'));h+=R('线别',gv('line'));h+=R('来源',gv('reportSource'));
     h+=S('批号');h+=R('D/C',gv('dc'));h+=R('L/C',gv('lc'));h+=R('Prod Date',gv('productionDate'));h+=R('Qty',inp+'/'+def+'/'+fr);h+=R('放置',D.placement||'—');h+=R('保质期',TS.notExpired?'✓':'✗');
     h+=S('防伪');var ak2=['origBox','iqcTape','labelMatch','qtyMatch','packMatch'];for(var i=0;i<ak2.length;i++)h+=R(ak2[i],TS[ak2[i]]?'✓':'✗');
-    h+=S('分析');h+=R('不良',gv('defectType'));h+=R('表面',D.surface||'—');h+=R('对比',D.compare||'—');h+=R('集中',D.focus||'—');h+=R('跨线',D.crossline||'—');h+=R('工站',D.station||'—');
+    h+=S('分析');h+=R('不良',gv('defectType'));h+=R('表面',(D.surface&&D.surface.length?D.surface.join(', '):'—'));h+=R('对比',(D.compare&&D.compare.length?D.compare.join(', '):'—'));h+=R('集中',D.focus||'—');h+=R('跨线',D.crossline||'—');h+=R('工站',D.station||'—');
     h+=S('判定');h+='<tr class="vr"><td colspan="2">'+(VM[D.verdict]||'—')+'</td></tr>';
     h+=R('新箱',gv('newBoxSample')+'/'+gv('newBoxDefect'));h+=R('原材%',$('pPct').textContent);
     var acts=[];var ckk=Object.keys(CK);for(var i=0;i<ckk.length;i++){if(CK[ckk[i]])acts.push(ckk[i])}
