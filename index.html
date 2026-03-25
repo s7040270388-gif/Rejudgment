@@ -210,59 +210,51 @@ select{cursor:pointer;padding-right:30px}
 
   <div class="card">
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">机种<span class="req">*</span></span><span class="lb-e">Project</span></div>
-        <input type="text" id="model" placeholder="PWYU" oninput="this.value=this.value.toUpperCase();ct()"></div>
-      <div class="field"><div class="lb"><span class="lb-z">线别<span class="req">*</span></span><span class="lb-e">Line</span></div>
-        <input type="text" id="line" placeholder="K22 D line" onchange="ct()"></div>
+      <div class="field"><div class="lb"><span class="lb-z">机种<span class="req">*</span></span><span class="lb-e">Project / Model Name</span></div>
+        <input type="text" id="model" placeholder="" oninput="this.value=this.value.toUpperCase();ct()"></div>
+      <div class="field"><div class="lb"><span class="lb-z">线别<span class="req">*</span></span><span class="lb-e">Production Line</span></div>
+        <input type="text" id="line" placeholder="" onchange="ct()"></div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">材料类型<span class="req">*</span></span><span class="lb-e">Material Type</span></div>
-      <select id="materialType" onchange="ct()">
-        <option value="">— 请选择 Select —</option>
-        <optgroup label="电子 Electronic"><option>DM* — Power Cord 电源线</option><option>DD*/3X*/3Q* — Cable 线材</option><option>3R*/35*/3Z* — Antenna 天线</option><option>DQ* — Fan 风扇</option><option>AD* — MIC/Cable/FPC/T/P/Mouse</option><option>AF* — Power Supply 电源供应器</option><option>AH* — Battery 电池</option><option>AI* — Camera 相机模组</option><option>DE* — FFC/FPC 软排线</option><option>ATR* — RAM Module 内存</option><option>C* — 电容/电阻/电感</option><option>AJ*/AR*/AL*/AK* — IC/CPU</option><option>DA* — PCB 电路板</option><option>DF* — Connector 连接器</option><option>DG* — Socket 插座</option><option>DN — Speaker/MIC 喇叭/麦克风</option></optgroup>
-        <optgroup label="塑胶 Plastic"><option>EA — Plastic Housing 塑胶壳(大)</option><option>EB — Plastic Parts 塑胶件(小)</option><option>EC — Key Caps 按键</option></optgroup>
-        <optgroup label="金属 Metal"><option>FA — Metal Case 金属壳(大)</option><option>FB — Metal Parts 金属件(小)</option><option>3G* — Hinge 转轴</option></optgroup>
-        <optgroup label="其他 Others"><option>GA — Rubber 橡胶</option><option>GB — Sponge/Gasket 泡棉</option><option>FC — Insulator 绝缘体</option><option>MM/MS/MU — Screw 螺丝</option><option>HC — Label 标签</option><option>HE — BOX 盒子</option><option>XX — 消耗品 Consumables</option><option>JX — Other 杂项</option></optgroup>
-      </select>
-    </div>
+<input type="hidden" id="materialType" value="N/A">
   </div>
 
   <div class="dv">不良现象 Defect</div>
 
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">不良现象<span class="req">*</span></span><span class="lb-e">Defect Symptom</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">不良现象<span class="req">*</span></span><span class="lb-e">Defect Symptom / Failure Mode</span></div>
       <select id="defectType" onchange="ct()"><option value="">— 请选择 Select —</option><option>Scratch (刮伤)</option><option>Dent (压伤)</option><option>Crack (裂痕)</option><option>Warpage (翘曲变形)</option><option>Delamination (分层/剥离)</option><option>Open (断路)</option><option>Short (短路)</option><option>Solder Ball (锡球)</option><option>焊接不良 (空焊/冷焊)</option><option>Contamination (污染)</option><option>Discoloration (变色/氧化)</option><option>Dimension NG (尺寸不良)</option><option>功能性失效 Function Fail</option><option>Other (其他)</option></select></div>
-    <div class="field"><div class="lb"><span class="lb-z">表面观察</span><span class="lb-e">Surface Observation</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">表面观察</span><span class="lb-e">Surface Observation / Physical Evidence</span></div>
       <div class="ig c2" id="g_surface">
-        <div class="io" onclick="pIo(this,'surface','断面粗糙→疑外力')"><div class="iz">粗糙→外力</div><div class="ie">Rough→Impact</div></div>
-        <div class="io" onclick="pIo(this,'surface','断面光滑→疑疲劳')"><div class="iz">光滑→疲劳</div><div class="ie">Smooth→Fatigue</div></div>
-        <div class="io" onclick="pIo(this,'surface','残胶→疑重工')"><div class="iz">残胶→重工</div><div class="ie">Residue→Rework</div></div>
-        <div class="io" onclick="pIo(this,'surface','焊锡残留→疑已上线')"><div class="iz">焊锡→已上线</div><div class="ie">Solder→Used</div></div>
-        <div class="io" onclick="pIo(this,'surface','DDS')"><div class="iz">DDS</div><div class="ie">DDS</div></div>
-        <div class="io" onclick="pIo(this,'surface','表面原始状态良好')"><div class="iz">原始良好</div><div class="ie">Original good</div></div>
+        <div class="io" onclick="pIo(this,'surface','断面粗糙→疑外力')"><div class="iz">粗糙→外力</div><div class="ie">Rough Surface → External Impact</div></div>
+        <div class="io" onclick="pIo(this,'surface','断面光滑→疑疲劳')"><div class="iz">光滑→疲劳</div><div class="ie">Smooth Surface → Fatigue Crack</div></div>
+        <div class="io" onclick="pIo(this,'surface','残胶→疑重工')"><div class="iz">残胶→重工</div><div class="ie">Adhesive Residue → Suspected Rework</div></div>
+        <div class="io" onclick="pIo(this,'surface','焊锡残留→疑已上线')"><div class="iz">焊锡→已上线</div><div class="ie">Solder Residue → Previously Used</div></div>
+        <div class="io" onclick="pIo(this,'surface','DDS')"><div class="iz">DDS</div><div class="ie">DDS (Dry/Dirty/Scratch)</div></div>
+        <div class="io" onclick="pIo(this,'surface','表面原始状态良好')"><div class="iz">原始良好</div><div class="ie">Original Surface: Good Condition</div></div>
       </div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">良品vs不良品</span><span class="lb-e">Good vs Defective</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">良品vs不良品</span><span class="lb-e">Good vs Defective Comparison</span></div>
       <div class="ig c2" id="g_compare">
-        <div class="io" onclick="pIo(this,'compare','材料本体缺陷')"><div class="iz">材料缺陷</div><div class="ie">Material defect</div></div>
-        <div class="io" onclick="pIo(this,'compare','外力损伤')"><div class="iz">外力损伤</div><div class="ie">External</div></div>
-        <div class="io" onclick="pIo(this,'compare','差异不明显')"><div class="iz">不明显</div><div class="ie">No diff</div></div>
-        <div class="io" onclick="pIo(this,'compare','未对比')"><div class="iz">未对比</div><div class="ie">Not compared</div></div>
+        <div class="io" onclick="pIo(this,'compare','材料本体缺陷')"><div class="iz">材料缺陷</div><div class="ie">Inherent Material Defect</div></div>
+        <div class="io" onclick="pIo(this,'compare','外力损伤')"><div class="iz">外力损伤</div><div class="ie">External Force Damage</div></div>
+        <div class="io" onclick="pIo(this,'compare','差异不明显')"><div class="iz">不明显</div><div class="ie">No Obvious Difference</div></div>
+        <div class="io" onclick="pIo(this,'compare','未对比')"><div class="iz">未对比</div><div class="ie">Not Yet Compared</div></div>
       </div>
     </div>
   </div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">集中性</span><span class="lb-e">Concentration</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">集中性</span><span class="lb-e">Defect Concentration / Distribution</span></div>
       <div class="ig c3" id="g_focus">
-        <div class="io" onclick="pIo(this,'focus','集中特定批')"><div class="iz">集中特定批</div><div class="ie">Specific lot</div></div>
-        <div class="io" onclick="pIo(this,'focus','随机发生')"><div class="iz">随机</div><div class="ie">Random</div></div>
-        <div class="io" onclick="pIo(this,'focus','仅此批次')"><div class="iz">仅此批</div><div class="ie">This lot</div></div>
+        <div class="io" onclick="pIo(this,'focus','集中特定批')"><div class="iz">集中特定批</div><div class="ie">Concentrated in Specific Lot</div></div>
+        <div class="io" onclick="pIo(this,'focus','随机发生')"><div class="iz">随机</div><div class="ie">Random Occurrence</div></div>
+        <div class="io" onclick="pIo(this,'focus','仅此批次')"><div class="iz">仅此批</div><div class="ie">This Lot Only</div></div>
       </div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">跨线比对</span><span class="lb-e">Cross-line comparison</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">跨线比对</span><span class="lb-e">Cross-line Comparison</span></div>
       <div class="ig c3" id="g_crossline">
-        <div class="io" onclick="pIo(this,'crossline','其他线也有→来料')"><div class="iz">其他线也有</div><div class="ie">Other lines</div></div>
-        <div class="io" onclick="pIo(this,'crossline','仅此线→制程')"><div class="iz">仅此线</div><div class="ie">This line</div></div>
-        <div class="io" onclick="pIo(this,'crossline','无法比对')"><div class="iz">无法比对</div><div class="ie">Can't compare</div></div>
+        <div class="io" onclick="pIo(this,'crossline','其他线也有→来料')"><div class="iz">其他线也有</div><div class="ie">Found on Other Lines → Raw Material</div></div>
+        <div class="io" onclick="pIo(this,'crossline','仅此线→制程')"><div class="iz">仅此线</div><div class="ie">This Line Only → Process Issue</div></div>
+        <div class="io" onclick="pIo(this,'crossline','无法比对')"><div class="iz">无法比对</div><div class="ie">Unable to Compare</div></div>
       </div>
     </div>
   </div>
@@ -273,64 +265,64 @@ select{cursor:pointer;padding-right:30px}
   <div class="sec-hdr"><span class="sec-ico">🔍</span><div><div class="sec-t">现场勘查</div><div class="sec-en">On-site Inspection</div></div></div>
   <div class="card">
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">主厂商<span class="req">*</span></span><span class="lb-e">Vendor</span></div>
-        <input type="text" id="vendor" placeholder="GTK" onchange="ct()"></div>
-      <div class="field"><div class="lb"><span class="lb-z">P/N 料号<span class="req">*</span></span><span class="lb-e">Part Number</span></div>
-        <input type="text" id="qpn" placeholder="4PVF1BC0040" onchange="ct()"></div>
+      <div class="field"><div class="lb"><span class="lb-z">主厂商<span class="req">*</span></span><span class="lb-e">Primary Vendor / Supplier</span></div>
+        <input type="text" id="vendor" placeholder="" onchange="ct()"></div>
+      <div class="field"><div class="lb"><span class="lb-z">P/N 料号<span class="req">*</span></span><span class="lb-e">Part Number (P/N)</span></div>
+        <input type="text" id="qpn" placeholder="" onchange="ct()"></div>
     </div>
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">D/C 日期码<span class="req">*</span></span><span class="lb-e">Date Code</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">D/C 日期码<span class="req">*</span></span><span class="lb-e">Date Code (D/C)</span></div>
         <input type="text" id="dc" placeholder="0309" onchange="ct()"></div>
-      <div class="field"><div class="lb"><span class="lb-z">通报来源</span><span class="lb-e">Report Source</span></div>
-        <select id="reportSource"><option value="">选择</option><option>产线PE</option><option>产线OP</option><option>QC巡检</option><option>CQA</option><option>Inline OBA</option><option>测试站</option><option>IQC巡查</option></select></div>
+      <div class="field"><div class="lb"><span class="lb-z">通报来源</span><span class="lb-e">Report Source / Reported By</span></div>
+        <select id="reportSource"><option value="">— 选择 Select —</option><option>产线PE Line PE</option><option>产线OP Line Operator</option><option>QC巡检 QC Patrol</option><option>CQA</option><option>Inline OBA</option><option>测试站 Test Station</option><option>IQC巡查 IQC Patrol</option></select></div>
     </div>
   </div>
   <div class="dv">产线勘查 Line Check</div>
   <div class="card">
-    <div class="lb"><span class="lb-z">产线材料放置状况</span><span class="lb-e">Material Placement</span></div>
+    <div class="lb"><span class="lb-z">产线材料放置状况</span><span class="lb-e">Material Placement Status on Line</span></div>
     <div class="chips" id="g_placement">
-      <div class="ch" onclick="pCh(this,'placement')">错盘</div>
-      <div class="ch" onclick="pCh(this,'placement')">散乱</div>
-      <div class="ch" onclick="pCh(this,'placement')">放桌面</div>
-      <div class="ch" onclick="pCh(this,'placement')">堆叠挤压</div>
-      <div class="ch" onclick="pCh(this,'placement')">未开箱</div>
+      <div class="ch" onclick="pCh(this,'placement')">错盘 Wrong Tray</div>
+      <div class="ch" onclick="pCh(this,'placement')">散乱 Scattered</div>
+      <div class="ch" onclick="pCh(this,'placement')">放桌面 On Desk</div>
+      <div class="ch" onclick="pCh(this,'placement')">堆叠挤压 Stacked/Crushed</div>
+      <div class="ch" onclick="pCh(this,'placement')">未开箱 Unopened</div>
     </div>
   </div>
   <div class="dv">防伪五项 Authentication</div>
   <div class="card">
-    <div class="tg" data-key="origBox"><div class="tg-l"><div class="tg-z">原箱？</div><div class="tg-e">Original box?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？</div><div class="tg-e">IQC tape/label?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="labelMatch"><div class="tg-l"><div class="tg-z">标签一致？</div><div class="tg-e">Labels match?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="qtyMatch"><div class="tg-l"><div class="tg-z">数量吻合？</div><div class="tg-e">Qty match?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="packMatch"><div class="tg-l"><div class="tg-z">包装一致？</div><div class="tg-e">Pack match?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="origBox"><div class="tg-l"><div class="tg-z">原箱？</div><div class="tg-e">Original Packaging Box?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？</div><div class="tg-e">IQC Tape / Label Present?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="labelMatch"><div class="tg-l"><div class="tg-z">标签一致？</div><div class="tg-e">Labels Match (P/N, Qty, Vendor)?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="qtyMatch"><div class="tg-l"><div class="tg-z">数量吻合？</div><div class="tg-e">Quantity Matches Label?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="packMatch"><div class="tg-l"><div class="tg-z">包装一致？</div><div class="tg-e">Packaging Condition Matches Standard?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
     <div class="alt r" id="authAlt">⚠️ 非IQC标准放行状态！</div>
     <div style="margin-top:8px">
-      <div class="tg" data-key="notExpired"><div class="tg-l"><div class="tg-z">保质期内？</div><div class="tg-e">Within shelf life?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+      <div class="tg" data-key="notExpired"><div class="tg-l"><div class="tg-z">保质期内？</div><div class="tg-e">Within Shelf Life / Expiry Date?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
       <div class="alt r" id="expAlt">⚠️ 零件超期！</div>
     </div>
   </div>
   <div class="dv">制程勘查 Process</div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">组装工站类型</span><span class="lb-e">Assembly Station</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">组装工站类型</span><span class="lb-e">Assembly Station Type</span></div>
       <div class="ig c3" id="g_station">
-        <div class="io" onclick="pIo(this,'station','人工组装');showSt('m')"><div class="iz">人工</div><div class="ie">Manual</div></div>
-        <div class="io" onclick="pIo(this,'station','自动机台');showSt('a')"><div class="iz">自动</div><div class="ie">Auto</div></div>
-        <div class="io" onclick="pIo(this,'station','人工+机台混合');showSt('b')"><div class="iz">混合</div><div class="ie">Hybrid</div></div>
+        <div class="io" onclick="pIo(this,'station','人工组装');showSt('m')"><div class="iz">人工</div><div class="ie">Manual Assembly</div></div>
+        <div class="io" onclick="pIo(this,'station','自动机台');showSt('a')"><div class="iz">自动</div><div class="ie">Automated Machine</div></div>
+        <div class="io" onclick="pIo(this,'station','人工+机台混合');showSt('b')"><div class="iz">混合</div><div class="ie">Hybrid: Manual + Machine</div></div>
       </div>
     </div>
     <div id="stM" style="display:none;margin-top:8px;padding-left:8px;border-left:3px solid var(--acc)">
-      <div class="lb"><span class="lb-z">桌面异物？</span></div>
-      <div class="pills"><div class="pl" onclick="pPl(this,'desk')">是</div><div class="pl" onclick="pPl(this,'desk')">否</div></div>
-      <div class="lb" style="margin-top:8px"><span class="lb-z">重工痕迹？</span></div>
-      <div class="pills"><div class="pl" onclick="pPl(this,'rework')">是</div><div class="pl" onclick="pPl(this,'rework')">否</div></div>
-      <div class="lb" style="margin-top:8px"><span class="lb-z">OP 依 SOP？</span></div>
-      <div class="pills"><div class="pl" onclick="pPl(this,'sop')">是</div><div class="pl" onclick="pPl(this,'sop')">否</div><div class="pl" onclick="pPl(this,'sop')">未确认</div></div>
+      <div class="lb"><span class="lb-z">桌面异物？</span><span class="lb-e">Foreign Object on Workbench?</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'desk')">是 Yes</div><div class="pl" onclick="pPl(this,'desk')">否 No</div></div>
+      <div class="lb" style="margin-top:8px"><span class="lb-z">重工痕迹？</span><span class="lb-e">Signs of Rework?</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'rework')">是 Yes</div><div class="pl" onclick="pPl(this,'rework')">否 No</div></div>
+      <div class="lb" style="margin-top:8px"><span class="lb-z">OP 依 SOP？</span><span class="lb-e">Operator Following SOP?</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'sop')">是 Yes</div><div class="pl" onclick="pPl(this,'sop')">否 No</div><div class="pl" onclick="pPl(this,'sop')">未确认 Unconfirmed</div></div>
     </div>
     <div id="stA" style="display:none;margin-top:8px;padding-left:8px;border-left:3px solid #7c3aed">
-      <div class="lb"><span class="lb-z">吸嘴/治具磨损？</span></div>
-      <div class="pills"><div class="pl" onclick="pPl(this,'nozzle')">是</div><div class="pl" onclick="pPl(this,'nozzle')">否</div></div>
-      <div class="lb" style="margin-top:8px"><span class="lb-z">参数变更？</span></div>
-      <div class="pills"><div class="pl" onclick="pPl(this,'param')">有</div><div class="pl" onclick="pPl(this,'param')">无</div><div class="pl" onclick="pPl(this,'param')">不确定</div></div>
+      <div class="lb"><span class="lb-z">吸嘴/治具磨损？</span><span class="lb-e">Nozzle / Jig Worn Out?</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'nozzle')">是 Yes</div><div class="pl" onclick="pPl(this,'nozzle')">否 No</div></div>
+      <div class="lb" style="margin-top:8px"><span class="lb-z">参数变更？</span><span class="lb-e">Machine Parameter Changed?</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'param')">有 Yes</div><div class="pl" onclick="pPl(this,'param')">无 No</div><div class="pl" onclick="pPl(this,'param')">不确定 Uncertain</div></div>
     </div>
   </div>
 </div>
@@ -340,30 +332,30 @@ select{cursor:pointer;padding-right:30px}
   <div class="sec-hdr"><span class="sec-ico">📋</span><div><div class="sec-t">批号与数量</div><div class="sec-en">Lot Data & Quantity</div></div></div>
   <div class="card">
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">IQC 工程师<span class="req">*</span></span><span class="lb-e">IQC Engineer</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">IQC 工程师<span class="req">*</span></span><span class="lb-e">IQC Engineer Name</span></div>
         <input type="text" id="iqcEngineer" readonly style="background:var(--card2);font-weight:600"></div>
-      <div class="field"><div class="lb"><span class="lb-z">PE 工程师</span><span class="lb-e">PE Engineer</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">PE 工程师</span><span class="lb-e">Process Engineer Name</span></div>
         <input type="text" id="peEngineer" placeholder="姓名"></div>
     </div>
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">对手家</span><span class="lb-e">2nd Source</span></div>
-        <input type="text" id="vendor2" placeholder="Merry"></div>
-      <div class="field"><div class="lb"><span class="lb-z">L/C 批号</span><span class="lb-e">Lot Code</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">对手家</span><span class="lb-e">2nd Source Vendor</span></div>
+        <input type="text" id="vendor2" placeholder=""></div>
+      <div class="field"><div class="lb"><span class="lb-z">L/C 批号</span><span class="lb-e">Lot Code (L/C)</span></div>
         <input type="text" id="lc" placeholder="202060203"></div>
     </div>
   </div>
   <div class="dv">生产与投入 Production</div>
   <div class="card">
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">生产日期</span><span class="lb-e">Production Date</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">生产日期</span><span class="lb-e">Production Date (Mfg. Date)</span></div>
         <input type="text" id="productionDate" placeholder="2025-03-01"></div>
-      <div class="field"><div class="lb"><span class="lb-z">投料日</span><span class="lb-e">Feed Start</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">投料日</span><span class="lb-e">Material Feed Start Date</span></div>
         <input type="date" id="startDate"></div>
     </div>
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">投入数<span class="req">*</span></span><span class="lb-e">Total Qty</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">投入数<span class="req">*</span></span><span class="lb-e">Total Input Quantity</span></div>
         <div class="nw"><div class="nb" onclick="adj('inputQty',-100)">−</div><input type="number" id="inputQty" value="0" min="0" oninput="calcFR()"><div class="nb" onclick="adj('inputQty',100)">+</div></div></div>
-      <div class="field"><div class="lb"><span class="lb-z">不良数<span class="req">*</span></span><span class="lb-e">Defect Qty</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">不良数<span class="req">*</span></span><span class="lb-e">Defective Quantity Found</span></div>
         <div class="nw"><div class="nb" onclick="adj('defectQty',-1)">−</div><input type="number" id="defectQty" value="0" min="0" oninput="calcFR()"><div class="nb" onclick="adj('defectQty',1)">+</div></div></div>
     </div>
     <div class="fr" id="frB"><span>F/R =</span><span class="fv" id="frV">0.00%</span></div>
@@ -378,22 +370,22 @@ select{cursor:pointer;padding-right:30px}
   <div class="sec-hdr"><span class="sec-ico">⚖️</span><div><div class="sec-t">开箱判定</div><div class="sec-en">New Box Verdict</div></div></div>
   <div class="alt p show" style="margin-bottom:10px">💡 新箱正常→产线肇因；新箱也有不良→来料异常</div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">开新箱验证结果<span class="req">*</span></span><span class="lb-e">Verdict</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">开新箱验证结果<span class="req">*</span></span><span class="lb-e">New Box Verification Result</span></div>
       <div class="ig c3" id="g_verdict">
-        <div class="io" onclick="pIoV(this,'process','picked-ok')"><div class="iz">新箱正常</div><div class="ie">OK→Process</div></div>
-        <div class="io" onclick="pIoV(this,'vendor','picked-ng')"><div class="iz">新箱也不良</div><div class="ie">NG→Material</div></div>
-        <div class="io" onclick="pIoV(this,'both','picked-warn')"><div class="iz">复合因素</div><div class="ie">Both</div></div>
+        <div class="io" onclick="pIoV(this,'process','picked-ok')"><div class="iz">新箱正常</div><div class="ie">New Box OK → Process Issue</div></div>
+        <div class="io" onclick="pIoV(this,'vendor','picked-ng')"><div class="iz">新箱也不良</div><div class="ie">New Box NG → Raw Material Issue</div></div>
+        <div class="io" onclick="pIoV(this,'both','picked-warn')"><div class="iz">复合因素</div><div class="ie">Combined: Process + Material</div></div>
       </div>
     </div>
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">新箱抽验数</span><span class="lb-e">Sample Qty</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">新箱抽验数</span><span class="lb-e">New Box Sample Quantity</span></div>
         <input type="number" id="newBoxSample" placeholder="20" min="0"></div>
-      <div class="field"><div class="lb"><span class="lb-z">新箱不良数</span><span class="lb-e">Defect Qty</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">新箱不良数</span><span class="lb-e">New Box Defective Quantity</span></div>
         <input type="number" id="newBoxDefect" placeholder="0" min="0"></div>
     </div>
   </div>
   <div class="prob">
-    <div class="lb"><span class="lb-z">📐 原材不良可能性</span><span class="lb-e">Raw Material Defect Probability</span></div>
+    <div class="lb"><span class="lb-z">📐 原材不良可能性</span><span class="lb-e">Raw Material Defect Probability Score</span></div>
     <div class="prob-bar-bg" style="margin-top:6px"><div class="prob-bar" id="pBar" style="width:0%"></div></div>
     <div class="prob-pct" id="pPct">—%</div>
     <div class="prob-lbl" id="pLbl">等待数据...</div>
@@ -404,51 +396,51 @@ select{cursor:pointer;padding-right:30px}
 <div class="page" data-p="5">
   <div class="sec-hdr"><span class="sec-ico">📸</span><div><div class="sec-t">收尾行动</div><div class="sec-en">Evidence & Actions</div></div></div>
   <div class="card">
-    <div class="lb"><span class="lb-z">拍照存证</span><span class="lb-e">Photo Evidence</span></div>
+    <div class="lb"><span class="lb-z">拍照存证</span><span class="lb-e">Photo Evidence (Required)</span></div>
     <div class="pg">
-      <div class="ps" onclick="tP(0)"><span class="pi">🔍</span><span class="pz">不良特写</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(0,this)"></div>
-      <div class="ps" onclick="tP(1)"><span class="pi">🔧</span><span class="pz">治具</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(1,this)"></div>
-      <div class="ps" onclick="tP(2)"><span class="pi">📦</span><span class="pz">外箱</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(2,this)"></div>
-      <div class="ps" onclick="tP(3)"><span class="pi">⚖️</span><span class="pz">良品vs不良</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(3,this)"></div>
+      <div class="ps" onclick="tP(0)"><span class="pi">🔍</span><span class="pz">不良特写 Defect Close-up</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(0,this)"></div>
+      <div class="ps" onclick="tP(1)"><span class="pi">🔧</span><span class="pz">治具 Jig/Fixture</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(1,this)"></div>
+      <div class="ps" onclick="tP(2)"><span class="pi">📦</span><span class="pz">外箱 Outer Box</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(2,this)"></div>
+      <div class="ps" onclick="tP(3)"><span class="pi">⚖️</span><span class="pz">良品vs不良 Good vs Defect</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(3,this)"></div>
     </div>
   </div>
   <div class="card">
-    <div class="lb"><span class="lb-z">后续动作</span><span class="lb-e">Actions (multi-select)</span></div>
-    <div class="ck" onclick="tCk(this,'isolate')"><div class="cb"></div><div style="font-size:13px;font-weight:700">隔离库存 Hold</div></div>
-    <div class="ck" onclick="tCk(this,'sqe')"><div class="cb"></div><div style="font-size:13px;font-weight:700">通报SQE</div></div>
-    <div class="ck" onclick="tCk(this,'fae')"><div class="cb"></div><div style="font-size:13px;font-weight:700">FAE到厂</div></div>
-    <div class="ck" onclick="tCk(this,'rtv')"><div class="cb"></div><div style="font-size:13px;font-weight:700">退货 RTV</div></div>
-    <div class="ck" onclick="tCk(this,'twok')"><div class="cb"></div><div style="font-size:13px;font-weight:700">2K OBA 验证</div></div>
-    <div class="ck" onclick="tCk(this,'monitor')"><div class="cb"></div><div style="font-size:13px;font-weight:700">持续监控</div></div>
+    <div class="lb"><span class="lb-z">后续动作 Follow-up Actions</span><span class="lb-e">Multi-select</span></div>
+    <div class="ck" onclick="tCk(this,'isolate')"><div class="cb"></div><div style="font-size:13px;font-weight:700">隔离库存 Isolate & Hold Stock</div></div>
+    <div class="ck" onclick="tCk(this,'sqe')"><div class="cb"></div><div style="font-size:13px;font-weight:700">通报SQE Notify Supplier Quality Engineer</div></div>
+    <div class="ck" onclick="tCk(this,'fae')"><div class="cb"></div><div style="font-size:13px;font-weight:700">FAE到厂 Request FAE On-site Visit</div></div>
+    <div class="ck" onclick="tCk(this,'rtv')"><div class="cb"></div><div style="font-size:13px;font-weight:700">退货 Return to Vendor (RTV)</div></div>
+    <div class="ck" onclick="tCk(this,'twok')"><div class="cb"></div><div style="font-size:13px;font-weight:700">2K OBA 验证 2000pcs OBA Verification</div></div>
+    <div class="ck" onclick="tCk(this,'monitor')"><div class="cb"></div><div style="font-size:13px;font-weight:700">持续监控 Continue Monitoring</div></div>
   </div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">补充备注</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">补充备注</span><span class="lb-e">Additional Remarks</span></div>
       <textarea id="remarks" placeholder="例 OP表示昨天换过治具..."></textarea></div>
-    <div class="field"><div class="lb"><span class="lb-z">T0 纪录</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">T0 纪录</span><span class="lb-e">T0 IQC Record</span></div>
       <div class="chips" id="g_t0">
-        <div class="ch" onclick="pCh(this,'t0')">正常放行</div>
-        <div class="ch" onclick="pCh(this,'t0')">特采</div>
-        <div class="ch" onclick="pCh(this,'t0')">免检</div>
-        <div class="ch" onclick="pCh(this,'t0')">查无</div>
+        <div class="ch" onclick="pCh(this,'t0')">正常放行 Normal Pass</div>
+        <div class="ch" onclick="pCh(this,'t0')">特采 Conditional Accept</div>
+        <div class="ch" onclick="pCh(this,'t0')">免检 Inspection Waived</div>
+        <div class="ch" onclick="pCh(this,'t0')">查无 No Record Found</div>
       </div>
     </div>
   </div>
   <div class="dv">急迫评估 Urgency</div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">急迫程度<span class="req">*</span></span></div>
+    <div class="field"><div class="lb"><span class="lb-z">急迫程度<span class="req">*</span></span><span class="lb-e">Urgency Level</span></div>
       <div class="ig c3" id="g_urgency">
-        <div class="io" onclick="pIoU(this,'normal','picked-ok')"><div class="iz">一般</div><div class="ie">Normal</div></div>
-        <div class="io" onclick="pIoU(this,'urgent','picked-warn')"><div class="iz">紧急</div><div class="ie">Urgent</div></div>
-        <div class="io" onclick="pIoU(this,'stopline','picked-ng')"><div class="iz">停线级</div><div class="ie">Stop Line</div></div>
+        <div class="io" onclick="pIoU(this,'normal','picked-ok')"><div class="iz">一般</div><div class="ie">Normal Priority</div></div>
+        <div class="io" onclick="pIoU(this,'urgent','picked-warn')"><div class="iz">紧急</div><div class="ie">Urgent: Escalate Now</div></div>
+        <div class="io" onclick="pIoU(this,'stopline','picked-ng')"><div class="iz">停线级</div><div class="ie">Stop Line Immediately</div></div>
       </div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">库存查询</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">库存查询</span><span class="lb-e">Inventory Check (SAP)</span></div>
       <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 请回 SAP 查询同批次库存</div>
-      <div class="pills"><div class="pl" onclick="pPl(this,'inv')">已查询</div><div class="pl" onclick="pPl(this,'inv')">未查询</div></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'inv')">已查询 Checked</div><div class="pl" onclick="pPl(this,'inv')">未查询 Not Yet</div></div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">样品带回</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">样品带回</span><span class="lb-e">Samples Collected</span></div>
       <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 不良+良品各≥2pcs</div>
-      <div class="pills"><div class="pl" onclick="pPl(this,'sample')">已带回</div><div class="pl" onclick="pPl(this,'sample')">未带回</div></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'sample')">已带回 Collected</div><div class="pl" onclick="pPl(this,'sample')">未带回 Not Yet</div></div>
     </div>
   </div>
 </div>
@@ -564,7 +556,7 @@ function updUI(){
 function next(){
   try{
     if(cur===1){
-      var ids=['model','line','materialType'];
+      var ids=['model','line'];
       for(var i=0;i<ids.length;i++){
         var e=$(ids[i]);
         if(!e||!e.value||!e.value.trim()){if(e)e.style.borderColor='red';toast('请填写必填项');return}
@@ -586,7 +578,7 @@ function prev(){try{if(cur>1){cur--;updUI()}}catch(x){}}
 function ct(){
   try{
     var c=0;
-    var fids=['iqcEngineer','model','line','materialType','vendor','qpn','dc'];
+    var fids=['iqcEngineer','model','line','vendor','qpn','dc'];
     for(var i=0;i<fids.length;i++){var el=$(fids[i]);if(el&&el.value&&el.value.trim())c++}
     var dks=['placement','station','surface','compare','focus','crossline','t0'];
     for(var i=0;i<dks.length;i++){if(D[dks[i]])c++}
@@ -683,9 +675,13 @@ function shareToTeams(){
   try{
     var txt=$('rW').innerText;
     var url='https://teams.microsoft.com/l/chat/0/0?message='+encodeURIComponent(txt);
-    window.open(url,'_blank');
+    location.href=url;
     toast('正在打开 Teams...');
-  }catch(x){toast('打开失败')}
+  }catch(x){
+    try{
+      var ta=document.createElement('textarea');ta.value=$('rW').innerText;ta.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('已复制！请手动贴到 Teams');
+    }catch(e){toast('请手动复制报告')}
+  }
 }
 
 /* Run init immediately - script is at bottom of body so DOM is ready */
