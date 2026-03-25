@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>IQC 原材復判 v9</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#f5f6f8;--card:#fff;--card2:#f8f9fb;--bdr:#e2e4e9;--txt:#1c1e24;--dim:#60656f;--mut:#a0a5b0;--acc:#2563eb;--accL:#eff4ff;--ok:#16a34a;--okL:#f0fdf4;--ng:#dc2626;--ngL:#fef2f2;--ngB:rgba(220,38,38,.12);--warn:#d97706;--warnL:#fffbeb;--r:14px;--rs:10px;--sh:0 1px 3px rgba(0,0,0,.05)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;-webkit-text-size-adjust:100%}
+
+.top{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--bdr);padding:10px 16px}
+.top-row{display:flex;align-items:center;justify-content:space-between}
+.top h1{font-size:15px;font-weight:800;color:var(--acc)}
+.top-r{display:flex;gap:6px;align-items:center}
+.urg-p{font-size:9px;padding:2px 8px;border-radius:12px;font-weight:700;display:none}
+.urg-p.show{display:inline}
+.urg-p.normal{background:var(--okL);color:var(--ok)}
+.urg-p.urgent{background:var(--warnL);color:var(--warn)}
+.urg-p.stopline{background:var(--ngL);color:var(--ng)}
+.filled-ct{font-size:10px;color:var(--ok);background:var(--okL);padding:2px 8px;border-radius:10px;font-weight:700}
+.prog{display:flex;gap:3px;margin-top:8px}
+.prog-s{flex:1;height:4px;border-radius:4px;background:#e8eaef}
+.prog-s.done{background:linear-gradient(90deg,var(--acc),#6366f1)}
+.prog-s.cur{background:var(--acc)}
+.prog-info{display:flex;justify-content:space-between;font-size:10px;color:var(--mut);margin-top:3px}
+
+.main{padding:12px 14px 130px}
+.page{display:none}
+.page.active{display:block}
+
+.sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-ico{font-size:24px}
+.sec-t{font-size:17px;font-weight:800}
+.sec-en{font-size:11px;color:var(--dim)}
+
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:var(--sh)}
+
+.lb{margin-bottom:4px}
+.lb-z{font-size:12px;font-weight:600}
+.lb-e{font-size:10px;color:var(--dim)}
+.req{color:var(--ng);font-size:10px;margin-left:2px}
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+input[type="text"],input[type="number"],input[type="date"],select,textarea{width:100%;padding:11px 12px;background:var(--card);border:1.5px solid var(--bdr);border-radius:var(--rs);color:var(--txt);font-size:14px;font-family:inherit;-webkit-appearance:none;box-shadow:var(--sh)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+input::placeholder,textarea::placeholder{color:var(--mut);font-size:13px}
+textarea{resize:vertical;min-height:56px}
+select{cursor:pointer;padding-right:30px}
+
+.nw{display:flex}
+.nw input{text-align:center;border-radius:0;-moz-appearance:textfield;font-weight:700;font-size:16px}
+.nw input::-webkit-inner-spin-button{-webkit-appearance:none}
+.nb{width:46px;flex-shrink:0;border:1.5px solid var(--bdr);background:var(--card2);color:var(--txt);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
+.nb:first-child{border-radius:var(--rs) 0 0 var(--rs);border-right:none}
+.nb:last-child{border-radius:0 var(--rs) var(--rs) 0;border-left:none}
+
+.fr{background:var(--card2);border:1.5px solid var(--bdr);border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.fr .fv{font-size:18px;font-weight:700}
+.fr.hi .fv{color:var(--ng)}
+.fr.ok .fv{color:var(--ok)}
+.fr-a{margin-top:4px;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:600;display:none;line-height:1.4}
+.fr-a.show{display:block}
+.fr-a.s{background:var(--ngL);color:var(--ng)}
+.fr-a.m{background:var(--warnL);color:#92400e}
+.fr-a.l{background:var(--okL);color:var(--ok)}
+
+.ig{display:grid;gap:8px}
+.ig.c2{grid-template-columns:1fr 1fr}
+.ig.c3{grid-template-columns:1fr 1fr 1fr}
+.io{padding:14px 8px;border:2px solid var(--bdr);border-radius:var(--r);background:var(--card);text-align:center;cursor:pointer;box-shadow:var(--sh);user-select:none;position:relative}
+.io .iz{font-size:14px;font-weight:800;line-height:1.3}
+.io .ie{font-size:10px;color:var(--dim);margin-top:2px}
+.io.picked{border-color:var(--acc);background:var(--accL)}
+.io.picked-ok{border-color:var(--ok);background:var(--okL)}
+.io.picked-ng{border-color:var(--ng);background:var(--ngL)}
+.io.picked-warn{border-color:var(--warn);background:var(--warnL)}
+
+.tg{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rs);padding:11px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;box-shadow:var(--sh)}
+.tg.warn{border-color:var(--ngB);background:var(--ngL)}
+.tg-l{flex:1;padding-right:8px}
+.tg-z{font-size:12px;font-weight:600}
+.tg-e{font-size:9px;color:var(--dim)}
+.sw{position:relative;width:44px;height:24px;border-radius:24px;background:#ccd;cursor:pointer;flex-shrink:0}
+.sw.on{background:var(--ok)}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.sw.on::after{left:22px}
+
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;-webkit-overflow-scrolling:touch}
+.ch{flex-shrink:0;padding:8px 14px;border:1.5px solid var(--bdr);border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;background:var(--card);white-space:nowrap;box-shadow:var(--sh);user-select:none}
+.ch.picked{border-color:var(--acc);background:var(--acc);color:#fff}
+
+.pills{display:flex;gap:6px}
+.pl{flex:1;padding:10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;background:var(--card);text-align:center;user-select:none}
+.pl.on{border-color:var(--ok);background:var(--okL);color:var(--ok)}
+.pl.off{border-color:var(--ngB);background:var(--ngL);color:var(--ng)}
+
+.ck{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--card);border:1.5px solid var(--bdr);border-radius:var(--rs);cursor:pointer;box-shadow:var(--sh);margin-bottom:5px;user-select:none}
+.ck.on{border-color:var(--ok);background:var(--okL)}
+.cb{width:20px;height:20px;border-radius:5px;border:2px solid var(--bdr);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.ck.on .cb{background:var(--ok);border-color:var(--ok);color:#fff}
+
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ps{aspect-ratio:1;border:2px dashed var(--bdr);border-radius:var(--rs);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;background:var(--card2)}
+.ps .pi{font-size:22px;margin-bottom:2px}
+.ps .pz{font-size:9px;color:var(--dim);font-weight:500}
+.ps img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ps .rm{position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.6);border-radius:50%;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;z-index:2}
+.ps.has{border-style:solid;border-color:var(--ok)}
+
+.alt{padding:8px 10px;border-radius:8px;font-size:11px;line-height:1.5;display:none;margin-top:6px}
+.alt.show{display:block}
+.alt.r{background:var(--ngL);color:var(--ng);border:1px solid var(--ngB)}
+.alt.b{background:var(--accL);color:var(--acc);border:1px solid rgba(37,99,235,.12)}
+.alt.p{background:#f5f0ff;color:#7c3aed;border:1px solid rgba(124,58,237,.1)}
+
+.prob{background:var(--card);border:1.5px solid var(--bdr);border-radius:var(--r);padding:14px;margin-top:10px;box-shadow:var(--sh)}
+.prob-bar-bg{height:10px;background:var(--card2);border-radius:10px;overflow:hidden;border:1px solid var(--bdr)}
+.prob-bar{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--ok),var(--warn),var(--ng))}
+.prob-pct{font-size:28px;font-weight:700;text-align:center;margin-top:4px}
+.prob-lbl{font-size:11px;color:var(--mut);text-align:center}
+
+.dv{display:flex;align-items:center;gap:8px;margin:14px 0 10px;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--bdr)}
+
+.bn{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--bdr);padding:10px 14px;padding-bottom:10px;display:flex;gap:8px;z-index:50}
+.bt{flex:1;padding:14px;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;font-family:inherit}
+.bt-b{background:#e8eaef;color:var(--dim)}
+.bt-n{background:var(--acc);color:#fff}
+.bt-g{background:var(--ok);color:#fff}
+
+/* WELCOME - simple, no fancy transitions */
+#wel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
+#wel h2{font-size:22px;font-weight:800;margin:16px 0 4px}
+#wel .ws{font-size:12px;color:var(--dim);margin-bottom:28px}
+#wel input{width:100%;max-width:260px;padding:13px;border:2px solid var(--bdr);border-radius:var(--r);font-size:15px;text-align:center;margin-bottom:12px;font-family:inherit}
+#wel input:focus{outline:none;border-color:var(--acc)}
+#welBtn{padding:14px 36px;border:none;border-radius:var(--r);background:var(--acc);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:block;width:100%;max-width:260px}
+.wrt{margin-top:14px;font-size:12px;color:var(--mut)}
+.wrt b{color:var(--acc);cursor:pointer}
+
+/* MODAL */
+.mod{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(0,0,0,.3)}
+.mod.show{display:block}
+.mod-s{position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:18px 18px 0 0;max-height:85vh;overflow-y:auto;padding:16px 14px 30px}
+.mod-s .mh{width:32px;height:4px;background:var(--card2);border-radius:4px;margin:0 auto 12px}
+.rw{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rs);overflow:hidden;margin-bottom:12px;max-height:50vh;overflow-y:auto}
+.rh{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;padding:10px 14px;font-size:12px;font-weight:700;text-align:center;line-height:1.4}
+.rt{width:100%;border-collapse:collapse;font-size:11px}
+.rt th{background:var(--card2);color:var(--dim);padding:5px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--bdr);width:35%}
+.rt td{padding:5px 8px;border-bottom:1px solid #eee;word-break:break-all}
+.rt tr.sc td{background:var(--card2);font-weight:700;color:var(--acc);font-size:9px;text-transform:uppercase;letter-spacing:.8px}
+.rt tr.vr td{background:var(--ngL);font-weight:700;font-size:12px;text-align:center;padding:10px}
+.sb{display:flex;flex-direction:column;gap:6px}
+.sb button{padding:12px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:var(--card);color:var(--txt);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:center}
+.sb .teams-btn{background:#6264A7;color:#fff;border-color:#6264A7}
+
+.toast{position:fixed;top:52px;left:50%;transform:translateX(-50%) translateY(-16px);background:var(--ok);color:#fff;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:600;opacity:0;z-index:300;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- JS BLOCKED FALLBACK (Teams file preview doesn't run JS) -->
+<noscript>
+<div style="position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;font-family:-apple-system,sans-serif">
+  <div style="font-size:60px;margin-bottom:16px">⚠️</div>
+  <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">无法在此处运行</h2>
+  <p style="font-size:14px;color:#666;line-height:1.6;max-width:300px;margin-bottom:20px">
+    Teams 文件预览不支持互动功能。<br>请用以下方式打开：
+  </p>
+  <div style="background:#f0f4ff;border:2px solid #2563eb;border-radius:12px;padding:16px;max-width:300px;text-align:left;font-size:13px;line-height:1.8">
+    <b>方法 1：Safari 打开</b><br>
+    点右上角 ⋯ → 「在浏览器中打开」<br><br>
+    <b>方法 2：部署到 SharePoint</b><br>
+    上传到 SharePoint 网站页面，<br>用链接打开即可正常使用
+  </div>
+</div>
+</noscript>
+
+<!-- ===== WELCOME ===== -->
+<div id="wel">
+  <div style="font-size:56px;margin-bottom:4px">📦</div>
+  <h2>IQC 原材復判</h2>
+  <div class="ws">Raw Material Re-judgment System</div>
+  <input type="text" id="wN" placeholder="输入姓名 Enter name">
+  <button id="welBtn" onclick="go()">开始復判 Start</button>
+  <div class="wrt" id="wRt" style="display:none">上次 Last: <b id="rN" onclick="qgo()"></b></div>
+</div>
+
+<!-- ===== TOP BAR ===== -->
+<div class="top" id="top" style="display:none">
+  <div class="top-row">
+    <h1>IQC 原材復判</h1>
+    <div class="top-r"><span class="urg-p" id="urgP"></span><span class="filled-ct" id="fCt">0 filled</span></div>
+  </div>
+  <div class="prog" id="prog"></div>
+  <div class="prog-info"><span id="pL">1/5</span><span id="pN"></span></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="main" id="mainC" style="display:none">
+
+<!-- PAGE 1: 不良分析 + 机种/线别/材料 -->
+<div class="page active" data-p="1">
+  <div class="sec-hdr"><span class="sec-ico">🔬</span><div><div class="sec-t">不良分析</div><div class="sec-en">Defect Analysis</div></div></div>
+
+  <div class="card">
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">机种<span class="req">*</span></span><span class="lb-e">Project</span></div>
+        <input type="text" id="model" placeholder="PWYU" oninput="this.value=this.value.toUpperCase();ct()"></div>
+      <div class="field"><div class="lb"><span class="lb-z">线别<span class="req">*</span></span><span class="lb-e">Line</span></div>
+        <input type="text" id="line" placeholder="K22 D line" onchange="ct()"></div>
+    </div>
+    <div class="field"><div class="lb"><span class="lb-z">材料类型<span class="req">*</span></span><span class="lb-e">Material Type</span></div>
+      <select id="materialType" onchange="ct()">
+        <option value="">— 请选择 Select —</option>
+        <optgroup label="电子 Electronic"><option>DM* — Power Cord 电源线</option><option>DD*/3X*/3Q* — Cable 线材</option><option>3R*/35*/3Z* — Antenna 天线</option><option>DQ* — Fan 风扇</option><option>AD* — MIC/Cable/FPC/T/P/Mouse</option><option>AF* — Power Supply 电源供应器</option><option>AH* — Battery 电池</option><option>AI* — Camera 相机模组</option><option>DE* — FFC/FPC 软排线</option><option>ATR* — RAM Module 内存</option><option>C* — 电容/电阻/电感</option><option>AJ*/AR*/AL*/AK* — IC/CPU</option><option>DA* — PCB 电路板</option><option>DF* — Connector 连接器</option><option>DG* — Socket 插座</option><option>DN — Speaker/MIC 喇叭/麦克风</option></optgroup>
+        <optgroup label="塑胶 Plastic"><option>EA — Plastic Housing 塑胶壳(大)</option><option>EB — Plastic Parts 塑胶件(小)</option><option>EC — Key Caps 按键</option></optgroup>
+        <optgroup label="金属 Metal"><option>FA — Metal Case 金属壳(大)</option><option>FB — Metal Parts 金属件(小)</option><option>3G* — Hinge 转轴</option></optgroup>
+        <optgroup label="其他 Others"><option>GA — Rubber 橡胶</option><option>GB — Sponge/Gasket 泡棉</option><option>FC — Insulator 绝缘体</option><option>MM/MS/MU — Screw 螺丝</option><option>HC — Label 标签</option><option>HE — BOX 盒子</option><option>XX — 消耗品 Consumables</option><option>JX — Other 杂项</option></optgroup>
+      </select>
+    </div>
+  </div>
+
+  <div class="dv">不良现象 Defect</div>
+
+  <div class="card">
+    <div class="field"><div class="lb"><span class="lb-z">不良现象<span class="req">*</span></span><span class="lb-e">Defect Symptom</span></div>
+      <select id="defectType" onchange="ct()"><option value="">— 请选择 Select —</option><option>Scratch (刮伤)</option><option>Dent (压伤)</option><option>Crack (裂痕)</option><option>Warpage (翘曲变形)</option><option>Delamination (分层/剥离)</option><option>Open (断路)</option><option>Short (短路)</option><option>Solder Ball (锡球)</option><option>焊接不良 (空焊/冷焊)</option><option>Contamination (污染)</option><option>Discoloration (变色/氧化)</option><option>Dimension NG (尺寸不良)</option><option>功能性失效 Function Fail</option><option>Other (其他)</option></select></div>
+    <div class="field"><div class="lb"><span class="lb-z">表面观察</span><span class="lb-e">Surface Observation</span></div>
+      <div class="ig c2" id="g_surface">
+        <div class="io" onclick="pIo(this,'surface','断面粗糙→疑外力')"><div class="iz">粗糙→外力</div><div class="ie">Rough→Impact</div></div>
+        <div class="io" onclick="pIo(this,'surface','断面光滑→疑疲劳')"><div class="iz">光滑→疲劳</div><div class="ie">Smooth→Fatigue</div></div>
+        <div class="io" onclick="pIo(this,'surface','残胶→疑重工')"><div class="iz">残胶→重工</div><div class="ie">Residue→Rework</div></div>
+        <div class="io" onclick="pIo(this,'surface','焊锡残留→疑已上线')"><div class="iz">焊锡→已上线</div><div class="ie">Solder→Used</div></div>
+        <div class="io" onclick="pIo(this,'surface','DDS')"><div class="iz">DDS</div><div class="ie">DDS</div></div>
+        <div class="io" onclick="pIo(this,'surface','表面原始状态良好')"><div class="iz">原始良好</div><div class="ie">Original good</div></div>
+      </div>
+    </div>
+    <div class="field"><div class="lb"><span class="lb-z">良品vs不良品</span><span class="lb-e">Good vs Defective</span></div>
+      <div class="ig c2" id="g_compare">
+        <div class="io" onclick="pIo(this,'compare','材料本体缺陷')"><div class="iz">材料缺陷</div><div class="ie">Material defect</div></div>
+        <div class="io" onclick="pIo(this,'compare','外力损伤')"><div class="iz">外力损伤</div><div class="ie">External</div></div>
+        <div class="io" onclick="pIo(this,'compare','差异不明显')"><div class="iz">不明显</div><div class="ie">No diff</div></div>
+        <div class="io" onclick="pIo(this,'compare','未对比')"><div class="iz">未对比</div><div class="ie">Not compared</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="field"><div class="lb"><span class="lb-z">集中性</span><span class="lb-e">Concentration</span></div>
+      <div class="ig c3" id="g_focus">
+        <div class="io" onclick="pIo(this,'focus','集中特定批')"><div class="iz">集中特定批</div><div class="ie">Specific lot</div></div>
+        <div class="io" onclick="pIo(this,'focus','随机发生')"><div class="iz">随机</div><div class="ie">Random</div></div>
+        <div class="io" onclick="pIo(this,'focus','仅此批次')"><div class="iz">仅此批</div><div class="ie">This lot</div></div>
+      </div>
+    </div>
+    <div class="field"><div class="lb"><span class="lb-z">跨线比对</span><span class="lb-e">Cross-line comparison</span></div>
+      <div class="ig c3" id="g_crossline">
+        <div class="io" onclick="pIo(this,'crossline','其他线也有→来料')"><div class="iz">其他线也有</div><div class="ie">Other lines</div></div>
+        <div class="io" onclick="pIo(this,'crossline','仅此线→制程')"><div class="iz">仅此线</div><div class="ie">This line</div></div>
+        <div class="io" onclick="pIo(this,'crossline','无法比对')"><div class="iz">无法比对</div><div class="ie">Can't compare</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: 现场勘查 + 厂商/料号/DC -->
+<div class="page" data-p="2">
+  <div class="sec-hdr"><span class="sec-ico">🔍</span><div><div class="sec-t">现场勘查</div><div class="sec-en">On-site Inspection</div></div></div>
+  <div class="card">
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">主厂商<span class="req">*</span></span><span class="lb-e">Vendor</span></div>
+        <input type="text" id="vendor" placeholder="GTK" onchange="ct()"></div>
+      <div class="field"><div class="lb"><span class="lb-z">P/N 料号<span class="req">*</span></span><span class="lb-e">Part Number</span></div>
+        <input type="text" id="qpn" placeholder="4PVF1BC0040" onchange="ct()"></div>
+    </div>
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">D/C 日期码<span class="req">*</span></span><span class="lb-e">Date Code</span></div>
+        <input type="text" id="dc" placeholder="0309" onchange="ct()"></div>
+      <div class="field"><div class="lb"><span class="lb-z">通报来源</span><span class="lb-e">Report Source</span></div>
+        <select id="reportSource"><option value="">选择</option><option>产线PE</option><option>产线OP</option><option>QC巡检</option><option>CQA</option><option>Inline OBA</option><option>测试站</option><option>IQC巡查</option></select></div>
+    </div>
+  </div>
+  <div class="dv">产线勘查 Line Check</div>
+  <div class="card">
+    <div class="lb"><span class="lb-z">产线材料放置状况</span><span class="lb-e">Material Placement</span></div>
+    <div class="chips" id="g_placement">
+      <div class="ch" onclick="pCh(this,'placement')">错盘</div>
+      <div class="ch" onclick="pCh(this,'placement')">散乱</div>
+      <div class="ch" onclick="pCh(this,'placement')">放桌面</div>
+      <div class="ch" onclick="pCh(this,'placement')">堆叠挤压</div>
+      <div class="ch" onclick="pCh(this,'placement')">未开箱</div>
+    </div>
+  </div>
+  <div class="dv">防伪五项 Authentication</div>
+  <div class="card">
+    <div class="tg" data-key="origBox"><div class="tg-l"><div class="tg-z">原箱？</div><div class="tg-e">Original box?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？</div><div class="tg-e">IQC tape/label?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="labelMatch"><div class="tg-l"><div class="tg-z">标签一致？</div><div class="tg-e">Labels match?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="qtyMatch"><div class="tg-l"><div class="tg-z">数量吻合？</div><div class="tg-e">Qty match?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="packMatch"><div class="tg-l"><div class="tg-z">包装一致？</div><div class="tg-e">Pack match?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="alt r" id="authAlt">⚠️ 非IQC标准放行状态！</div>
+    <div style="margin-top:8px">
+      <div class="tg" data-key="notExpired"><div class="tg-l"><div class="tg-z">保质期内？</div><div class="tg-e">Within shelf life?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+      <div class="alt r" id="expAlt">⚠️ 零件超期！</div>
+    </div>
+  </div>
+  <div class="dv">制程勘查 Process</div>
+  <div class="card">
+    <div class="field"><div class="lb"><span class="lb-z">组装工站类型</span><span class="lb-e">Assembly Station</span></div>
+      <div class="ig c3" id="g_station">
+        <div class="io" onclick="pIo(this,'station','人工组装');showSt('m')"><div class="iz">人工</div><div class="ie">Manual</div></div>
+        <div class="io" onclick="pIo(this,'station','自动机台');showSt('a')"><div class="iz">自动</div><div class="ie">Auto</div></div>
+        <div class="io" onclick="pIo(this,'station','人工+机台混合');showSt('b')"><div class="iz">混合</div><div class="ie">Hybrid</div></div>
+      </div>
+    </div>
+    <div id="stM" style="display:none;margin-top:8px;padding-left:8px;border-left:3px solid var(--acc)">
+      <div class="lb"><span class="lb-z">桌面异物？</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'desk')">是</div><div class="pl" onclick="pPl(this,'desk')">否</div></div>
+      <div class="lb" style="margin-top:8px"><span class="lb-z">重工痕迹？</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'rework')">是</div><div class="pl" onclick="pPl(this,'rework')">否</div></div>
+      <div class="lb" style="margin-top:8px"><span class="lb-z">OP 依 SOP？</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'sop')">是</div><div class="pl" onclick="pPl(this,'sop')">否</div><div class="pl" onclick="pPl(this,'sop')">未确认</div></div>
+    </div>
+    <div id="stA" style="display:none;margin-top:8px;padding-left:8px;border-left:3px solid #7c3aed">
+      <div class="lb"><span class="lb-z">吸嘴/治具磨损？</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'nozzle')">是</div><div class="pl" onclick="pPl(this,'nozzle')">否</div></div>
+      <div class="lb" style="margin-top:8px"><span class="lb-z">参数变更？</span></div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'param')">有</div><div class="pl" onclick="pPl(this,'param')">无</div><div class="pl" onclick="pPl(this,'param')">不确定</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: 批号与数量 -->
+<div class="page" data-p="3">
+  <div class="sec-hdr"><span class="sec-ico">📋</span><div><div class="sec-t">批号与数量</div><div class="sec-en">Lot Data & Quantity</div></div></div>
+  <div class="card">
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">IQC 工程师<span class="req">*</span></span><span class="lb-e">IQC Engineer</span></div>
+        <input type="text" id="iqcEngineer" readonly style="background:var(--card2);font-weight:600"></div>
+      <div class="field"><div class="lb"><span class="lb-z">PE 工程师</span><span class="lb-e">PE Engineer</span></div>
+        <input type="text" id="peEngineer" placeholder="姓名"></div>
+    </div>
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">对手家</span><span class="lb-e">2nd Source</span></div>
+        <input type="text" id="vendor2" placeholder="Merry"></div>
+      <div class="field"><div class="lb"><span class="lb-z">L/C 批号</span><span class="lb-e">Lot Code</span></div>
+        <input type="text" id="lc" placeholder="202060203"></div>
+    </div>
+  </div>
+  <div class="dv">生产与投入 Production</div>
+  <div class="card">
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">生产日期</span><span class="lb-e">Production Date</span></div>
+        <input type="text" id="productionDate" placeholder="2025-03-01"></div>
+      <div class="field"><div class="lb"><span class="lb-z">投料日</span><span class="lb-e">Feed Start</span></div>
+        <input type="date" id="startDate"></div>
+    </div>
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">投入数<span class="req">*</span></span><span class="lb-e">Total Qty</span></div>
+        <div class="nw"><div class="nb" onclick="adj('inputQty',-100)">−</div><input type="number" id="inputQty" value="0" min="0" oninput="calcFR()"><div class="nb" onclick="adj('inputQty',100)">+</div></div></div>
+      <div class="field"><div class="lb"><span class="lb-z">不良数<span class="req">*</span></span><span class="lb-e">Defect Qty</span></div>
+        <div class="nw"><div class="nb" onclick="adj('defectQty',-1)">−</div><input type="number" id="defectQty" value="0" min="0" oninput="calcFR()"><div class="nb" onclick="adj('defectQty',1)">+</div></div></div>
+    </div>
+    <div class="fr" id="frB"><span>F/R =</span><span class="fv" id="frV">0.00%</span></div>
+    <div class="fr-a s" id="frS">🚨 >1% 建议停线隔离</div>
+    <div class="fr-a m" id="frM">⚠️ 0.3-1% 加严抽验</div>
+    <div class="fr-a l" id="frL">✅ &lt;0.3% 监控</div>
+  </div>
+</div>
+
+<!-- PAGE 4: 开箱判定 -->
+<div class="page" data-p="4">
+  <div class="sec-hdr"><span class="sec-ico">⚖️</span><div><div class="sec-t">开箱判定</div><div class="sec-en">New Box Verdict</div></div></div>
+  <div class="alt p show" style="margin-bottom:10px">💡 新箱正常→产线肇因；新箱也有不良→来料异常</div>
+  <div class="card">
+    <div class="field"><div class="lb"><span class="lb-z">开新箱验证结果<span class="req">*</span></span><span class="lb-e">Verdict</span></div>
+      <div class="ig c3" id="g_verdict">
+        <div class="io" onclick="pIoV(this,'process','picked-ok')"><div class="iz">新箱正常</div><div class="ie">OK→Process</div></div>
+        <div class="io" onclick="pIoV(this,'vendor','picked-ng')"><div class="iz">新箱也不良</div><div class="ie">NG→Material</div></div>
+        <div class="io" onclick="pIoV(this,'both','picked-warn')"><div class="iz">复合因素</div><div class="ie">Both</div></div>
+      </div>
+    </div>
+    <div class="f2">
+      <div class="field"><div class="lb"><span class="lb-z">新箱抽验数</span><span class="lb-e">Sample Qty</span></div>
+        <input type="number" id="newBoxSample" placeholder="20" min="0"></div>
+      <div class="field"><div class="lb"><span class="lb-z">新箱不良数</span><span class="lb-e">Defect Qty</span></div>
+        <input type="number" id="newBoxDefect" placeholder="0" min="0"></div>
+    </div>
+  </div>
+  <div class="prob">
+    <div class="lb"><span class="lb-z">📐 原材不良可能性</span><span class="lb-e">Raw Material Defect Probability</span></div>
+    <div class="prob-bar-bg" style="margin-top:6px"><div class="prob-bar" id="pBar" style="width:0%"></div></div>
+    <div class="prob-pct" id="pPct">—%</div>
+    <div class="prob-lbl" id="pLbl">等待数据...</div>
+  </div>
+</div>
+
+<!-- PAGE 5: 收尾行动 -->
+<div class="page" data-p="5">
+  <div class="sec-hdr"><span class="sec-ico">📸</span><div><div class="sec-t">收尾行动</div><div class="sec-en">Evidence & Actions</div></div></div>
+  <div class="card">
+    <div class="lb"><span class="lb-z">拍照存证</span><span class="lb-e">Photo Evidence</span></div>
+    <div class="pg">
+      <div class="ps" onclick="tP(0)"><span class="pi">🔍</span><span class="pz">不良特写</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(0,this)"></div>
+      <div class="ps" onclick="tP(1)"><span class="pi">🔧</span><span class="pz">治具</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(1,this)"></div>
+      <div class="ps" onclick="tP(2)"><span class="pi">📦</span><span class="pz">外箱</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(2,this)"></div>
+      <div class="ps" onclick="tP(3)"><span class="pi">⚖️</span><span class="pz">良品vs不良</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="hP(3,this)"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="lb"><span class="lb-z">后续动作</span><span class="lb-e">Actions (multi-select)</span></div>
+    <div class="ck" onclick="tCk(this,'isolate')"><div class="cb"></div><div style="font-size:13px;font-weight:700">隔离库存 Hold</div></div>
+    <div class="ck" onclick="tCk(this,'sqe')"><div class="cb"></div><div style="font-size:13px;font-weight:700">通报SQE</div></div>
+    <div class="ck" onclick="tCk(this,'fae')"><div class="cb"></div><div style="font-size:13px;font-weight:700">FAE到厂</div></div>
+    <div class="ck" onclick="tCk(this,'rtv')"><div class="cb"></div><div style="font-size:13px;font-weight:700">退货 RTV</div></div>
+    <div class="ck" onclick="tCk(this,'twok')"><div class="cb"></div><div style="font-size:13px;font-weight:700">2K OBA 验证</div></div>
+    <div class="ck" onclick="tCk(this,'monitor')"><div class="cb"></div><div style="font-size:13px;font-weight:700">持续监控</div></div>
+  </div>
+  <div class="card">
+    <div class="field"><div class="lb"><span class="lb-z">补充备注</span></div>
+      <textarea id="remarks" placeholder="例 OP表示昨天换过治具..."></textarea></div>
+    <div class="field"><div class="lb"><span class="lb-z">T0 纪录</span></div>
+      <div class="chips" id="g_t0">
+        <div class="ch" onclick="pCh(this,'t0')">正常放行</div>
+        <div class="ch" onclick="pCh(this,'t0')">特采</div>
+        <div class="ch" onclick="pCh(this,'t0')">免检</div>
+        <div class="ch" onclick="pCh(this,'t0')">查无</div>
+      </div>
+    </div>
+  </div>
+  <div class="dv">急迫评估 Urgency</div>
+  <div class="card">
+    <div class="field"><div class="lb"><span class="lb-z">急迫程度<span class="req">*</span></span></div>
+      <div class="ig c3" id="g_urgency">
+        <div class="io" onclick="pIoU(this,'normal','picked-ok')"><div class="iz">一般</div><div class="ie">Normal</div></div>
+        <div class="io" onclick="pIoU(this,'urgent','picked-warn')"><div class="iz">紧急</div><div class="ie">Urgent</div></div>
+        <div class="io" onclick="pIoU(this,'stopline','picked-ng')"><div class="iz">停线级</div><div class="ie">Stop Line</div></div>
+      </div>
+    </div>
+    <div class="field"><div class="lb"><span class="lb-z">库存查询</span></div>
+      <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 请回 SAP 查询同批次库存</div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'inv')">已查询</div><div class="pl" onclick="pPl(this,'inv')">未查询</div></div>
+    </div>
+    <div class="field"><div class="lb"><span class="lb-z">样品带回</span></div>
+      <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 不良+良品各≥2pcs</div>
+      <div class="pills"><div class="pl" onclick="pPl(this,'sample')">已带回</div><div class="pl" onclick="pPl(this,'sample')">未带回</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bn" id="bn" style="display:none">
+  <button class="bt bt-b" id="bB" onclick="prev()" style="display:none">← 上一步</button>
+  <button class="bt bt-n" id="bN" onclick="next()">下一步 Next →</button>
+  <button class="bt bt-g" id="bG" onclick="genRpt()" style="display:none">📋 生成报告</button>
+</div>
+
+<!-- MODAL -->
+<div class="mod" id="rMod" onclick="if(event.target===this)clMod()">
+  <div class="mod-s">
+    <div class="mh"></div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:10px">📋 IQC 原材復判报告</div>
+    <div class="rw" id="rW"></div>
+    <div class="sb">
+      <button class="teams-btn" onclick="shareToTeams()">💬 发送到 Teams</button>
+      <button onclick="cpRpt()">📋 复制 Copy</button>
+      <button onclick="clMod()" style="text-align:center;color:var(--mut)">关闭 Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   TEAMS WEBVIEW SAFE: No addEventListener, no arrow functions,
+   no template literals, no optional chaining, no localStorage
+   dependency. Pure inline onclick + var + try/catch everywhere.
+   ============================================================ */
+
+var PAGES=['不良分析','现场勘查','批号数量','开箱判定','收尾行动'];
+var cur=1,totalP=5,startTS='',endTS='',fillCount=0;
+var D={},TS={origBox:1,iqcTape:1,labelMatch:1,qtyMatch:1,packMatch:1,notExpired:1},CK={},photos=[null,null,null,null];
+
+/* safe localStorage */
+function lsGet(k){try{return localStorage.getItem(k)}catch(x){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(x){}}
+
+/* safe getElementById */
+function $(id){return document.getElementById(id)}
+
+/* init: called at bottom of body via inline script */
+function doInit(){
+  try{
+    var s=lsGet('iqc_eng');
+    if(s){$('wRt').style.display='block';$('rN').textContent=s}
+  }catch(x){}
+  try{
+    startTS=new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }catch(x){startTS=new Date().toString()}
+  try{
+    var pr=$('prog');
+    for(var i=0;i<totalP;i++){var d=document.createElement('div');d.className='prog-s';pr.appendChild(d)}
+  }catch(x){}
+  updUI();
+}
+
+function go(){
+  try{
+    var n=$('wN').value.trim();
+    if(!n){$('wN').style.borderColor='red';return}
+    lsSet('iqc_eng',n);
+    $('iqcEngineer').value=n;
+    D.iqcEngineer=n;
+    enter();
+  }catch(x){alert('Error: '+x.message)}
+}
+
+function qgo(){
+  try{
+    var n=lsGet('iqc_eng');
+    if(n){$('iqcEngineer').value=n;D.iqcEngineer=n;enter()}
+  }catch(x){}
+}
+
+function enter(){
+  try{
+    $('wel').style.display='none';
+    $('top').style.display='';
+    $('mainC').style.display='';
+    $('bn').style.display='';
+    ct();
+  }catch(x){alert('Enter error: '+x.message)}
+}
+
+function updUI(){
+  try{
+    var pages=document.querySelectorAll('.page');
+    for(var i=0;i<pages.length;i++){
+      var pn=parseInt(pages[i].getAttribute('data-p'));
+      if(pn===cur){pages[i].className='page active'}else{pages[i].className='page'}
+    }
+    var segs=document.querySelectorAll('.prog-s');
+    for(var i=0;i<segs.length;i++){
+      if(i+1<cur)segs[i].className='prog-s done';
+      else if(i+1===cur)segs[i].className='prog-s cur';
+      else segs[i].className='prog-s';
+    }
+    $('pL').textContent=cur+'/'+totalP;
+    $('pN').textContent=PAGES[cur-1];
+    $('bB').style.display=cur>1?'':'none';
+    $('bN').style.display=cur<totalP?'':'none';
+    $('bG').style.display=cur===totalP?'':'none';
+    if(cur===4)calcProb();
+    window.scrollTo(0,0);
+  }catch(x){}
+}
+
+function next(){
+  try{
+    if(cur===1){
+      var ids=['model','line','materialType'];
+      for(var i=0;i<ids.length;i++){
+        var e=$(ids[i]);
+        if(!e||!e.value||!e.value.trim()){if(e)e.style.borderColor='red';toast('请填写必填项');return}
+      }
+    }
+    if(cur===2){
+      var ids2=['vendor','qpn','dc'];
+      for(var i=0;i<ids2.length;i++){
+        var e=$(ids2[i]);
+        if(!e||!e.value||!e.value.trim()){if(e)e.style.borderColor='red';toast('请填写必填项');return}
+      }
+    }
+    if(cur<totalP){cur++;updUI()}
+  }catch(x){}
+}
+
+function prev(){try{if(cur>1){cur--;updUI()}}catch(x){}}
+
+function ct(){
+  try{
+    var c=0;
+    var fids=['iqcEngineer','model','line','materialType','vendor','qpn','dc'];
+    for(var i=0;i<fids.length;i++){var el=$(fids[i]);if(el&&el.value&&el.value.trim())c++}
+    var dks=['placement','station','surface','compare','focus','crossline','t0'];
+    for(var i=0;i<dks.length;i++){if(D[dks[i]])c++}
+    if(D.verdict)c++;if(D.urgency)c++;
+    var iq=$('inputQty');if(iq&&parseInt(iq.value)>0)c++;
+    fillCount=c;
+    $('fCt').textContent=c+' filled';
+  }catch(x){}
+}
+
+function gv(id){try{var el=$(id);return(el&&el.value&&el.value.trim())?el.value.trim():'—'}catch(x){return '—'}}
+function adj(id,d){try{var e=$(id);e.value=Math.max(0,(parseInt(e.value)||0)+d);calcFR()}catch(x){}}
+function calcFR(){
+  try{
+    var i=parseInt($('inputQty').value)||0,d=parseInt($('defectQty').value)||0;
+    var b=$('frB'),v=$('frV');
+    if(i>0){
+      var f=d/i*100;v.textContent=f.toFixed(2)+'%';b.className='fr '+(f>.5?'hi':'ok');
+      $('frS').className='fr-a s'+(f>=1?' show':'');
+      $('frM').className='fr-a m'+(f>=.3&&f<1?' show':'');
+      $('frL').className='fr-a l'+(f>0&&f<.3?' show':'');
+      ct();
+    }else{v.textContent='0.00%';b.className='fr';$('frS').className='fr-a s';$('frM').className='fr-a m';$('frL').className='fr-a l'}
+  }catch(x){}
+}
+
+function pCh(el,key){try{var ch=el.parentElement.querySelectorAll('.ch');for(var i=0;i<ch.length;i++)ch[i].className='ch';el.className='ch picked';D[key]=el.textContent.trim();ct()}catch(x){}}
+function pIo(el,key,val){try{var g=el.parentElement;var ios=g.querySelectorAll('.io');for(var i=0;i<ios.length;i++)ios[i].className='io';el.className='io picked';D[key]=val;ct()}catch(x){}}
+function pIoV(el,val,cls){try{var ios=document.querySelectorAll('#g_verdict .io');for(var i=0;i<ios.length;i++)ios[i].className='io';el.className='io '+cls;D.verdict=val;ct();calcProb()}catch(x){}}
+function pIoU(el,val,cls){try{var ios=document.querySelectorAll('#g_urgency .io');for(var i=0;i<ios.length;i++)ios[i].className='io';el.className='io '+cls;D.urgency=val;
+  var p=$('urgP');p.className='urg-p show '+val;var m={normal:'🟢 一般',urgent:'🟡 紧急',stopline:'🔴 停线'};p.textContent=m[val]||'';ct()}catch(x){}}
+function pPl(el,key){try{var pls=el.parentElement.querySelectorAll('.pl');for(var i=0;i<pls.length;i++){pls[i].className='pl'}var isFirst=el===el.parentElement.children[0];el.className='pl '+(isFirst?'on':'off');D[key]=el.textContent.trim();ct()}catch(x){}}
+function tSw(el){try{var card=el.closest('.tg'),key=card.getAttribute('data-key');var on=el.className.indexOf('on')>=0;if(on){el.className='sw'}else{el.className='sw on'}TS[key]=on?0:1;card.className=on?'tg warn':'tg';
+  var aa=$('authAlt');if(aa){var bad=!TS.origBox||!TS.iqcTape||!TS.labelMatch||!TS.qtyMatch||!TS.packMatch;aa.className='alt r'+(bad?' show':'')}
+  var ea=$('expAlt');if(ea){ea.className='alt r'+(!TS.notExpired?' show':'')}ct()}catch(x){}}
+function tCk(el,key){try{var on=el.className.indexOf('on')>=0;el.className=on?'ck':'ck on';CK[key]=on?0:1;el.querySelector('.cb').textContent=on?'':'✓';ct()}catch(x){}}
+function showSt(t){try{$('stM').style.display=(t==='m'||t==='b')?'block':'none';$('stA').style.display=(t==='a'||t==='b')?'block':'none'}catch(x){}}
+function tP(j){try{document.querySelectorAll('.ps')[j].querySelector('input').click()}catch(x){}}
+function hP(j,inp){try{if(!inp.files[0])return;var r=new FileReader();r.onload=function(e){try{photos[j]=e.target.result;var s=document.querySelectorAll('.ps')[j];var old=s.querySelector('img');if(old)old.remove();var oldb=s.querySelector('.rm');if(oldb)oldb.remove();var img=document.createElement('img');img.src=e.target.result;s.appendChild(img);s.className='ps has';var b=document.createElement('button');b.className='rm';b.textContent='✕';b.onclick=function(ev){ev.stopPropagation();photos[j]=null;img.remove();b.remove();s.className='ps'};s.appendChild(b)}catch(x){}};r.readAsDataURL(inp.files[0])}catch(x){}}
+function toast(m){try{var t=$('toast');t.textContent=m;t.className='toast show';setTimeout(function(){t.className='toast'},2000)}catch(x){}}
+
+function calcProb(){
+  try{
+    var sc=0,mx=0;
+    mx+=30;if(D.verdict==='vendor')sc+=30;else if(D.verdict==='both')sc+=20;
+    mx+=15;var sf=D.surface||'';if(sf.indexOf('原始')>=0)sc+=12;else if(sf)sc+=3;
+    mx+=15;var cl=D.crossline||'';if(cl.indexOf('其他')>=0)sc+=15;else if(cl.indexOf('仅此')>=0)sc+=3;else if(cl.indexOf('无法')>=0)sc+=8;
+    mx+=15;var aOK=0;var ak=['origBox','iqcTape','labelMatch','qtyMatch','packMatch'];for(var i=0;i<ak.length;i++){if(TS[ak[i]])aOK++}sc+=Math.round(aOK/5*15);
+    mx+=10;var gb=D.compare||'';if(gb.indexOf('材料')>=0)sc+=10;else if(gb.indexOf('外力')>=0)sc+=2;
+    mx+=5;var fo=D.focus||'';if(fo.indexOf('集中')>=0)sc+=4;else if(fo.indexOf('仅此')>=0)sc+=3;
+    var pct=mx>0?Math.round(sc/mx*100):0;
+    $('pBar').style.width=pct+'%';
+    $('pPct').textContent=pct+'%';
+    $('pPct').style.color=pct>=70?'var(--ng)':pct>=40?'var(--warn)':'var(--ok)';
+    $('pLbl').textContent=pct>=70?'⚠️ 高度怀疑原材':pct>=40?'🔶 中度可能':'✅ 可能性低';
+  }catch(x){}
+}
+
+function genRpt(){
+  try{
+    endTS=new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+    var inp=parseInt($('inputQty').value)||0,def=parseInt($('defectQty').value)||0;
+    var fr=inp>0?(def/inp*100).toFixed(2)+'%':'N/A';
+    var VM={process:'✅ 新箱正常→制程',vendor:'❌ 新箱不良→来料',both:'⚠️ 复合'};
+    var UM={normal:'🟢 一般',urgent:'🟡 紧急',stopline:'🔴 停线'};
+    var R=function(l,v){return '<tr><th>'+l+'</th><td>'+v+'</td></tr>'};
+    var S=function(t){return '<tr class="sc"><td colspan="2">'+t+'</td></tr>'};
+    var mt=gv('materialType');var mts=mt.split('—');
+    var h='<div class="rh">'+(mts[1]||mt)+' in '+gv('line')+'<br>P/N:'+gv('qpn')+' Vendor:'+gv('vendor')+' D/C:'+gv('dc')+'</div><table class="rt">';
+    h+=S('基本');h+=R('IQC',gv('iqcEngineer'));h+=R('PE',gv('peEngineer'));h+=R('机种',gv('model'));h+=R('材料',mt);h+=R('P/N',gv('qpn'));h+=R('Vendor',gv('vendor'));h+=R('线别',gv('line'));h+=R('来源',gv('reportSource'));
+    h+=S('批号');h+=R('D/C',gv('dc'));h+=R('L/C',gv('lc'));h+=R('Prod Date',gv('productionDate'));h+=R('Qty',inp+'/'+def+'/'+fr);h+=R('放置',D.placement||'—');h+=R('保质期',TS.notExpired?'✓':'✗');
+    h+=S('防伪');var ak2=['origBox','iqcTape','labelMatch','qtyMatch','packMatch'];for(var i=0;i<ak2.length;i++)h+=R(ak2[i],TS[ak2[i]]?'✓':'✗');
+    h+=S('分析');h+=R('不良',gv('defectType'));h+=R('表面',D.surface||'—');h+=R('对比',D.compare||'—');h+=R('集中',D.focus||'—');h+=R('跨线',D.crossline||'—');h+=R('工站',D.station||'—');
+    h+=S('判定');h+='<tr class="vr"><td colspan="2">'+(VM[D.verdict]||'—')+'</td></tr>';
+    h+=R('新箱',gv('newBoxSample')+'/'+gv('newBoxDefect'));h+=R('原材%',$('pPct').textContent);
+    var acts=[];var ckk=Object.keys(CK);for(var i=0;i<ckk.length;i++){if(CK[ckk[i]])acts.push(ckk[i])}
+    h+=R('动作',acts.join(',')||'—');h+=R('备注',gv('remarks'));h+=R('T0',D.t0||'—');
+    h+=S('评估');h+=R('急迫',UM[D.urgency]||'—');h+=R('库存',D.inv||'—');h+=R('样品',D.sample||'—');
+    h+=S('时间');h+=R('开始',startTS);h+=R('结束',endTS);
+    h+='</table>';
+    $('rW').innerHTML=h;$('rMod').className='mod show';
+  }catch(x){alert('Report error: '+x.message)}
+}
+
+function clMod(){try{$('rMod').className='mod'}catch(x){}}
+function cpRpt(){
+  try{
+    var txt=$('rW').innerText;
+    var ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(ta);ta.focus();ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);toast('已复制!');
+  }catch(x){toast('复制失败')}
+}
+function shareToTeams(){
+  try{
+    var txt=$('rW').innerText;
+    var url='https://teams.microsoft.com/l/chat/0/0?message='+encodeURIComponent(txt);
+    window.open(url,'_blank');
+    toast('正在打开 Teams...');
+  }catch(x){toast('打开失败')}
+}
+
+/* Run init immediately - script is at bottom of body so DOM is ready */
+doInit();
+</script>
+</body>
+</html>
