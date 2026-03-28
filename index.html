@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>IQC 原材復判培训系统 v9</title>
+<title>IQC 原材復判培训系统 v10</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--bg:#f5f6f8;--card:#fff;--card2:#f8f9fb;--bdr:#e2e4e9;--txt:#1c1e24;--dim:#60656f;--mut:#a0a5b0;--acc:#2563eb;--accL:#eff4ff;--ok:#16a34a;--okL:#f0fdf4;--ng:#dc2626;--ngL:#fef2f2;--ngB:rgba(220,38,38,.12);--warn:#d97706;--warnL:#fffbeb;--r:14px;--rs:10px;--sh:0 1px 3px rgba(0,0,0,.05)}
@@ -157,8 +157,66 @@ select{cursor:pointer;padding-right:30px}
 .sb button{padding:12px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:var(--card);color:var(--txt);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:center}
 .sb .teams-btn{background:#6264A7;color:#fff;border-color:#6264A7}
 
+/* 新報告樣式 */
+.rpt-card{background:var(--card);border-radius:var(--rs);overflow:hidden}
+.rpt-summary{background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;padding:14px 16px;text-align:center}
+.rpt-title{font-size:16px;font-weight:800;margin-bottom:2px}
+.rpt-subtitle{font-size:11px;opacity:.8}
+.rpt-key{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bdr);border-bottom:1px solid var(--bdr)}
+.rpt-key .rpt-row{background:var(--card);padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.rpt-key .rpt-row:nth-child(5){grid-column:1/-1}
+.rpt-label{font-size:10px;color:var(--dim)}
+.rpt-value{font-size:13px;font-weight:700;color:var(--txt)}
+.rpt-verdict{padding:16px;text-align:center;border-bottom:1px solid var(--bdr)}
+.rpt-verdict.process{background:linear-gradient(135deg,#dcfce7,#bbf7d0)}
+.rpt-verdict.vendor{background:linear-gradient(135deg,#fee2e2,#fecaca)}
+.rpt-verdict.both{background:linear-gradient(135deg,#fef3c7,#fde68a)}
+.rpt-verdict.none{background:var(--card2)}
+.rpt-verdict-label{font-size:10px;color:var(--dim);margin-bottom:4px}
+.rpt-verdict-value{font-size:15px;font-weight:800}
+.rpt-data{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bdr);border-bottom:1px solid var(--bdr)}
+.rpt-data-item{background:var(--card);padding:10px 8px;text-align:center}
+.rpt-data-num{font-size:18px;font-weight:800;color:var(--txt)}
+.rpt-data-label{font-size:9px;color:var(--dim);margin-top:2px}
+.rpt-table{width:100%;border-collapse:collapse;font-size:11px}
+.rpt-table td{padding:6px 10px;border-bottom:1px solid var(--bdr)}
+.rpt-table td:first-child{width:40%;color:var(--dim);background:var(--card2)}
+.rpt-table td:last-child{font-weight:500}
+.rpt-table tr.rpt-section td{background:var(--accL);color:var(--acc);font-weight:700;font-size:10px;padding:8px 10px}
+
 .toast{position:fixed;top:52px;left:50%;transform:translateX(-50%) translateY(-16px);background:var(--ok);color:#fff;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:600;opacity:0;z-index:300;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 培训系统 */
+.tip-btn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--accL);color:var(--acc);font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--acc);margin-left:5px;flex-shrink:0;user-select:none;vertical-align:middle}
+.tip-btn:active{background:var(--acc);color:#fff}
+
+.tip-pop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:500;background:rgba(0,0,0,.4)}
+.tip-pop.show{display:block}
+.tip-box{position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:18px 18px 0 0;padding:18px 16px 32px;max-height:75vh;overflow-y:auto}
+.tip-box .tip-hdr{font-size:14px;font-weight:700;color:var(--acc);margin-bottom:8px}
+.tip-box .tip-why{font-size:13px;line-height:1.7;color:var(--txt);margin-bottom:10px}
+.tip-box .tip-case{background:var(--accL);border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:8px 10px;font-size:12px;line-height:1.6;color:var(--txt);margin-bottom:8px}
+.tip-box .tip-warn{background:var(--warnL);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:8px 10px;font-size:12px;line-height:1.6;color:#92400e;margin-bottom:8px}
+.tip-box .tip-ok{background:var(--okL);border-left:3px solid var(--ok);border-radius:0 8px 8px 0;padding:8px 10px;font-size:12px;line-height:1.6;color:#14532d;margin-bottom:8px}
+.tip-close{display:block;width:100%;padding:12px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:var(--card);color:var(--dim);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;text-align:center}
+
+/* 案例選擇器 */
+.case-bar{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;padding:10px 14px;margin-bottom:0;border-radius:var(--r) var(--r) 0 0;display:flex;align-items:center;justify-content:space-between}
+.case-bar .case-title{font-size:12px;font-weight:700}
+.case-bar .case-pick{font-size:10px;background:rgba(255,255,255,.2);padding:3px 10px;border-radius:10px;cursor:pointer;border:1px solid rgba(255,255,255,.3)}
+.case-info{background:#f0f4ff;border:1px solid #c7d9f8;border-top:none;border-radius:0 0 var(--r) var(--r);padding:10px 14px;margin-bottom:12px}
+.case-info .case-label{font-size:10px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.case-info .case-desc{font-size:12px;line-height:1.6;color:var(--txt)}
+
+/* 頁面解說彈窗 */
+.page-tip-pop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:500;background:rgba(0,0,0,.4)}
+.page-tip-pop.show{display:block}
+.page-tip-box{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card);border-radius:var(--r);padding:20px 18px;width:88%;max-width:360px;max-height:80vh;overflow-y:auto}
+.page-tip-box h3{font-size:15px;font-weight:700;color:var(--acc);margin-bottom:10px}
+.page-tip-box p{font-size:13px;line-height:1.7;color:var(--txt);margin-bottom:8px}
+.page-tip-box .pt-case{background:var(--accL);border-radius:8px;padding:10px;font-size:12px;line-height:1.6;margin-bottom:8px}
+.page-tip-box .pt-key{font-weight:700;color:var(--ng)}
 </style>
 </head>
 <body>
@@ -204,64 +262,230 @@ select{cursor:pointer;padding-right:30px}
 
 <div class="main" id="mainC" style="display:none">
 
-<!-- PAGE 1: 不良分析 + 机种/线别/材料 -->
+<!-- PAGE 1: 初步判定 + 机种/线别 -->
 <div class="page active" data-p="1">
-  <div class="sec-hdr"><span class="sec-ico">🔬</span><div><div class="sec-t">不良分析</div><div class="sec-en">Defect Analysis</div></div></div>
+  <div class="sec-hdr"><span class="sec-ico">🔎</span><div><div class="sec-t">初步判定</div><div class="sec-en">Physical Evidence Assessment</div></div></div>
+
+  <!-- ERS 文件提醒 -->
+  <div class="card" style="background:linear-gradient(135deg,#eff4ff,#e8f4ff);border:1.5px solid var(--acc)">
+    <div class="tg" style="border:none;background:transparent;padding:0;margin:0" data-key="ersReady">
+      <div class="tg-l">
+        <div class="tg-z" style="color:var(--acc)">📄 已携带 ERS 文件？<span class="req">*</span></div>
+        <div class="tg-e">ERS Document Ready?</div>
+      </div>
+      <div class="sw" id="ersSw" onclick="tSwERS(this)"></div>
+    </div>
+    <div class="alt r" id="ersAlt" style="display:block;margin-top:8px">⚠️ 请确认携带 ERS 文件再进行复判！Please bring ERS document before inspection.</div>
+  </div>
 
   <div class="card">
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">机种<span class="req">*</span></span><span class="lb-e">Project / Model Name</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">机种<span class="req">*</span></span><span class="lb-e">Project / Model Name</span><span class="tip-btn" onclick="showTip('model')">?</span></div>
         <input type="text" id="model" placeholder="" oninput="this.value=this.value.toUpperCase();ct()"></div>
-      <div class="field"><div class="lb"><span class="lb-z">线别<span class="req">*</span></span><span class="lb-e">Production Line</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">线别<span class="req">*</span></span><span class="lb-e">Production Line</span><span class="tip-btn" onclick="showTip('line')">?</span></div>
         <input type="text" id="line" placeholder="" onchange="ct()"></div>
     </div>
-<input type="hidden" id="materialType" value="N/A">
+    <input type="hidden" id="materialType" value="N/A">
   </div>
 
-  <div class="dv">不良现象 Defect</div>
+  <!-- 提示说明 -->
+  <div id="evidHint" style="font-size:11px;color:var(--dim);background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:8px 12px;margin-bottom:10px;line-height:1.6">
+    🎯 <b>初步判定零件是否已被产线组装过</b>：若发现已组装/已使用迹象，表示不良可能由制程造成，可终止来料复判。<br>
+    <b>Determine if the part has been assembled by the line</b>: If assembly evidence is found, defect may be caused by process — stop incoming material re-judgment.
+  </div>
 
-  <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">不良现象<span class="req">*</span></span><span class="lb-e">Defect Symptom / Failure Mode</span></div>
-      <select id="defectType" onchange="ct()"><option value="">— 请选择 Select —</option><option>Scratch (刮伤)</option><option>Dent (压伤)</option><option>Crack (裂痕)</option><option>Warpage (翘曲变形)</option><option>Delamination (分层/剥离)</option><option>Open (断路)</option><option>Short (短路)</option><option>Solder Ball (锡球)</option><option>焊接不良 (空焊/冷焊)</option><option>Contamination (污染)</option><option>Discoloration (变色/氧化)</option><option>Dimension NG (尺寸不良)</option><option>功能性失效 Function Fail</option><option>Other (其他)</option></select></div>
-    <div class="field"><div class="lb"><span class="lb-z">表面观察</span><span class="lb-e">Surface Observation / Physical Evidence</span></div>
-      <div class="ig c2" id="g_surface" style="position:relative"><div style="font-size:9px;color:var(--mut);margin-bottom:4px;grid-column:1/-1">可多选 Multi-select</div>
-        <div class="io" onclick="pIoM(this,'surface','断面粗糙→疑外力')"><div class="iz">粗糙→外力</div><div class="ie">Rough Surface → External Impact</div></div>
-        <div class="io" onclick="pIoM(this,'surface','断面光滑→疑疲劳')"><div class="iz">光滑→疲劳</div><div class="ie">Smooth Surface → Fatigue Crack</div></div>
-        <div class="io" onclick="pIoM(this,'surface','残胶→疑重工')"><div class="iz">残胶→重工</div><div class="ie">Adhesive Residue → Suspected Rework</div></div>
-        <div class="io" onclick="pIoM(this,'surface','焊锡残留→疑已上线')"><div class="iz">焊锡→已上线</div><div class="ie">Solder Residue → Previously Used</div></div>
-        <div class="io" onclick="pIoM(this,'surface','DDS')"><div class="iz">DDS</div><div class="ie">DDS (Dry/Dirty/Scratch)</div></div>
-        <div class="io" onclick="pIoM(this,'surface','表面原始状态良好')"><div class="iz">原始良好</div><div class="ie">Original Surface: Good Condition</div></div>
+  <!-- 选择器容器：L1/L2 互斥切换 + 覆蓋結果 -->
+  <div id="evidPickerWrap" style="position:relative">
+    
+    <!-- 已选物证结果摘要（覆蓋在選擇器正中央） -->
+    <div id="evidSummaryCard" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:90%;max-width:320px;padding:14px 16px;border-radius:12px;background:#fffbe6;border:2px solid #f59e0b;box-shadow:0 8px 24px rgba(0,0,0,0.15)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:11px;color:#92400e;font-weight:700">📋 初步判定结果 Physical Evidence Result</span>
+      </div>
+      <div id="evidSummaryList" style="font-size:13px;color:#dc2626;font-weight:700;line-height:1.8;margin-bottom:10px"></div>
+      <div style="text-align:center">
+        <span style="font-size:12px;color:var(--acc);cursor:pointer;background:var(--accL);padding:6px 16px;border-radius:16px;font-weight:600" onclick="evidResetAll()">重新选择 Reset</span>
       </div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">良品vs不良品</span><span class="lb-e">Good vs Defective Comparison</span></div>
-      <div class="ig c2" id="g_compare"><div style="font-size:9px;color:var(--mut);margin-bottom:4px;grid-column:1/-1">可多选 Multi-select</div>
-        <div class="io" onclick="pIoM(this,'compare','材料本体缺陷')"><div class="iz">材料缺陷</div><div class="ie">Inherent Material Defect</div></div>
-        <div class="io" onclick="pIoM(this,'compare','外力损伤')"><div class="iz">外力损伤</div><div class="ie">External Force Damage</div></div>
-        <div class="io" onclick="pIoM(this,'compare','差异不明显')"><div class="iz">不明显</div><div class="ie">No Obvious Difference</div></div>
-        <div class="io" onclick="pIoM(this,'compare','未对比')"><div class="iz">未对比</div><div class="ie">Not Yet Compared</div></div>
+
+    <!-- Layer 1: 类别卡片 -->
+    <div id="evidL1">
+      <div style="font-size:11px;color:var(--mut);margin-bottom:8px;font-weight:600">检查是否有组装痕迹 Check for Assembly Evidence</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="io" id="evidCat_fastening" onclick="evidOpenCat('fastening')">
+          <div class="iz" style="font-size:22px;margin-bottom:2px">🔩</div>
+          <div class="iz" style="font-size:13px">锁付与结构</div>
+          <div class="ie">Fastening & Structure</div>
+          <div id="evidCatBadge_fastening" style="display:none;margin-top:4px;font-size:9px;font-weight:700;color:var(--ng);background:var(--ngL);padding:2px 6px;border-radius:8px"></div>
+        </div>
+        <div class="io" id="evidCat_test" onclick="evidOpenCat('test')">
+          <div class="iz" style="font-size:22px;margin-bottom:2px">🧪</div>
+          <div class="iz" style="font-size:13px">测试与治具</div>
+          <div class="ie">Test & Fixture</div>
+          <div id="evidCatBadge_test" style="display:none;margin-top:4px;font-size:9px;font-weight:700;color:var(--ng);background:var(--ngL);padding:2px 6px;border-radius:8px"></div>
+        </div>
+        <div class="io" id="evidCat_cosmetic" onclick="evidOpenCat('cosmetic')">
+          <div class="iz" style="font-size:22px;margin-bottom:2px">👁️</div>
+          <div class="iz" style="font-size:13px">外观与包装</div>
+          <div class="ie">Cosmetic & Packaging</div>
+          <div id="evidCatBadge_cosmetic" style="display:none;margin-top:4px;font-size:9px;font-weight:700;color:var(--ng);background:var(--ngL);padding:2px 6px;border-radius:8px"></div>
+        </div>
+        <div class="io" id="evidCat_adhesive" onclick="evidOpenCat('adhesive')">
+          <div class="iz" style="font-size:22px;margin-bottom:2px">🔗</div>
+          <div class="iz" style="font-size:13px">胶水与贴合</div>
+          <div class="ie">Adhesive & Bonding</div>
+          <div id="evidCatBadge_adhesive" style="display:none;margin-top:4px;font-size:9px;font-weight:700;color:var(--ng);background:var(--ngL);padding:2px 6px;border-radius:8px"></div>
+        </div>
+        <div class="io" id="evidCat_label" onclick="evidOpenCat('label')">
+          <div class="iz" style="font-size:22px;margin-bottom:2px">🏷️</div>
+          <div class="iz" style="font-size:13px">标签与标识</div>
+          <div class="ie">Label & Marking</div>
+          <div id="evidCatBadge_label" style="display:none;margin-top:4px;font-size:9px;font-weight:700;color:var(--ng);background:var(--ngL);padding:2px 6px;border-radius:8px"></div>
+        </div>
+        <div class="io" id="evidCat_solder" onclick="evidOpenCat('solder')">
+          <div class="iz" style="font-size:22px;margin-bottom:2px">⚡</div>
+          <div class="iz" style="font-size:13px">焊接痕迹</div>
+          <div class="ie">Soldering Evidence</div>
+          <div id="evidCatBadge_solder" style="display:none;margin-top:4px;font-size:9px;font-weight:700;color:var(--ng);background:var(--ngL);padding:2px 6px;border-radius:8px"></div>
+        </div>
+        <div class="io" id="evidCat_none" onclick="evidSelectNone(this)" style="grid-column:1/-1;background:var(--okL);border-color:var(--ok)">
+          <div class="iz" style="color:var(--ok)">✅ 以上均无 — 无组装过的迹象</div>
+          <div class="ie">None of the above — No assembly evidence found</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 2: 细项（沉浸式，替换L1） -->
+    <div id="evidL2" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div id="evidL2Title" style="font-size:13px;font-weight:700;color:var(--txt);flex:1"></div>
+        <button onclick="evidBackToL1()" style="padding:6px 14px;border:1.5px solid var(--bdr);border-radius:20px;background:var(--card);color:var(--dim);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">← 返回 Back</button>
+      </div>
+      <div style="font-size:10px;color:var(--mut);margin-bottom:8px">可多选 Multi-select — 点击细项进行勾选 Click to select</div>
+      <div id="evidL2Grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+      <button onclick="evidDone()" style="width:100%;margin-top:12px;padding:13px;background:var(--acc);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">完成选择 Done ✓</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAGE 2: 不良分析 Defect Analysis -->
+<div class="page" data-p="2">
+  <div class="sec-hdr"><span class="sec-ico">🔬</span><div><div class="sec-t">不良分析</div><div class="sec-en">Defect Analysis</div></div></div>
+
+  <!-- 初步判定结果摘要（带入） -->
+  <div id="evidSummaryCard2" style="display:none;margin-bottom:10px;padding:10px 14px;border-radius:10px;background:#fffbe6;border:1.5px solid #f59e0b">
+    <div style="font-size:10px;color:#92400e;font-weight:700;margin-bottom:4px">📋 初步判定结果 Physical Evidence (from Page 1)</div>
+    <div id="evidSummaryList2" style="font-size:12px;color:#dc2626;font-weight:600;line-height:1.8"></div>
+  </div>
+
+  <!-- 选择器容器：L1/L2/L3 沉浸式切换 -->
+  <div class="card">
+    <div class="field">
+      <div class="lb"><span class="lb-z">不良现象<span class="req">*</span></span><span class="lb-e">Defect Symptom / Failure Mode</span><span class="tip-btn" onclick="showTip('defect')">?</span></div>
+      <div id="defectPickerWrap" style="position:relative;min-height:120px">
+
+        <!-- 不良现象已选摘要（覆蓋在選擇器正中央） -->
+        <div id="defectSummaryCard" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:90%;max-width:300px;padding:14px 16px;border-radius:12px;background:#fffbe6;border:2px solid #f59e0b;box-shadow:0 8px 24px rgba(0,0,0,0.15)">
+          <div style="font-size:11px;color:#92400e;font-weight:700;margin-bottom:6px">📋 已选不良现象 Selected Defect</div>
+          <div id="defectSummaryText" style="font-size:13px;color:#dc2626;font-weight:700;margin-bottom:10px"></div>
+          <div style="text-align:center">
+            <span style="font-size:12px;color:var(--acc);cursor:pointer;background:var(--accL);padding:6px 16px;border-radius:16px;font-weight:600" onclick="defectResetAll()">重新选择 Reset</span>
+          </div>
+        </div>
+
+        <!-- L1: 三大类 -->
+        <div id="defectL1">
+          <div style="font-size:11px;color:var(--mut);margin-bottom:8px;font-weight:600">选择大类 Select Type</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div class="io" id="defectL1_cosmetic" onclick="defectOpenL1('cosmetic',this)">
+              <div class="iz" style="font-size:20px;margin-bottom:2px">👁️</div>
+              <div class="iz">外观</div><div class="ie">Cosmetic</div>
+            </div>
+            <div class="io" id="defectL1_dimension" onclick="defectOpenL1('dimension',this)">
+              <div class="iz" style="font-size:20px;margin-bottom:2px">📐</div>
+              <div class="iz">尺寸</div><div class="ie">Dimension</div>
+            </div>
+            <div class="io" id="defectL1_function" onclick="defectOpenL1('function',this)">
+              <div class="iz" style="font-size:20px;margin-bottom:2px">⚡</div>
+              <div class="iz">功能</div><div class="ie">Function</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L2: 分类 -->
+        <div id="defectL2" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div id="defectL2Title" style="font-size:13px;font-weight:700;color:var(--txt);flex:1"></div>
+            <button onclick="defectBackToL1()" style="padding:6px 14px;border:1.5px solid var(--bdr);border-radius:20px;background:var(--card);color:var(--dim);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">← 返回 Back</button>
+          </div>
+          <div style="font-size:11px;color:var(--mut);margin-bottom:8px;font-weight:600">选择分类 Select Category</div>
+          <div id="defectL2Grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+        </div>
+
+        <!-- L3: 细项 -->
+        <div id="defectL3" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div id="defectL3Title" style="font-size:13px;font-weight:700;color:var(--txt);flex:1"></div>
+            <button onclick="defectBackToL2()" style="padding:6px 14px;border:1.5px solid var(--bdr);border-radius:20px;background:var(--card);color:var(--dim);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">← 返回</button>
+          </div>
+          <div id="defectL3Grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px"></div>
+        </div>
+
+      </div>
+      <input type="hidden" id="defectType">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="dv" style="margin-top:0">良品对比 Good vs Defective Comparison</div>
+    <div class="lb" style="margin-bottom:8px"><span class="lb-z">良品vs不良品</span><span class="lb-e">Good vs Defective Comparison</span><span class="tip-btn" onclick="showTip('compare')">?</span></div>
+    <div style="font-size:10px;color:var(--acc);background:var(--accL);padding:6px 10px;border-radius:8px;margin-bottom:10px">💡 须携带实物良品≥2pcs进行并排比对 Physical comparison mandatory — min 2 good samples</div>
+    <div class="ig c2" id="g_compare">
+      <div class="io" onclick="pIoM(this,'compare','材料本体缺陷→来料问题')">
+        <div class="iz">材料本体缺陷</div><div class="ie">Inherent Material Defect</div>
+        <div style="font-size:9px;color:var(--ng);margin-top:3px">差异源自材料本身，非外力</div>
+      </div>
+      <div class="io" onclick="pIoM(this,'compare','外力损伤→制程问题')">
+        <div class="iz">外力损伤</div><div class="ie">External Force Damage</div>
+        <div style="font-size:9px;color:var(--warn);margin-top:3px">损伤由外力造成，良品无此现象</div>
+      </div>
+      <div class="io" onclick="pIoM(this,'compare','两者均有→批次性问题')">
+        <div class="iz">两者均有</div><div class="ie">Both Show Similar Signs</div>
+        <div style="font-size:9px;color:var(--warn);margin-top:3px">良品与不良品均有类似迹象</div>
+      </div>
+      <div class="io" onclick="pIoM(this,'compare','差异不明显→需进一步测试')">
+        <div class="iz">差异不明显</div><div class="ie">No Obvious Difference</div>
+        <div style="font-size:9px;color:var(--dim);margin-top:3px">外观无明显差异，需电气测试</div>
+      </div>
+      <div class="io" onclick="pIoM(this,'compare','未对比→待补充')">
+        <div class="iz">未对比</div><div class="ie">Not Yet Compared</div>
+        <div style="font-size:9px;color:var(--mut);margin-top:3px">尚未进行良品实物对比</div>
       </div>
     </div>
   </div>
+
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">集中性</span><span class="lb-e">Defect Concentration / Distribution</span></div>
+    <div class="dv" style="margin-top:0">分布分析 Distribution Analysis</div>
+    <div class="field"><div class="lb"><span class="lb-z">集中性</span><span class="lb-e">Defect Concentration / Distribution</span><span class="tip-btn" onclick="showTip('focus')">?</span></div>
       <div class="ig c3" id="g_focus">
-        <div class="io" onclick="pIo(this,'focus','集中特定批')"><div class="iz">集中特定批</div><div class="ie">Concentrated in Specific Lot</div></div>
+        <div class="io" onclick="pIo(this,'focus','集中特定批')"><div class="iz">集中特定批</div><div class="ie">Specific Lot Only</div></div>
         <div class="io" onclick="pIo(this,'focus','随机发生')"><div class="iz">随机</div><div class="ie">Random Occurrence</div></div>
         <div class="io" onclick="pIo(this,'focus','仅此批次')"><div class="iz">仅此批</div><div class="ie">This Lot Only</div></div>
       </div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">跨线比对</span><span class="lb-e">Cross-line Comparison</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">跨线比对</span><span class="lb-e">Cross-line Comparison</span><span class="tip-btn" onclick="showTip('crossline')">?</span></div>
       <div class="ig c3" id="g_crossline">
-        <div class="io" onclick="pIo(this,'crossline','其他线也有→来料')"><div class="iz">其他线也有</div><div class="ie">Found on Other Lines → Raw Material</div></div>
-        <div class="io" onclick="pIo(this,'crossline','仅此线→制程')"><div class="iz">仅此线</div><div class="ie">This Line Only → Process Issue</div></div>
+        <div class="io" onclick="pIo(this,'crossline','其他线也有→来料')"><div class="iz">其他线也有</div><div class="ie">Found on Other Lines → Material</div></div>
+        <div class="io" onclick="pIo(this,'crossline','仅此线→制程')"><div class="iz">仅此线</div><div class="ie">This Line Only → Process</div></div>
         <div class="io" onclick="pIo(this,'crossline','无法比对')"><div class="iz">无法比对</div><div class="ie">Unable to Compare</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PAGE 2: 现场勘查 + 厂商/料号/DC -->
-<div class="page" data-p="2">
+<!-- PAGE 3: 现场勘查 + 厂商/料号/DC -->
+<div class="page" data-p="3">
   <div class="sec-hdr"><span class="sec-ico">🔍</span><div><div class="sec-t">现场勘查</div><div class="sec-en">On-site Inspection</div></div></div>
   <div class="card">
     <div class="f2">
@@ -279,7 +503,7 @@ select{cursor:pointer;padding-right:30px}
   </div>
   <div class="dv">产线勘查 Line Check</div>
   <div class="card">
-    <div class="lb"><span class="lb-z">产线材料放置状况</span><span class="lb-e">Material Placement Status on Line</span></div>
+    <div class="lb"><span class="lb-z">产线材料放置状况</span><span class="lb-e">Material Placement Status on Line</span><span class="tip-btn" onclick="showTip('placement')">?</span></div>
     <div class="chips" id="g_placement">
       <div class="ch" onclick="pCh(this,'placement')">错盘 Wrong Tray</div>
       <div class="ch" onclick="pCh(this,'placement')">散乱 Scattered</div>
@@ -290,15 +514,39 @@ select{cursor:pointer;padding-right:30px}
   </div>
   <div class="dv">防伪五项 Authentication</div>
   <div class="card">
-    <div class="tg" data-key="origBox"><div class="tg-l"><div class="tg-z">原箱？</div><div class="tg-e">Original Packaging Box?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？</div><div class="tg-e">IQC Tape / Label Present?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="labelMatch"><div class="tg-l"><div class="tg-z">标签一致？</div><div class="tg-e">Labels Match (P/N, Qty, Vendor)?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="qtyMatch"><div class="tg-l"><div class="tg-z">数量吻合？</div><div class="tg-e">Quantity Matches Label?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="packMatch"><div class="tg-l"><div class="tg-z">包装一致？</div><div class="tg-e">Packaging Condition Matches Standard?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="origBox"><div class="tg-l"><div class="tg-z">原箱？<span class="tip-btn" onclick="showTip('origBox')">?</span></div><div class="tg-e">Original Packaging Box?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？<span class="tip-btn" onclick="showTip('iqcTape')">?</span></div><div class="tg-e">IQC Tape / Label Present?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="labelMatch"><div class="tg-l"><div class="tg-z">标签一致？<span class="tip-btn" onclick="showTip('labelMatch')">?</span></div><div class="tg-e">Labels Match (P/N, Qty, Vendor)?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="qtyMatch"><div class="tg-l"><div class="tg-z">数量吻合？<span class="tip-btn" onclick="showTip('qtyMatch')">?</span></div><div class="tg-e">Quantity Matches Label?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="packMatch"><div class="tg-l"><div class="tg-z">包装一致？<span class="tip-btn" onclick="showTip('packMatch')">?</span></div><div class="tg-e">Packaging Condition Matches Standard?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
     <div class="alt r" id="authAlt">⚠️ 非IQC标准放行状态！</div>
     <div style="margin-top:8px">
-      <div class="tg" data-key="notExpired"><div class="tg-l"><div class="tg-z">保质期内？</div><div class="tg-e">Within Shelf Life / Expiry Date?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+      <div class="tg" data-key="notExpired"><div class="tg-l"><div class="tg-z">保质期内？<span class="tip-btn" onclick="showTip('expiry')">?</span></div><div class="tg-e">Within Shelf Life / Expiry Date?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
       <div class="alt r" id="expAlt">⚠️ 零件超期！</div>
+    </div>
+  </div>
+  <div class="dv">批次库存状况 Lot Inventory Status</div>
+  <div class="card">
+    <div class="field">
+      <div class="lb"><span class="lb-z">现场同批料数量</span><span class="lb-e">Same Lot Boxes on Line</span></div>
+      <div class="f2">
+        <div class="nw"><div class="nb" onclick="adj('sameLotBoxes',-1)">−</div><input type="number" id="sameLotBoxes" value="0" min="0" placeholder="箱" oninput="ct()"><div class="nb" onclick="adj('sameLotBoxes',1)">+</div></div>
+        <select id="sameLotStatus" onchange="D.sameLotStatus=this.value;ct()">
+          <option value="">— 状态 Status —</option>
+          <option value="全部正常 All OK">全部正常 All OK</option>
+          <option value="部分异常 Some NG">部分异常 Some NG</option>
+          <option value="全部异常 All NG">全部异常 All NG</option>
+          <option value="未确认 Not Checked">未确认 Not Checked</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-top:10px">
+      <div class="lb"><span class="lb-z">材料开封状态</span><span class="lb-e">Material Opening Status</span></div>
+      <div class="ig c3" id="g_openStatus">
+        <div class="io" onclick="pIo(this,'openStatus','刚开封')"><div class="iz">刚开封</div><div class="ie">Just Opened</div></div>
+        <div class="io" onclick="pIo(this,'openStatus','用了一半')"><div class="iz">用了一半</div><div class="ie">Half Used</div></div>
+        <div class="io" onclick="pIo(this,'openStatus','快用完')"><div class="iz">快用完</div><div class="ie">Almost Empty</div></div>
+      </div>
     </div>
   </div>
   <div class="dv">制程勘查 Process</div>
@@ -327,8 +575,8 @@ select{cursor:pointer;padding-right:30px}
   </div>
 </div>
 
-<!-- PAGE 3: 批号与数量 -->
-<div class="page" data-p="3">
+<!-- PAGE 4: 批号与数量 -->
+<div class="page" data-p="4">
   <div class="sec-hdr"><span class="sec-ico">📋</span><div><div class="sec-t">批号与数量</div><div class="sec-en">Lot Data & Quantity</div></div></div>
   <div class="card">
     <div class="f2">
@@ -344,7 +592,7 @@ select{cursor:pointer;padding-right:30px}
         <input type="text" id="lc" placeholder="202060203"></div>
     </div>
   </div>
-  <div class="dv">生产与投入 Production</div>
+  <div class="dv">生产与投入 Production & Input</div>
   <div class="card">
     <div class="f2">
       <div class="field"><div class="lb"><span class="lb-z">生产日期</span><span class="lb-e">Production Date (Mfg. Date)</span></div>
@@ -352,25 +600,49 @@ select{cursor:pointer;padding-right:30px}
       <div class="field"><div class="lb"><span class="lb-z">投料日</span><span class="lb-e">Material Feed Start Date</span></div>
         <input type="date" id="startDate"></div>
     </div>
+    <div style="font-size:11px;color:var(--dim);background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.5">
+      💡 投入数与不良数用于计算不良比例 F/R%，帮助判断问题严重程度<br>
+      <span style="font-size:10px">Input qty & defect qty are used to calculate F/R% to assess severity</span>
+    </div>
     <div class="f2">
       <div class="field"><div class="lb"><span class="lb-z">投入数<span class="req">*</span></span><span class="lb-e">Total Input Quantity</span></div>
         <div class="nw"><div class="nb" onclick="adj('inputQty',-100)">−</div><input type="number" id="inputQty" value="0" min="0" oninput="calcFR()"><div class="nb" onclick="adj('inputQty',100)">+</div></div></div>
       <div class="field"><div class="lb"><span class="lb-z">不良数<span class="req">*</span></span><span class="lb-e">Defective Quantity Found</span></div>
         <div class="nw"><div class="nb" onclick="adj('defectQty',-1)">−</div><input type="number" id="defectQty" value="0" min="0" oninput="calcFR()"><div class="nb" onclick="adj('defectQty',1)">+</div></div></div>
     </div>
-    <div class="fr" id="frB"><span>F/R =</span><span class="fv" id="frV">0.00%</span></div>
-    <div class="fr-a s" id="frS">🚨 >1% 建议停线隔离</div>
-    <div class="fr-a m" id="frM">⚠️ 0.3-1% 加严抽验</div>
-    <div class="fr-a l" id="frL">✅ &lt;0.3% 监控</div>
+    <div class="fr" id="frB"><span>不良比例 F/R =</span><span class="fv" id="frV">0.00%</span></div>
+    <div class="fr-a s" id="frS">🚨 ≥1% 高不良率 High Defect Rate</div>
+    <div class="fr-a m" id="frM">⚠️ 0.3-1% 中等不良率 Medium</div>
+    <div class="fr-a l" id="frL">✅ &lt;0.3% 低不良率 Low</div>
+  </div>
+  <div class="dv">历史批次查询 History Check</div>
+  <div class="card" style="background:linear-gradient(135deg,#f5f0ff,#eff4ff);border:1.5px solid #7c3aed">
+    <div class="lb" style="margin-bottom:8px"><span class="lb-z" style="color:#7c3aed">📊 历史批次记录查询</span><span class="lb-e">Past 3 Months Defect History</span></div>
+    <div style="font-size:11px;color:#7c3aed;background:rgba(124,58,237,0.08);padding:8px 10px;border-radius:8px;margin-bottom:10px;line-height:1.6">
+      💡 请回系统查询此料号过去 3 个月有无类似异常记录<br>
+      Check system for similar defects on this P/N in past 3 months
+    </div>
+    <div class="field">
+      <div class="lb"><span class="lb-z">过去 3 个月有类似异常？</span><span class="lb-e">Similar Defect in Past 3 Months?</span></div>
+      <div class="ig c3" id="g_historyDefect">
+        <div class="io" onclick="pIo(this,'historyDefect','有记录 Yes')"><div class="iz">有记录</div><div class="ie">Yes, Found</div></div>
+        <div class="io" onclick="pIo(this,'historyDefect','无记录 No')"><div class="iz">无记录</div><div class="ie">No Record</div></div>
+        <div class="io" onclick="pIo(this,'historyDefect','未查询')"><div class="iz">未查询</div><div class="ie">Not Checked</div></div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:8px">
+      <div class="lb"><span class="lb-z">历史异常备注</span><span class="lb-e">History Notes (if any)</span></div>
+      <textarea id="historyNotes" placeholder="若有历史记录，简述异常类型..." style="min-height:44px"></textarea>
+    </div>
   </div>
 </div>
 
-<!-- PAGE 4: 开箱判定 -->
-<div class="page" data-p="4">
+<!-- PAGE 5: 开箱判定 -->
+<div class="page" data-p="5">
   <div class="sec-hdr"><span class="sec-ico">⚖️</span><div><div class="sec-t">开箱判定</div><div class="sec-en">New Box Verdict</div></div></div>
   <div class="alt p show" style="margin-bottom:10px">💡 新箱正常→产线肇因；新箱也有不良→来料异常</div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">开新箱验证结果<span class="req">*</span></span><span class="lb-e">New Box Verification Result</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">开新箱验证结果<span class="req">*</span></span><span class="lb-e">New Box Verification Result</span><span class="tip-btn" onclick="showTip('newbox')">?</span></div>
       <div class="ig c3" id="g_verdict">
         <div class="io" onclick="pIoV(this,'process','picked-ok')"><div class="iz">新箱正常</div><div class="ie">New Box OK → Process Issue</div></div>
         <div class="io" onclick="pIoV(this,'vendor','picked-ng')"><div class="iz">新箱也不良</div><div class="ie">New Box NG → Raw Material Issue</div></div>
@@ -385,16 +657,16 @@ select{cursor:pointer;padding-right:30px}
     </div>
   </div>
   <div class="prob">
-    <div class="lb"><span class="lb-z">📐 原材不良可能性</span><span class="lb-e">Raw Material Defect Probability Score</span></div>
+    <div class="lb"><span class="lb-z">📐 原材不良可能性</span><span class="lb-e">Raw Material Defect Probability Score</span><span class="tip-btn" onclick="showTip('prob')">?</span></div>
     <div class="prob-bar-bg" style="margin-top:6px"><div class="prob-bar" id="pBar" style="width:0%"></div></div>
     <div class="prob-pct" id="pPct">—%</div>
     <div class="prob-lbl" id="pLbl">等待数据...</div>
   </div>
 </div>
 
-<!-- PAGE 5: 收尾行动 -->
-<div class="page" data-p="5">
-  <div class="sec-hdr"><span class="sec-ico">📸</span><div><div class="sec-t">收尾行动</div><div class="sec-en">Evidence & Actions</div></div></div>
+<!-- PAGE 6: 收尾行动 -->
+<div class="page" data-p="6">
+  <div class="sec-hdr"><span class="sec-ico">📸</span><div><div class="sec-t">收尾行动</div><div class="sec-en">Evidence & Follow-up Actions</div></div></div>
   <div class="card">
     <div class="lb"><span class="lb-z">拍照存证</span><span class="lb-e">Photo Evidence (Required)</span></div>
     <div class="pg">
@@ -405,29 +677,39 @@ select{cursor:pointer;padding-right:30px}
     </div>
   </div>
   <div class="card">
-    <div class="lb"><span class="lb-z">后续动作 Follow-up Actions</span><span class="lb-e">Multi-select</span></div>
-    <div class="ck" onclick="tCk(this,'isolate')"><div class="cb"></div><div style="font-size:13px;font-weight:700">隔离库存 Isolate & Hold Stock</div></div>
-    <div class="ck" onclick="tCk(this,'sqe')"><div class="cb"></div><div style="font-size:13px;font-weight:700">通报SQE Notify Supplier Quality Engineer</div></div>
-    <div class="ck" onclick="tCk(this,'fae')"><div class="cb"></div><div style="font-size:13px;font-weight:700">FAE到厂 Request FAE On-site Visit</div></div>
-    <div class="ck" onclick="tCk(this,'rtv')"><div class="cb"></div><div style="font-size:13px;font-weight:700">退货 Return to Vendor (RTV)</div></div>
-    <div class="ck" onclick="tCk(this,'twok')"><div class="cb"></div><div style="font-size:13px;font-weight:700">2K OBA 验证 2000pcs OBA Verification</div></div>
-    <div class="ck" onclick="tCk(this,'monitor')"><div class="cb"></div><div style="font-size:13px;font-weight:700">持续监控 Continue Monitoring</div></div>
+    <div class="lb" style="margin-bottom:8px"><span class="lb-z">📋 后续动作检查清单</span><span class="lb-e">Follow-up Actions Checklist</span></div>
+    <div style="font-size:11px;color:var(--dim);background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.5">
+      💡 根据实际情况勾选需要执行的动作（非强制，视不良情况选择）<br>
+      <span style="font-size:10px">Check applicable actions based on the situation (optional, varies by defect type)</span>
+    </div>
+    <div class="ck" onclick="tCk(this,'isolate')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">隔离库存</div><div style="font-size:11px;color:var(--dim)">Isolate & Hold Stock</div></div></div>
+    <div class="ck" onclick="tCk(this,'sqe')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">通报 SQE</div><div style="font-size:11px;color:var(--dim)">Notify Supplier Quality Engineer</div></div></div>
+    <div class="ck" onclick="tCk(this,'purchase')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">通知采购</div><div style="font-size:11px;color:var(--dim)">Notify Purchasing</div></div></div>
+    <div class="ck" onclick="tCk(this,'pmc')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">通知 PMC</div><div style="font-size:11px;color:var(--dim)">Notify Production Planning</div></div></div>
+    <div class="ck" onclick="tCk(this,'mc')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">通知 MC</div><div style="font-size:11px;color:var(--dim)">Notify Material Control</div></div></div>
+    <div class="ck" onclick="tCk(this,'fae')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">FAE 到厂</div><div style="font-size:11px;color:var(--dim)">Request FAE On-site Visit</div></div></div>
+    <div class="ck" onclick="tCk(this,'rtv')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">退货 RTV</div><div style="font-size:11px;color:var(--dim)">Return to Vendor</div></div></div>
+    <div class="ck" onclick="tCk(this,'twok')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">2K OBA 验证</div><div style="font-size:11px;color:var(--dim)">2000pcs OBA Verification</div></div></div>
+    <div class="ck" onclick="tCk(this,'monitor')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">持续监控</div><div style="font-size:11px;color:var(--dim)">Continue Monitoring</div></div></div>
   </div>
   <div class="card">
     <div class="field"><div class="lb"><span class="lb-z">补充备注</span><span class="lb-e">Additional Remarks</span></div>
-      <textarea id="remarks" placeholder="例 OP表示昨天换过治具..."></textarea></div>
-    <div class="field"><div class="lb"><span class="lb-z">T0 纪录</span><span class="lb-e">T0 IQC Record</span></div>
-      <div class="chips" id="g_t0">
-        <div class="ch" onclick="pCh(this,'t0')">正常放行 Normal Pass</div>
-        <div class="ch" onclick="pCh(this,'t0')">特采 Conditional Accept</div>
-        <div class="ch" onclick="pCh(this,'t0')">免检 Inspection Waived</div>
-        <div class="ch" onclick="pCh(this,'t0')">查无 No Record Found</div>
-      </div>
+      <textarea id="remarks" placeholder="例 OP表示昨天换过治具... e.g. Operator mentioned jig was changed yesterday..."></textarea></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#eff4ff,#e8f4ff);border:1.5px solid var(--acc)">
+    <div class="lb" style="margin-bottom:8px"><span class="lb-z" style="color:var(--acc)">📂 T0 IQC 抽验记录查询</span><span class="lb-e">T0 IQC Inspection Record Check</span></div>
+    <div style="font-size:11px;color:var(--acc);background:rgba(37,99,235,0.08);padding:8px 10px;border-radius:8px;margin-bottom:10px;line-height:1.5">
+      💡 提醒：回办公室后请查询 T0 IQC 抽检记录，确认此批次是否有被抽检<br>
+      <span style="font-size:10px">Reminder: Check T0 IQC inspection records to verify if this lot was sampled</span>
+    </div>
+    <div class="ig c2" id="g_t0">
+      <div class="io" onclick="pIo(this,'t0','已查询 Checked')" style="border-color:var(--ok)"><div class="iz" style="color:var(--ok)">✅ 已查询</div><div class="ie">Checked</div></div>
+      <div class="io" onclick="pIo(this,'t0','未查询 Not Yet')"><div class="iz">⏳ 未查询</div><div class="ie">Not Yet</div></div>
     </div>
   </div>
-  <div class="dv">急迫评估 Urgency</div>
+  <div class="dv">急迫评估 Urgency Assessment</div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">急迫程度<span class="req">*</span></span><span class="lb-e">Urgency Level</span></div>
+    <div class="field"><div class="lb"><span class="lb-z">急迫程度<span class="req">*</span></span><span class="lb-e">Urgency Level</span><span class="tip-btn" onclick="showTip('urgency')">?</span></div>
       <div class="ig c3" id="g_urgency">
         <div class="io" onclick="pIoU(this,'normal','picked-ok')"><div class="iz">一般</div><div class="ie">Normal Priority</div></div>
         <div class="io" onclick="pIoU(this,'urgent','picked-warn')"><div class="iz">紧急</div><div class="ie">Urgent: Escalate Now</div></div>
@@ -435,11 +717,11 @@ select{cursor:pointer;padding-right:30px}
       </div>
     </div>
     <div class="field"><div class="lb"><span class="lb-z">库存查询</span><span class="lb-e">Inventory Check (SAP)</span></div>
-      <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 请回 SAP 查询同批次库存</div>
+      <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 请回 SAP 查询同批次库存 Please check SAP for same lot inventory</div>
       <div class="pills"><div class="pl" onclick="pPl(this,'inv')">已查询 Checked</div><div class="pl" onclick="pPl(this,'inv')">未查询 Not Yet</div></div>
     </div>
     <div class="field"><div class="lb"><span class="lb-z">样品带回</span><span class="lb-e">Samples Collected</span></div>
-      <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 不良+良品各≥2pcs</div>
+      <div class="alt b show" style="margin-top:0;margin-bottom:6px">💡 不良+良品各≥2pcs Defect + Good samples ≥2pcs each</div>
       <div class="pills"><div class="pl" onclick="pPl(this,'sample')">已带回 Collected</div><div class="pl" onclick="pPl(this,'sample')">未带回 Not Yet</div></div>
     </div>
   </div>
@@ -475,8 +757,8 @@ select{cursor:pointer;padding-right:30px}
    dependency. Pure inline onclick + var + try/catch everywhere.
    ============================================================ */
 
-var PAGES=['不良分析','现场勘查','批号数量','开箱判定','收尾行动'];
-var cur=1,totalP=5,startTS='',endTS='',fillCount=0;
+var PAGES=['初步判定','不良分析','现场勘查','批号数量','开箱判定','收尾行动'];
+var cur=1,totalP=6,startTS='',endTS='',fillCount=0;
 var D={},TS={origBox:1,iqcTape:1,labelMatch:1,qtyMatch:1,packMatch:1,notExpired:1},CK={},photos=[null,null,null,null];
 
 /* safe localStorage */
@@ -548,7 +830,7 @@ function updUI(){
     $('bB').style.display=cur>1?'':'none';
     $('bN').style.display=cur<totalP?'':'none';
     $('bG').style.display=cur===totalP?'':'none';
-    if(cur===4)calcProb();
+    if(cur===5)calcProb();
     window.scrollTo(0,0);
   }catch(x){}
 }
@@ -562,7 +844,7 @@ function next(){
         if(!e||!e.value||!e.value.trim()){if(e)e.style.borderColor='red';toast('请填写必填项');return}
       }
     }
-    if(cur===2){
+    if(cur===3){
       var ids2=['vendor','qpn','dc'];
       for(var i=0;i<ids2.length;i++){
         var e=$(ids2[i]);
@@ -578,7 +860,7 @@ function prev(){try{if(cur>1){cur--;updUI()}}catch(x){}}
 function ct(){
   try{
     var c=0;
-    var fids=['iqcEngineer','model','line','vendor','qpn','dc'];
+    var fids=['iqcEngineer','model','line','vendor','qpn','dc','defectType'];
     for(var i=0;i<fids.length;i++){var el=$(fids[i]);if(el&&el.value&&el.value.trim())c++}
     var dks=['placement','station','focus','crossline','t0'];if(D.surface&&D.surface.length)c++;if(D.compare&&D.compare.length)c++;
     for(var i=0;i<dks.length;i++){if(D[dks[i]])c++}
@@ -617,6 +899,7 @@ function tSw(el){try{var card=el.closest('.tg'),key=card.getAttribute('data-key'
   var ea=$('expAlt');if(ea){ea.className='alt r'+(!TS.notExpired?' show':'')}ct()}catch(x){}}
 function tCk(el,key){try{var on=el.className.indexOf('on')>=0;el.className=on?'ck':'ck on';CK[key]=on?0:1;el.querySelector('.cb').textContent=on?'':'✓';ct()}catch(x){}}
 function showSt(t){try{$('stM').style.display=(t==='m'||t==='b')?'block':'none';$('stA').style.display=(t==='a'||t==='b')?'block':'none'}catch(x){}}
+function tSwERS(el){try{var on=el.className.indexOf('on')>=0;if(on){el.className='sw';$('ersAlt').style.display='block';D.ersReady=0}else{el.className='sw on';$('ersAlt').style.display='none';D.ersReady=1}ct()}catch(x){}}
 function tP(j){try{document.querySelectorAll('.ps')[j].querySelector('input').click()}catch(x){}}
 function hP(j,inp){try{if(!inp.files[0])return;var r=new FileReader();r.onload=function(e){try{photos[j]=e.target.result;var s=document.querySelectorAll('.ps')[j];var old=s.querySelector('img');if(old)old.remove();var oldb=s.querySelector('.rm');if(oldb)oldb.remove();var img=document.createElement('img');img.src=e.target.result;s.appendChild(img);s.className='ps has';var b=document.createElement('button');b.className='rm';b.textContent='✕';b.onclick=function(ev){ev.stopPropagation();photos[j]=null;img.remove();b.remove();s.className='ps'};s.appendChild(b)}catch(x){}};r.readAsDataURL(inp.files[0])}catch(x){}}
 function toast(m){try{var t=$('toast');t.textContent=m;t.className='toast show';setTimeout(function(){t.className='toast'},2000)}catch(x){}}
@@ -625,7 +908,7 @@ function calcProb(){
   try{
     var sc=0,mx=0;
     mx+=30;if(D.verdict==='vendor')sc+=30;else if(D.verdict==='both')sc+=20;
-    mx+=15;var sf=D.surface||'';if(sf.indexOf('原始')>=0)sc+=12;else if(sf)sc+=3;
+    mx+=15;var sf=D.surface||'';if(sf.indexOf('无组装')>=0)sc+=12;else if(sf)sc+=3;
     mx+=15;var cl=D.crossline||'';if(cl.indexOf('其他')>=0)sc+=15;else if(cl.indexOf('仅此')>=0)sc+=3;else if(cl.indexOf('无法')>=0)sc+=8;
     mx+=15;var aOK=0;var ak=['origBox','iqcTape','labelMatch','qtyMatch','packMatch'];for(var i=0;i<ak.length;i++){if(TS[ak[i]])aOK++}sc+=Math.round(aOK/5*15);
     mx+=10;var gb=D.compare||'';if(gb.indexOf('材料')>=0)sc+=10;else if(gb.indexOf('外力')>=0)sc+=2;
@@ -643,49 +926,844 @@ function genRpt(){
     endTS=new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
     var inp=parseInt($('inputQty').value)||0,def=parseInt($('defectQty').value)||0;
     var fr=inp>0?(def/inp*100).toFixed(2)+'%':'N/A';
-    var VM={process:'✅ 新箱正常→制程',vendor:'❌ 新箱不良→来料',both:'⚠️ 复合'};
-    var UM={normal:'🟢 一般',urgent:'🟡 紧急',stopline:'🔴 停线'};
-    var R=function(l,v){return '<tr><th>'+l+'</th><td>'+v+'</td></tr>'};
-    var S=function(t){return '<tr class="sc"><td colspan="2">'+t+'</td></tr>'};
+    var VM={process:'✅ 制程问题 Process Issue',vendor:'❌ 来料问题 Material Issue',both:'⚠️ 复合因素 Combined'};
+    var UM={normal:'🟢 一般 Normal',urgent:'🟡 紧急 Urgent',stopline:'🔴 停线 Stop Line'};
     var mt=gv('materialType');var mts=mt.split('—');
-    var h='<div class="rh">'+(mts[1]||mt)+' in '+gv('line')+'<br>P/N:'+gv('qpn')+' Vendor:'+gv('vendor')+' D/C:'+gv('dc')+'</div><table class="rt">';
-    h+=S('基本');h+=R('IQC',gv('iqcEngineer'));h+=R('PE',gv('peEngineer'));h+=R('机种',gv('model'));h+=R('材料',mt);h+=R('P/N',gv('qpn'));h+=R('Vendor',gv('vendor'));h+=R('线别',gv('line'));h+=R('来源',gv('reportSource'));
-    h+=S('批号');h+=R('D/C',gv('dc'));h+=R('L/C',gv('lc'));h+=R('Prod Date',gv('productionDate'));h+=R('Qty',inp+'/'+def+'/'+fr);h+=R('放置',D.placement||'—');h+=R('保质期',TS.notExpired?'✓':'✗');
-    h+=S('防伪');var ak2=['origBox','iqcTape','labelMatch','qtyMatch','packMatch'];for(var i=0;i<ak2.length;i++)h+=R(ak2[i],TS[ak2[i]]?'✓':'✗');
-    h+=S('分析');h+=R('不良',gv('defectType'));h+=R('表面',(D.surface&&D.surface.length?D.surface.join(', '):'—'));h+=R('对比',(D.compare&&D.compare.length?D.compare.join(', '):'—'));h+=R('集中',D.focus||'—');h+=R('跨线',D.crossline||'—');h+=R('工站',D.station||'—');
-    h+=S('判定');h+='<tr class="vr"><td colspan="2">'+(VM[D.verdict]||'—')+'</td></tr>';
-    h+=R('新箱',gv('newBoxSample')+'/'+gv('newBoxDefect'));h+=R('原材%',$('pPct').textContent);
-    var acts=[];var ckk=Object.keys(CK);for(var i=0;i<ckk.length;i++){if(CK[ckk[i]])acts.push(ckk[i])}
-    h+=R('动作',acts.join(',')||'—');h+=R('备注',gv('remarks'));h+=R('T0',D.t0||'—');
-    h+=S('评估');h+=R('急迫',UM[D.urgency]||'—');h+=R('库存',D.inv||'—');h+=R('样品',D.sample||'—');
-    h+=S('时间');h+=R('开始',startTS);h+=R('结束',endTS);
+    
+    // 新報告格式 - 更清晰
+    var h='<div class="rpt-card">';
+    
+    // 頂部摘要區
+    h+='<div class="rpt-summary">';
+    h+='<div class="rpt-title">IQC 产线复判报告</div>';
+    h+='<div class="rpt-subtitle">On-line Material Re-judgment Report</div>';
+    h+='</div>';
+    
+    // 關鍵信息區
+    h+='<div class="rpt-key">';
+    h+='<div class="rpt-row"><span class="rpt-label">📍 线别 Line</span><span class="rpt-value">'+gv('line')+'</span></div>';
+    h+='<div class="rpt-row"><span class="rpt-label">📦 料号 P/N</span><span class="rpt-value">'+gv('qpn')+'</span></div>';
+    h+='<div class="rpt-row"><span class="rpt-label">🏭 厂商 Vendor</span><span class="rpt-value">'+gv('vendor')+'</span></div>';
+    h+='<div class="rpt-row"><span class="rpt-label">📅 D/C</span><span class="rpt-value">'+gv('dc')+'</span></div>';
+    h+='<div class="rpt-row"><span class="rpt-label">⚠️ 不良 Defect</span><span class="rpt-value">'+gv('defectType')+'</span></div>';
+    h+='</div>';
+    
+    // 判定結果 - 大字醒目
+    h+='<div class="rpt-verdict '+(D.verdict||'none')+'">';
+    h+='<div class="rpt-verdict-label">判定结果 Verdict</div>';
+    h+='<div class="rpt-verdict-value">'+(VM[D.verdict]||'— 未判定 Not Determined —')+'</div>';
+    h+='</div>';
+    
+    // 數據摘要
+    h+='<div class="rpt-data">';
+    h+='<div class="rpt-data-item"><div class="rpt-data-num">'+inp+'</div><div class="rpt-data-label">投入数 Input</div></div>';
+    h+='<div class="rpt-data-item"><div class="rpt-data-num" style="color:var(--ng)">'+def+'</div><div class="rpt-data-label">不良数 Defect</div></div>';
+    h+='<div class="rpt-data-item"><div class="rpt-data-num" style="color:'+(parseFloat(fr)>=1?'var(--ng)':parseFloat(fr)>=0.3?'var(--warn)':'var(--ok)')+'">'+fr+'</div><div class="rpt-data-label">不良率 F/R</div></div>';
+    h+='<div class="rpt-data-item"><div class="rpt-data-num">'+$('pPct').textContent+'</div><div class="rpt-data-label">原材可能性</div></div>';
+    h+='</div>';
+    
+    // 詳細信息表格
+    h+='<table class="rpt-table">';
+    h+='<tr class="rpt-section"><td colspan="2">👤 人员 Personnel</td></tr>';
+    h+='<tr><td>IQC 工程师</td><td>'+gv('iqcEngineer')+'</td></tr>';
+    h+='<tr><td>PE 工程师</td><td>'+gv('peEngineer')+'</td></tr>';
+    
+    h+='<tr class="rpt-section"><td colspan="2">📋 批次信息 Lot Info</td></tr>';
+    h+='<tr><td>机种 Model</td><td>'+gv('model')+'</td></tr>';
+    h+='<tr><td>材料类型 Material</td><td>'+mt+'</td></tr>';
+    h+='<tr><td>L/C 批号</td><td>'+gv('lc')+'</td></tr>';
+    h+='<tr><td>生产日期 Prod Date</td><td>'+gv('productionDate')+'</td></tr>';
+    h+='<tr><td>同批箱数 Same Lot Boxes</td><td>'+gv('sameLotBoxes')+' 箱</td></tr>';
+    h+='<tr><td>同批状态 Same Lot Status</td><td>'+(D.sameLotStatus||'—')+'</td></tr>';
+    h+='<tr><td>开封状态 Open Status</td><td>'+(D.openStatus||'—')+'</td></tr>';
+    
+    h+='<tr class="rpt-section"><td colspan="2">🔍 现场检查 On-site Check</td></tr>';
+    h+='<tr><td>组装痕迹 Assembly Evidence</td><td>'+(D.surface&&D.surface.length?D.surface.join(', '):'—')+'</td></tr>';
+    h+='<tr><td>放置状况 Placement</td><td>'+(D.placement||'—')+'</td></tr>';
+    h+='<tr><td>工站类型 Station</td><td>'+(D.station||'—')+'</td></tr>';
+    h+='<tr><td>良品对比 Comparison</td><td>'+(D.compare&&D.compare.length?D.compare.join(', '):'—')+'</td></tr>';
+    h+='<tr><td>分布情况 Distribution</td><td>'+(D.focus||'—')+'</td></tr>';
+    h+='<tr><td>跨线比对 Cross-line</td><td>'+(D.crossline||'—')+'</td></tr>';
+    
+    h+='<tr class="rpt-section"><td colspan="2">✅ 防伪验证 Authentication</td></tr>';
+    var authItems=[['原箱 Original Box','origBox'],['IQC胶带 IQC Tape','iqcTape'],['标签一致 Label Match','labelMatch'],['数量吻合 Qty Match','qtyMatch'],['包装一致 Pack Match','packMatch'],['保质期内 Not Expired','notExpired']];
+    for(var i=0;i<authItems.length;i++){h+='<tr><td>'+authItems[i][0]+'</td><td>'+(TS[authItems[i][1]]?'✓ OK':'✗ NG')+'</td></tr>';}
+    
+    h+='<tr class="rpt-section"><td colspan="2">📊 历史记录 History</td></tr>';
+    h+='<tr><td>3个月内类似异常</td><td>'+(D.historyDefect||'—')+'</td></tr>';
+    h+='<tr><td>历史备注</td><td>'+gv('historyNotes')+'</td></tr>';
+    
+    h+='<tr class="rpt-section"><td colspan="2">📦 新箱验证 New Box</td></tr>';
+    h+='<tr><td>抽验数 / 不良数</td><td>'+gv('newBoxSample')+' / '+gv('newBoxDefect')+'</td></tr>';
+    
+    var acts=[];var actNames={isolate:'隔离库存',sqe:'通报SQE',purchase:'通知采购',pmc:'通知PMC',mc:'通知MC',fae:'FAE到厂',rtv:'退货RTV',twok:'2K OBA',monitor:'持续监控'};
+    var ckk=Object.keys(CK);for(var i=0;i<ckk.length;i++){if(CK[ckk[i]])acts.push(actNames[ckk[i]]||ckk[i])}
+    h+='<tr class="rpt-section"><td colspan="2">📝 后续动作 Actions</td></tr>';
+    h+='<tr><td>已勾选动作</td><td>'+(acts.length?acts.join(', '):'—')+'</td></tr>';
+    h+='<tr><td>T0 记录查询</td><td>'+(D.t0||'—')+'</td></tr>';
+    h+='<tr><td>备注 Remarks</td><td>'+gv('remarks')+'</td></tr>';
+    
+    h+='<tr class="rpt-section"><td colspan="2">⏱️ 评估与时间 Assessment</td></tr>';
+    h+='<tr><td>急迫程度 Urgency</td><td>'+(UM[D.urgency]||'—')+'</td></tr>';
+    h+='<tr><td>库存查询 Inventory</td><td>'+(D.inv||'—')+'</td></tr>';
+    h+='<tr><td>样品带回 Samples</td><td>'+(D.sample||'—')+'</td></tr>';
+    h+='<tr><td>开始时间 Start</td><td>'+startTS+'</td></tr>';
+    h+='<tr><td>结束时间 End</td><td>'+endTS+'</td></tr>';
+    h+='<tr><td>ERS 文件</td><td>'+(D.ersReady?'✓ 已携带':'✗ 未携带')+'</td></tr>';
     h+='</table>';
+    
+    h+='</div>';
+    
     $('rW').innerHTML=h;$('rMod').className='mod show';
   }catch(x){alert('Report error: '+x.message)}
 }
 
 function clMod(){try{$('rMod').className='mod'}catch(x){}}
+
+function genPlainTextRpt(){
+  try{
+    var inp=parseInt($('inputQty').value)||0,def=parseInt($('defectQty').value)||0;
+    var fr=inp>0?(def/inp*100).toFixed(2)+'%':'N/A';
+    var VM={process:'制程问题 Process Issue',vendor:'来料问题 Material Issue',both:'复合因素 Combined'};
+    var UM={normal:'一般 Normal',urgent:'紧急 Urgent',stopline:'停线 Stop Line'};
+    var mt=gv('materialType');
+    var div='─────────────────────';
+    var txt='';
+    txt+='IQC 产线复判报告\n';
+    txt+='On-line Material Re-judgment Report\n';
+    txt+=div+'\n';
+    txt+='线别 Line: '+gv('line')+'\n';
+    txt+='料号 P/N: '+gv('qpn')+'\n';
+    txt+='厂商 Vendor: '+gv('vendor')+'\n';
+    txt+='D/C: '+gv('dc')+'\n';
+    txt+='不良 Defect: '+gv('defectType')+'\n';
+    txt+=div+'\n';
+    txt+='判定结果 Verdict: '+(VM[D.verdict]||'未判定')+'\n';
+    txt+=div+'\n';
+    txt+='数据 Data:\n';
+    txt+='  投入数 Input: '+inp+'\n';
+    txt+='  不良数 Defect: '+def+'\n';
+    txt+='  不良率 F/R: '+fr+'\n';
+    txt+='  原材可能性: '+$('pPct').textContent+'\n';
+    txt+=div+'\n';
+    txt+='人员 Personnel:\n';
+    txt+='  IQC: '+gv('iqcEngineer')+'\n';
+    txt+='  PE: '+gv('peEngineer')+'\n';
+    txt+=div+'\n';
+    txt+='批次信息 Lot Info:\n';
+    txt+='  机种 Model: '+gv('model')+'\n';
+    txt+='  材料 Material: '+mt+'\n';
+    txt+='  L/C: '+gv('lc')+'\n';
+    txt+='  生产日期: '+gv('productionDate')+'\n';
+    txt+='  同批箱数: '+gv('sameLotBoxes')+'箱\n';
+    txt+='  同批状态: '+(D.sameLotStatus||'—')+'\n';
+    txt+='  开封状态: '+(D.openStatus||'—')+'\n';
+    txt+=div+'\n';
+    txt+='现场检查 On-site Check:\n';
+    txt+='  组装痕迹: '+(D.surface&&D.surface.length?D.surface.join(', '):'—')+'\n';
+    txt+='  放置状况: '+(D.placement||'—')+'\n';
+    txt+='  工站类型: '+(D.station||'—')+'\n';
+    txt+='  良品对比: '+(D.compare&&D.compare.length?D.compare.join(', '):'—')+'\n';
+    txt+='  分布情况: '+(D.focus||'—')+'\n';
+    txt+='  跨线比对: '+(D.crossline||'—')+'\n';
+    txt+=div+'\n';
+    txt+='防伪验证 Authentication:\n';
+    txt+='  原箱: '+(TS.origBox?'OK':'NG')+' | IQC胶带: '+(TS.iqcTape?'OK':'NG')+' | 标签: '+(TS.labelMatch?'OK':'NG')+'\n';
+    txt+='  数量: '+(TS.qtyMatch?'OK':'NG')+' | 包装: '+(TS.packMatch?'OK':'NG')+' | 保质期: '+(TS.notExpired?'OK':'NG')+'\n';
+    txt+=div+'\n';
+    txt+='历史记录 History:\n';
+    txt+='  3个月内异常: '+(D.historyDefect||'—')+'\n';
+    txt+='  历史备注: '+gv('historyNotes')+'\n';
+    txt+=div+'\n';
+    txt+='新箱验证 New Box:\n';
+    txt+='  抽验数/不良数: '+gv('newBoxSample')+' / '+gv('newBoxDefect')+'\n';
+    txt+=div+'\n';
+    var acts=[];var actNames={isolate:'隔离库存',sqe:'通报SQE',purchase:'通知采购',pmc:'通知PMC',mc:'通知MC',fae:'FAE到厂',rtv:'退货RTV',twok:'2K OBA',monitor:'持续监控'};
+    var ckk=Object.keys(CK);for(var i=0;i<ckk.length;i++){if(CK[ckk[i]])acts.push(actNames[ckk[i]]||ckk[i]);}
+    txt+='后续动作 Actions:\n';
+    txt+='  已勾选: '+(acts.length?acts.join(', '):'—')+'\n';
+    txt+='  T0查询: '+(D.t0||'—')+'\n';
+    txt+='  备注: '+gv('remarks')+'\n';
+    txt+=div+'\n';
+    txt+='评估 Assessment:\n';
+    txt+='  急迫程度: '+(UM[D.urgency]||'—')+'\n';
+    txt+='  库存查询: '+(D.inv||'—')+'\n';
+    txt+='  样品带回: '+(D.sample||'—')+'\n';
+    txt+='  ERS文件: '+(D.ersReady?'已携带':'未携带')+'\n';
+    txt+=div+'\n';
+    txt+='时间: '+startTS+' ~ '+endTS+'\n';
+    return txt;
+  }catch(x){return '报告生成失败';}
+}
+
 function cpRpt(){
   try{
-    var txt=$('rW').innerText;
+    var txt=genPlainTextRpt();
     var ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(ta);ta.focus();ta.select();
     document.execCommand('copy');document.body.removeChild(ta);toast('已复制!');
   }catch(x){toast('复制失败')}
 }
 function shareToTeams(){
   try{
-    var txt=$('rW').innerText;
+    var txt=genPlainTextRpt();
     var url='https://teams.microsoft.com/l/chat/0/0?message='+encodeURIComponent(txt);
     location.href=url;
     toast('正在打开 Teams...');
   }catch(x){
     try{
-      var ta=document.createElement('textarea');ta.value=$('rW').innerText;ta.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('已复制！请手动贴到 Teams');
+      var ta=document.createElement('textarea');ta.value=genPlainTextRpt();ta.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('已复制！请手动贴到 Teams');
     }catch(e){toast('请手动复制报告')}
   }
 }
+</script>
 
-/* Run init immediately - script is at bottom of body so DOM is ready */
+<!-- 💡 說明彈窗 -->
+<div class="tip-pop" id="tipPop" onclick="if(event.target===this)closeTip()">
+  <div class="tip-box">
+    <div class="tip-hdr" id="tipHdr"></div>
+    <div class="tip-why" id="tipWhy"></div>
+    <div id="tipExtra"></div>
+    <button class="tip-close" onclick="closeTip()">关闭 Close</button>
+  </div>
+</div>
+
+<!-- 案例選擇彈窗 -->
+<div class="tip-pop" id="casePickPop" onclick="if(event.target===this)closeCasePicker()">
+  <div class="tip-box">
+    <div class="tip-hdr">选择培训案例 Select Training Case</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div class="ck" onclick="setCase(0);closeCasePicker()"><div class="cb" id="caseCk0">✓</div><div><div style="font-size:13px;font-weight:700">案例 A｜来料异常</div><div style="font-size:11px;color:var(--dim)">新箱也不良 → 原材问题</div></div></div>
+      <div class="ck" onclick="setCase(1);closeCasePicker()"><div class="cb" id="caseCk1"></div><div><div style="font-size:13px;font-weight:700">案例 B｜制程问题</div><div style="font-size:11px;color:var(--dim)">新箱正常 → 线别肯定</div></div></div>
+      <div class="ck" onclick="setCase(2);closeCasePicker()"><div class="cb" id="caseCk2"></div><div><div style="font-size:13px;font-weight:700">案例 C｜复合因素</div><div style="font-size:11px;color:var(--dim)">原材+制程同时存在问题</div></div></div>
+    </div>
+    <button class="tip-close" onclick="closeCasePicker()">关闭 Close</button>
+  </div>
+</div>
+
+<script>
+var CASES=[
+{
+  label:'案例 A | 来料异常 Incoming Material Defect',
+  desc:'K11线电容C0402出现开路不良，F/R达2.3%。新箱验证后同样发现不良，高度怀疑原材问题。\nK11 line C0402 capacitor Open defect, F/R 2.3%. New box also failed — suspected raw material issue.',
+  tips:{
+    model:{
+      hdr:'💡 为什么要填机种？ Why fill in the model name?',
+      why:'工厂内可能同时有多个机种在线生产，记录机种的核心原因是：每个机种的负责DRI（直接责任人）都不同，包括PUR（采购）、PMC（物料计划）、PE（制程工程师）。一旦发现来料异常，IQC必须第一时间知道联系哪个机种的相关负责人，才能迅速评估影响范围、协调停线或换料决策。若不记录机种，复判报告将无法分发给正确负责人，延误处理时效。\\nA factory may have multiple models running simultaneously, each with different DRIs including PUR (Purchasing), PMC (Material Planning), and PE (Process Engineer). Recording the model is essential so IQC knows exactly who to notify when a material defect is confirmed. Without it, the report cannot reach the right people, delaying response.',
+      extra:'case:案例A机种：PWKK，高端机种，电容密度高，来料不良直接影响良率'
+    },
+    line:{
+      hdr:'💡 为什么要记录线别？ Why record the production line?',
+      why:'线别是区分「来料问题」与「制程问题」的第一道关键证据。若不良只发生在单一线别，则制程因素（操作手法、设备参数、治具状态）可能性高；若多条线使用同批料都出现相同不良，则强烈指向来料本身有问题。ResearchMFG指出：IQC人员通常需会同PE釐清是零件问题还是制程造成，线别资料是这个判断的起点。\nThe production line is the first key evidence to distinguish incoming material defect vs. process defect. If defects appear on multiple lines using the same lot, it strongly points to the raw material.',
+      extra:'case:案例A：K11与K22同批料同时不良 → 指向来料，非单一线制程问题'
+    },
+    defect:{
+      hdr:'💡 不良现象如何影响分析方向？ How does defect type set the investigation direction?',
+      why:'业界将不良现象标准分为三大类：\n1. 外观不良 Cosmetic：刮伤、压伤、变色、污染等，影响产品外观\n2. 尺寸不良 Dimension：零件尺寸超出规格，影响组装匹配性\n3. 功能不良 Function：开路、短路、电气特性失效，影响产品功能\n正确分类决定后续检验工具与分析方向：外观类→目视/放大镜；尺寸类→卡尺/光学量测；功能类→电气测试仪。分类不正确会导致分析走错方向，也难以向供应商举证追责。\n\nDefects are classified into three categories:\n1. Cosmetic: Scratch, Dent, Discoloration, Contamination\n2. Dimension: Part dimensions out of specification — affects assembly fit\n3. Function: Open, Short, electrical failure — affects product functionality\nCorrect classification determines the right inspection tool and analysis path.',
+      extra:'warn:案例A为Open（断路）→ 优先怀疑材料本体缺陷，而非制程外力'
+    },
+    surface:{
+      hdr:'💡 为什么要做表面观察？ Why observe the surface condition?',
+      why:'表面观察是判断不良「出厂时就存在」还是「制程中造成」的直接物证。断面粗糙、有工具划痕或外力压痕，代表在制程中受到冲击（制程肇因）；若表面原始状态良好、无外力痕迹但电气异常，则代表材料内部本体缺陷（来料肇因）。这是复判中最重要的现场证据之一，必须亲眼确认后记录，不能单凭OP描述。\nSurface observation is direct physical evidence to determine if the defect existed before delivery or was caused during process. Rough fracture or tool marks = process damage. Good original surface but electrical failure = inherent material defect. Must be verified in person.',
+      extra:'case:案例A：表面原始状态良好，无外力痕迹，但电气Open → 指向来料本体缺陷'
+    },
+    compare:{
+      hdr:'💡 良品vs不良品比对的目的是什么？ Why compare good vs. defective parts?',
+      why:'将良品与不良品并排实物对比，是确认缺陷来源最直接的方法。若两者外观差异明显且差异符合材料缺陷特征（如氧化、变形、尺寸偏差），指向来料；若外观相近但装配后才出现问题，需检查制程参数。IQC复判规范强调：必须带实物对比，不得以目视推测代替实物验证，否则无法作为与供应商沟通的有效证据。\nSide-by-side comparison of good vs. defective parts is the most direct method to identify defect origin. IQC standards require physical comparison — visual estimation alone is not sufficient as evidence when communicating with suppliers.',
+      extra:'warn:必须携带实物良品与不良品各≥2pcs进行对比，结果需拍照留存'
+    },
+    focus:{
+      hdr:'💡 集中性分析能说明什么？ What does defect concentration analysis reveal?',
+      why:'集中性分析（Concentration Analysis）是判断不良「系统性」还是「偶发性」的关键工具。不良集中在特定D/C批次 → 该批料出厂就有品质问题，属系统性来料异常；不良随机分散在各批次 → 可能是制程参数不稳定或操作差异。这个判断直接影响后续行动：系统性来料异常需对该批料全数隔离，偶发性则需锁定制程变因。\nConcentration analysis determines if defects are systematic or sporadic. Concentrated in a specific D/C lot → systematic incoming material issue → isolate full lot. Random across lots → process instability. This drives the action plan.',
+      extra:'case:案例A：不良集中在D/C 2415同批次，其他批次正常 → 该批来料系统性异常'
+    },
+    crossline:{
+      hdr:'💡 跨线比对为什么是复判的核心证据？ Why is cross-line comparison the core evidence?',
+      why:'跨线比对是区分「来料」与「制程」最直接、最有说服力的证据。若同批料在多条线都发生相同不良，制程因素（因为各线制程参数不同）可以基本排除，来料问题几乎确认。ResearchMFG的实际案例中，IQC常用此方法来向供应商证明是来料问题，而非制程或客户端操作失误。若只有单一线不良，则需深入检查该线的制程变因。\nCross-line comparison is the most direct and persuasive evidence to differentiate material vs. process defects. Same lot defective on multiple lines with different process parameters → process is eliminated → material defect confirmed. This is the key evidence when communicating with suppliers.',
+      extra:'case:案例A：K11与K22使用同批料，两线同时出现Open不良 → 来料问题确认'
+    },
+    placement:{
+      hdr:'💡 产线放置状况与不良有何关联？ How does on-line material placement relate to defects?',
+      why:'产线材料的放置方式直接影响零件在使用前是否已受到损伤。错盘、散放桌面、堆叠挤压都可能造成零件在上料前就已受到机械损伤，这属于「制程储运问题」而非来料问题。若放置状况正常但仍有不良，则更能排除制程外力因素，进一步支持来料不良的判断。记录放置状况是釐清责任归属的重要现场证据。\nHow materials are placed on the production line directly impacts whether parts are damaged before use. Improper placement (scattered on desk, stacked) = process/handling damage. Normal placement but still defective = supports material defect conclusion.',
+      extra:'ok:案例A：放置在标准料盘，无异常堆叠 → 排除制程储运损伤，支持来料判断'
+    },
+    origBox:{
+      hdr:'💡 为什么要确认原箱状态？ Why verify the original packaging box?',
+      why:'确认原箱是IQC「防伪五项」的第一项，目的是确保该批料以原厂包装状态进入仓库，没有被中途开封、换箱或混料。若发现非原厂包装或封条破损，代表该批料的完整性存疑，可能存在假冒品、混批或数量不符的风险。这是供应链管控的基础，也是向供应商追责的重要依据之一。\nVerifying the original box is the first of five IQC authentication checks. It ensures the lot entered the warehouse in its original factory-sealed packaging. A replaced or damaged box raises concerns about counterfeit parts, mixed lots, or quantity discrepancy.',
+      extra:'warn:换箱/封条破损 → 立即暂停使用，启动紧急调查，不得特采放行'
+    },
+    iqcTape:{
+      hdr:'💡 IQC胶带/标签代表什么？ What does the IQC tape/label prove?',
+      why:'IQC胶带（或PASS标签）是该批料「已通过IQC进料检验正式放行」的唯一凭证。若产线发现某批料无IQC封条，代表该批料可能绕过IQC检验直接流入产线，属于严重的品质系统漏洞。IQC规范中明确：所有外购料须盖有「IQC PASS」章或贴有放行标签后才能入库使用。无标签者直接视为未检验品处理。\nThe IQC tape or PASS label is the only proof that a lot has officially passed incoming inspection and been released. Parts without IQC seal found on the line represent a serious quality system breach — they may have bypassed inspection entirely.',
+      extra:'warn:无IQC胶带/标签 → 立即隔离，追查来源，该批料不得继续使用'
+    },
+    labelMatch:{
+      hdr:'💡 标签一致性检查的意义是什么？ Why check label consistency?',
+      why:'标签一致性检查确认实物的P/N（料号）、Vendor（厂商）、D/C（日期码）与外箱标签完全一致，是排除混料、错料、假冒品最基本的验证步骤。在IQC进料检验规范中，标签核对是库检的必要项目之一。若实物与标签不符，即使外观正常也必须判退，因为规格不符的零件在后续制程中可能导致功能性失效，责任难以追溯。\nLabel consistency check verifies that the physical P/N, Vendor, and D/C match the outer box label exactly. This is the basic step to eliminate mixed parts, wrong parts, or counterfeits. Per IQC standards, label mismatch = reject, even if appearance looks normal.',
+      extra:'warn:标签与实物不符 → 停止使用，填写不合格通知单，退回供应商'
+    },
+    qtyMatch:{
+      hdr:'💡 为什么要核对数量？ Why verify the quantity?',
+      why:'数量核对有两个目的：一是确认该批料的实际数量与标签一致，排除短料或混批的可能；二是确保F/R（不良率）的计算基准准确。若投入数量记录有误，F/R计算结果就会失真，影响处理级别的判断。IQC进料检验规范要求：每批来料须由仓管人员核对品名、规格、数量相符后才能签收，再交IQC验收。\nQuantity verification serves two purposes: confirming no shortage or mixed lot, and ensuring the F/R calculation has an accurate denominator. Per IQC procedures, warehouse staff must verify name, spec, and quantity before signing off, then hand to IQC.',
+      extra:'ok:数量正确是F/R = 不良数÷投入数 计算准确的前提条件'
+    },
+    packMatch:{
+      hdr:'💡 包装状态与来料品质有何关系？ How does packaging condition relate to incoming material quality?',
+      why:'包装状态是判断零件在运输或储存过程中是否受损的重要线索。包装变形、受潮、破损可能导致零件在到达产线前已受到机械冲击或环境侵蚀（如电容受潮导致电气特性劣化）。若包装完整但零件仍不良，更能排除运输损伤，将根因指向材料出厂品质本身。包装异常还需反馈给供应商要求改善包装规格。\nPackaging condition indicates whether parts were damaged during transit or storage. Damaged packaging may cause mechanical impact or environmental exposure (e.g., moisture absorption causing capacitor degradation). Intact packaging but defective parts = root cause points to factory quality.',
+      extra:'case:案例A：包装完整无破损，但仍有Open不良 → 进一步排除运输损伤，指向出厂品质'
+    },
+    expiry:{
+      hdr:'💡 保质期超期会导致什么问题？ What happens when parts exceed shelf life?',
+      why:'电子零件（尤其是电容、连接器、焊锡材料）都有明确的保质期（Shelf Life）。超期零件可能因氧化、吸湿、焊锡性劣化等原因导致电气特性不符规格，造成组装后功能失效或焊接不良。IQC进料检验规范明确规定：仓库须每月盘点超期物料并提交IQC重检，超期且无法确认品质的零件必须隔离禁用。T0栏位中「特采」也需注明超期状态。\nElectronic components (capacitors, connectors, solder materials) have defined shelf lives. Expired parts may suffer oxidation, moisture absorption, or solderability degradation — leading to electrical failure or poor solder joints. Per IQC standards, expired parts must be quarantined and re-inspected before use.',
+      extra:'warn:超期零件 → 必须隔离，禁止直接使用，重检合格才可特采放行'
+    },
+    inputQty:{
+      hdr:'💡 投入数与不良数 Input Qty & Defect Qty',
+      why:'投入数与不良数用于计算不良比例 F/R%（F/R = 不良数 ÷ 投入数 × 100%），帮助判断问题的严重程度。F/R越高，问题越严重，需要越紧急的处理。\nInput qty and defect qty are used to calculate defect rate F/R% (F/R = Defect Qty / Input Qty × 100%), which helps assess the severity of the issue.',
+      extra:'case:例：投入1000pcs，不良10pcs → F/R = 1.0%'
+    },
+    newbox:{
+      hdr:'💡 开新箱验证是复判的决策核心 New box verification is the key decision step',
+      why:'开新箱验证是IQC原材复判中「区分来料与制程」最直接的实验方法。逻辑如下：若开新批次（不同D/C）零件验证结果正常，代表原批料有问题但新批无，需进一步判断是批次异常还是制程问题；若新箱也有相同不良，代表不良特征存在于多批次，供应商的制程有系统性品质问题，来料异常确认。ResearchMFG实际案例中，IQC常以此结果作为向供应商要求8D改善报告的依据。\nNew box verification is the most direct experimental method to distinguish material vs. process defects. New box OK → lot-specific or process issue. New box also NG → systematic supplier quality problem confirmed. This result is commonly used as the basis for requesting an 8D report from the supplier.',
+      extra:'warn:案例A：新箱同样出现Open不良 → 来料系统性异常确认，启动8D要求'
+    },
+    prob:{
+      hdr:'💡 原材不良可能性评分的逻辑是什么？ How is the material defect probability score calculated?',
+      why:'本系统依据复判过程中收集的多维度证据进行加权评分，评估来料问题的可能性：开新箱结果（权重最高，30%）、跨线比对（15%）、表面观察（15%）、防伪五项完整性（15%）、良品比对结论（10%）、集中性分析（5%）等。这个模型参考了IQC实务中判断来料责任的常见逻辑。评分 ≥ 70% → 高度怀疑来料，建议启动供应商改善程序；40-70% → 中度可能，需进一步验证；< 40% → 来料可能性低，建议聚焦制程改善。\nThe score is a weighted assessment based on evidence collected: new box result (30%), cross-line comparison (15%), surface observation (15%), authentication checks (15%), good vs. defective comparison (10%), concentration (5%). Score ≥70% = high suspicion of material defect.',
+      extra:'case:案例A预估评分 > 85% → 高度怀疑来料，建议要求供应商提交8D改善报告'
+    },
+    urgency:{
+      hdr:'💡 急迫程度如何决定后续行动力度？ How does urgency level determine the response intensity?',
+      why:'急迫程度决定复判结论之后的行动速度与范围，必须与F/R数据和产线实际状况结合判断。一般（Normal）：F/R低、现有库存可支撑产线正常运作超过48小时，可安排计划性处理；紧急（Urgent）：F/R偏高（>0.5%）或库存低于48小时需求，需当天内启动改善行动；停线级（Stop Line）：F/R ≥ 1% 或产线已因此停线，需立即隔离库存、通报SQE、召开MRB会议决定处置方式。\nUrgency level determines the speed and scope of response actions. Normal: low F/R, sufficient stock >48hrs. Urgent: F/R >0.5% or stock <48hrs. Stop Line: F/R ≥1% or line already stopped — isolate stock, notify SQE, hold MRB meeting immediately.',
+      extra:'warn:案例A：F/R=2.3%，产线已停，选停线级 → 立即隔离全批库存，通报SQE召开MRB'
+    }
+  }
+}
+];
+var curCase=0;
+
+function setCase(idx){
+  try{
+    curCase=idx;
+    var c=CASES[idx];
+    document.getElementById('caseLabelEl').textContent=c.label;
+    document.getElementById('caseDescEl').innerHTML=c.desc.replace(/\n/g,'<br>');
+    for(var i=0;i<CASES.length;i++){
+      var ck=document.getElementById('caseCk'+i);
+      if(ck){ck.textContent=(i===idx)?'✓':'';ck.parentElement.className=(i===idx)?'ck on':'ck';}
+    }
+  }catch(x){}
+}
+
+function showTip(key){
+  try{
+    var t=CASES[curCase].tips[key];
+    if(!t){return;}
+    document.getElementById('tipHdr').textContent=t.hdr;
+    document.getElementById('tipWhy').innerHTML=t.why.replace(/\n/g,'<br>');
+    var ex=document.getElementById('tipExtra');
+    if(t.extra){
+      var parts=t.extra.split(':');
+      var type=parts[0];
+      var txt=parts.slice(1).join(':');
+      var cls=type==='warn'?'tip-warn':type==='ok'?'tip-ok':'tip-case';
+      ex.innerHTML='<div class="'+cls+'">📌 '+txt+'</div>';
+    }else{ex.innerHTML='';}
+    document.getElementById('tipPop').className='tip-pop show';
+  }catch(x){alert('showTip error: '+x.message);}
+}
+
+function closeTip(){try{document.getElementById('tipPop').className='tip-pop';}catch(x){}}
+function showCasePicker(){try{document.getElementById('casePickPop').className='tip-pop show';}catch(x){}}
+function closeCasePicker(){try{document.getElementById('casePickPop').className='tip-pop';}catch(x){}}
+</script>
+
+<script>
+/* ══════════════════════════════════════════════
+   IMMERSIVE EVIDENCE PICKER (Page 1)
+   + IMMERSIVE DEFECT PICKER (Page 2)
+   ══════════════════════════════════════════════ */
+
+/* ─── Evidence Data ─── */
+var EVID_CATS = {
+  fastening:{label:'🔩 锁付与结构 Fastening & Structure',items:[
+    ['螺丝锁付扭矩痕','Screw Torque Mark','螺孔周围有锁付扭矩压痕，证明曾被电批锁紧组装','ng'],
+    ['螺丝滑牙/花头','Screw Strip / Cross Recess Strip','螺丝头或螺孔已滑牙，证明曾被反复锁付','ng'],
+    ['螺丝孔发黄/异色','Screw Hole Discoloration','螺孔周围发黄或有氧化痕，属锁付后老化特征','warn'],
+    ['螺丝高翘/未锁到位','Screw Floating / Not Fully Seated','螺丝未完全锁平，可能为组装后拆解重组','warn'],
+    ['卡扣断裂/弹片变形','Latch Broken / Spring Deformed','塑胶卡扣折断或金属弹片变形，强拆痕迹','ng'],
+    ['铰链/转轴磨损','Hinge / Pivot Wear Mark','铰链或转轴有使用磨损，证明曾被多次开合','warn'],
+    ['结合缝有撬开痕','Pry Mark on Housing Seam','壳体结合缝有撬开工具留下的压痕或划伤','ng'],
+    ['定位柱/卡点断裂','Locating Boss / Snap Broken','内部定位柱或卡点断裂，强拆或重工特征','ng'],
+    ['螺孔金属碎屑残留','Metal Debris in Screw Hole','螺孔内有金属屑，证明曾被反复钻/锁','warn']
+  ]},
+  test:{label:'🧪 测试与治具 Test & Fixture',items:[
+    ['FVT/ICT测试探针压痕','FVT/ICT Test Probe Mark','焊盘或金属测试点有探针戳压凹痕，证明经过功能/电气测试站','warn'],
+    ['OQC测试点划伤','OQC Test Contact Scratch','出货检验测试接触点留下的划伤或磨损','warn'],
+    ['治具夹持压痕','Jig / Fixture Clamp Mark','夹具或定位块在零件边缘/侧面留下的压痕','warn'],
+    ['吸嘴吸附痕','Vacuum Nozzle Pick Mark','自动化吸嘴在零件表面留下的圆形吸附痕','warn'],
+    ['定位孔磨损/扩大','Locating Hole Worn / Enlarged','治具定位孔有磨损扩大，证明经过多次定位','warn'],
+    ['热压/超音波熔接痕','Hot Press / Ultrasonic Weld Mark','塑胶件有熔接线或热压变形，属FATP特有痕迹','ng'],
+    ['老化/Burn-in测试热痕','Burn-in / Aging Test Heat Mark','零件有热应力痕迹或老化测试导致的轻微变色','warn'],
+    ['点胶/UV胶固化残留','Dispensed / UV Cured Glue Residue','UV胶或热固化胶残留在零件上，证明经过点胶制程','warn'],
+    ['扭力测试接触痕','Torque Test Mark','扭力测试工具在零件上留下的接触或夹持痕迹','warn']
+  ]},
+  cosmetic:{label:'👁️ 外观与包装 Cosmetic & Packaging',items:[
+    ['保护膜已撕除','Protective Film Removed','原厂保护膜已被撕除，证明已进入组装线或已使用','warn'],
+    ['保护膜残胶','Protective Film Adhesive Residue','保护膜撕除后残留的胶迹，证明已被开封','warn'],
+    ['碰撞/压伤（非包装所致）','Impact / Dent Not From Packaging','碰撞痕与原装包装损伤特征不符，属制程搬运外力','warn'],
+    ['方向性刮伤/工具痕','Directional Scratch / Tool Mark','刮伤有明显方向性或与工具接触特征一致','warn'],
+    ['阳极层/涂装脱落','Anodization / Coating Peel Off','阳极层或涂装局部脱落，可能为制程机械损伤','warn'],
+    ['氧化/变色（局部不均匀）','Non-uniform Oxidation / Discoloration','端子或金属面有局部不均匀氧化，可能为旧料','warn'],
+    ['引脚/端子弯折变形','Pin / Terminal Bent or Deformed','引脚或连接器端子有弯折，疑为装配过程外力','ng'],
+    ['热变形/翘曲','Thermal Deformation / Warpage','零件有因高温导致的翘曲或变形','warn'],
+    ['表面高频接触磨损','Surface Wear from Repeated Contact','接触面有明显摩擦磨损痕，属长期使用特征','ng'],
+    ['清洁剂/溶剂接触痕','Solvent / Cleaner Contact Mark','表面有清洁剂溶解或溶剂接触留下的痕迹','warn']
+  ]},
+  adhesive:{label:'🔗 胶水与贴合 Adhesive & Bonding',items:[
+    ['结构胶残留','Structural Adhesive Residue','结构胶固化残留，证明曾经贴合组装 Cured adhesive residue, evidence of bonding assembly','ng'],
+    ['3M/双面胶残留','3M / Double-sided Tape Residue','双面胶撕除后残留的胶层，证明曾经贴合固定 Tape residue after removal, evidence of bonding','ng'],
+    ['泡棉/缓冲材残留','Foam / Cushion Residue','组装用泡棉或缓冲材残留，证明已进入组装配置 Foam/cushion residue, evidence of assembly','warn'],
+    ['导热膏/散热垫残留','Thermal Paste / Pad Residue','导热膏或散热垫残留，证明已组装散热模组 Thermal compound residue, evidence of heatsink assembly','ng'],
+    ['胶层轮廓/撕除影痕','Adhesive Outline / Ghost Mark','胶已撕除但表面留有胶层轮廓或压痕 Adhesive removed but outline/imprint remains','warn'],
+    ['密封胶/防水胶痕','Sealant / Waterproof Adhesive Mark','边缘有密封胶施工痕迹，证明经过防水组装制程 Sealant marks on edges, evidence of waterproof assembly','ng'],
+    ['背胶保护纸残留','Release Paper Residue','双面胶背纸残留碎片，证明已撕开使用 Release paper fragments, evidence of tape usage','warn']
+  ]},
+  label:{label:'🏷️ 标签与标识 Label & Marking',items:[
+    ['原厂标签被撕除','Original Label Removed','原厂出货标签被完整撕除，可能为混料或责任转嫁','ng'],
+    ['标签被覆盖/替换','Label Covered / Replaced','原厂标签上方覆盖新标签，疑为换标或混批','ng'],
+    ['标签信息与实物不符','Label Info Mismatch with Part','P/N、D/C或Vendor与实物不一致','ng'],
+    ['防拆封条破损/揭开','Tamper-evident Seal Broken','防拆封条已破损或被揭开','ng'],
+    ['SN/条码打磨重印','SN / Barcode Sanded and Re-marked','SN或条码区域有打磨痕迹后重新印字，翻新特征','ng'],
+    ['日期码与品相不符','Date Code Inconsistent with Condition','D/C标注较新但零件有明显老化，或反之','warn'],
+    ['标签撕除残胶','Label Adhesive Residue','标签撕除后残留的胶迹或标签纤维','warn'],
+    ['QR Code/2D码损毁','QR Code / 2D Code Damaged','QR码或追溯码有刮损无法扫描，可能为遮蔽追溯','warn']
+  ]},
+  solder:{label:'⚡ 焊接痕迹 Soldering Evidence',items:[
+    ['引脚/焊盘残锡','Solder Residue on Pins / Pads','引脚或焊盘上有残留焊锡，证明已经过SMT或手焊','ng'],
+    ['锡珠/锡球残留','Solder Ball Residue','本体或引脚旁有锡珠，证明经过回流焊制程','ng'],
+    ['助焊剂/松香残留','Flux / Rosin Residue','残留助焊剂证明经过回流焊或波峰焊','ng'],
+    ['PCB绿漆/铜皮沾附','PCB Solder Mask / Copper Residue','本体沾有PCB绿漆或铜皮碎片，高度怀疑拆机件','ng'],
+    ['引脚重镀/过度光亮','Re-tinned Pins / Over-bright Finish','正品引脚为亚光；光亮如新者疑为翻新重镀','ng'],
+    ['引脚局部氧化不均','Partial Pin Oxidation / Selective Cleaning','引脚局部氧化而其余被清洁，疑为翻新处理','warn'],
+    ['热损伤/电焦痕','Thermal Damage / Electric Burn Mark','零件有热损伤或电弧放电灼烧痕，证明曾通电','ng'],
+    ['波峰焊拖锡拉尖痕','Wave Solder Drag / Icicle Mark','引脚有波峰焊特有的拖锡拉尖痕迹','ng']
+  ]}
+};
+
+var _evidSelected = {};
+var _evidCurCat = '';
+
+function evidOpenCat(cat){
+  try{
+    _evidCurCat = cat;
+    var data = EVID_CATS[cat];
+    if(!data) return;
+    document.getElementById('evidL1').style.display = 'none';
+    var l2 = document.getElementById('evidL2');
+    l2.style.display = 'block';
+    document.getElementById('evidL2Title').textContent = data.label;
+    var grid = document.getElementById('evidL2Grid');
+    grid.innerHTML = '';
+    var items = data.items;
+    for(var i=0;i<items.length;i++){
+      var item=items[i]; var key=cat+'__'+i;
+      var on=_evidSelected[key]?true:false;
+      var sev=item[3];
+      var b=document.createElement('div');
+      b.className=on?'io picked-'+sev:'io';
+      b.style.cssText='padding:12px 10px;display:flex;align-items:flex-start;gap:10px;';
+      b.innerHTML='<div style="flex:1">'
+        +'<div class="iz" style="font-size:12px;text-align:left">'+item[0]+'</div>'
+        +'<div class="ie" style="text-align:left;margin-top:2px">'+item[1]+'</div>'
+        +'<div style="font-size:9px;color:var(--dim);margin-top:4px;line-height:1.5">'+item[2]+'</div>'
+        +'</div>'
+        +'<div id="evck_'+key+'" style="width:22px;height:22px;border-radius:50%;border:2px solid var(--bdr);background:'+(on?'var(--ng)':'var(--card)')+';flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;margin-top:2px">'+(on?'✓':'')+'</div>';
+      (function(k,el2,severity){
+        el2.onclick=function(){
+          _evidSelected[k]=!_evidSelected[k];
+          var isOn=_evidSelected[k];
+          el2.className=isOn?'io picked-'+severity:'io';
+          var ck=document.getElementById('evck_'+k);
+          if(ck){ck.style.background=isOn?'var(--ng)':'var(--card)';ck.textContent=isOn?'✓':'';}
+          // Uncheck "none" option
+          if(isOn){
+            var noneBtn=document.getElementById('evidCat_none');
+            if(noneBtn) noneBtn.className='io';
+            if(D['surface']){var ni=D['surface'].indexOf('✅ 表面原始状态良好→无组装迹象');if(ni>=0)D['surface'].splice(ni,1);}
+          }
+          ct();
+        };
+      })(key,b,sev);
+      grid.appendChild(b);
+    }
+  }catch(x){}
+}
+
+function evidBackToL1(){
+  try{
+    document.getElementById('evidL2').style.display='none';
+    document.getElementById('evidL1').style.display='block';
+    evidRefreshL1Badges();
+    evidRefreshSummary();
+  }catch(x){}
+}
+
+function evidDone(){
+  try{
+    evidBackToL1();
+  }catch(x){}
+}
+
+function evidRefreshL1Badges(){
+  try{
+    var cats=Object.keys(EVID_CATS);
+    for(var c=0;c<cats.length;c++){
+      var cat=cats[c];
+      var count=0;
+      var items=EVID_CATS[cat].items;
+      for(var i=0;i<items.length;i++){if(_evidSelected[cat+'__'+i])count++;}
+      var badge=document.getElementById('evidCatBadge_'+cat);
+      var catBtn=document.getElementById('evidCat_'+cat);
+      if(badge){
+        if(count>0){badge.style.display='inline-block';badge.textContent=count+' 项已选 selected';}
+        else{badge.style.display='none';}
+      }
+      if(catBtn){
+        catBtn.className=count>0?'io picked-ng':'io';
+      }
+    }
+  }catch(x){}
+}
+
+function evidRefreshSummary(){
+  try{
+    var lines=[];
+    var surfaceArr=[];
+    var cats=Object.keys(EVID_CATS);
+    for(var c=0;c<cats.length;c++){
+      var cat=cats[c];
+      var items=EVID_CATS[cat].items;
+      for(var i=0;i<items.length;i++){
+        if(_evidSelected[cat+'__'+i]){
+          lines.push('• '+items[i][0]+' — '+items[i][1]);
+          surfaceArr.push(items[i][0]+' ('+items[i][1]+')');
+        }
+      }
+    }
+    // Update D.surface
+    if(surfaceArr.length>0) D['surface']=surfaceArr;
+    else if(!D['surface']||D['surface'].indexOf('✅ 无组装迹象 No Assembly Evidence')<0) D['surface']=[];
+
+    var card=document.getElementById('evidSummaryCard');
+    var list=document.getElementById('evidSummaryList');
+    var l1=document.getElementById('evidL1');
+    var l2=document.getElementById('evidL2');
+    if(!card||!list) return;
+    
+    if(lines.length>0){
+      card.style.display='block';
+      list.innerHTML=lines.join('<br>');
+      if(l1) l1.style.opacity='0.3';
+      if(l2) l2.style.opacity='0.3';
+    } else if(D['surface']&&D['surface'].indexOf('✅ 无组装迹象 No Assembly Evidence')>=0){
+      card.style.display='block';
+      list.innerHTML='<span style="color:var(--ok)">✅ 无组装迹象 — No assembly evidence found</span>';
+      if(l1) l1.style.opacity='0.3';
+      if(l2) l2.style.opacity='0.3';
+    } else {
+      card.style.display='none';
+      if(l1) l1.style.opacity='1';
+      if(l2) l2.style.opacity='1';
+    }
+    // Also update page 2 banner
+    var card2=document.getElementById('evidSummaryCard2');
+    var list2=document.getElementById('evidSummaryList2');
+    if(card2&&list2){
+      if(lines.length>0){card2.style.display='block';list2.innerHTML=lines.join('<br>');}
+      else if(D['surface']&&D['surface'].indexOf('✅ 无组装迹象 No Assembly Evidence')>=0){card2.style.display='block';list2.innerHTML='<span style="color:var(--ok)">✅ 无组装迹象 No Assembly Evidence</span>';}
+      else card2.style.display='none';
+    }
+  }catch(x){}
+}
+
+function evidSelectNone(el){
+  try{
+    _evidSelected={};
+    D['surface']=['✅ 无组装迹象 No Assembly Evidence'];
+    // Reset all cat buttons
+    var cats=Object.keys(EVID_CATS);
+    for(var c=0;c<cats.length;c++){
+      var btn=document.getElementById('evidCat_'+cats[c]);
+      var badge=document.getElementById('evidCatBadge_'+cats[c]);
+      if(btn) btn.className='io';
+      if(badge) badge.style.display='none';
+    }
+    el.className='io picked-ok';
+    evidRefreshSummary();
+    ct();
+  }catch(x){}
+}
+
+function evidResetAll(){
+  try{
+    _evidSelected={};
+    D['surface']=[];
+    var cats=Object.keys(EVID_CATS);
+    for(var c=0;c<cats.length;c++){
+      var btn=document.getElementById('evidCat_'+cats[c]);
+      var badge=document.getElementById('evidCatBadge_'+cats[c]);
+      if(btn) btn.className='io';
+      if(badge) badge.style.display='none';
+    }
+    var noneBtn=document.getElementById('evidCat_none');
+    if(noneBtn) noneBtn.className='io';
+    noneBtn.style.cssText='grid-column:1/-1;background:var(--okL);border-color:var(--ok)';
+    document.getElementById('evidSummaryCard').style.display='none';
+    document.getElementById('evidL2').style.display='none';
+    document.getElementById('evidL1').style.display='block';
+    document.getElementById('evidL1').style.opacity='1';
+    ct();
+  }catch(x){}
+}
+
+/* ─── Defect Picker (Three-Level Immersive) ─── */
+var DEFECT_L1_MAP = {
+  cosmetic:['高频不良 Common','污染 Contamination','胶水 Adhesive','毛刺 Burr','打磨 Polish','痕迹 Marks','材质 Material','光学孔 Locating','标示 Labeling','NDA问题 NDA','其他 Others'],
+  dimension:['尺寸偏差 Out of Spec','配合/间隙 Fit & Gap','形位公差 GD&T'],
+  function:['Trackpad','Keyboard','Speaker','Microphone','Battery','Camera','Mesa (Fingerprint)','Flex (FPC)','Adapter','Fan','Antenna']
+};
+/* Dimension & Function custom categories */
+var DEFECT_CATS={
+'高频不良 Common':[['Scratch','刮伤'],['Damage','撞伤'],['Shiny Dot','亮点'],['Shiny Mark','亮痕'],['Shiny Edge','亮边'],['White Dot','白点'],['Dent','凹点'],['Dimple','凹陷'],['Protrusion Dot','凸点'],['Black Dot','黑点'],['Pitting','麻点'],['Oxidation','氧化'],['Shadow / Ghosting','阴影;鬼影;应力痕'],['Foreign Material','异物'],['Gas Mark','气痕'],['Aluminum Debris','铝屑']],
+'污染 Contamination':[['Discoloration','异色'],['Color Fading','掉色'],['Dirty / Smudge','脏污'],['Liquid Flowing Mark','流痕'],['WaterMark','水印;水渍'],['Finger Print','手指印']],
+'胶水 Adhesive':[['Residual Glue','残胶'],['Excessive Glue / Overflow','溢胶']],
+'毛刺 Burr':[['Burr','针型毛刺'],['Flash','毛边;披风']],
+'打磨 Polish':[['Sanding Mark','砂痕'],['Soft Edge / Over Polish','塌边;过抛'],['Polish Mark','打磨痕']],
+'痕迹 Marks':[['Deformation','变形'],['Ano. Hook Mark','挂具痕'],['Fixture Mark','治具印'],['Tool Mark','治具痕/工具痕'],['Press / Stress Mark','压痕'],['Molding Mark','模印']],
+'材质 Material':[['Grain Line','料纹'],['Black Line','黑线'],['Wall Thickness Uneven','壁厚不均'],['Orange Peel-like','橘皮状'],['Crack','开裂'],['Ano. Layer Peeling','阳极层脱落'],['Ano. Crack','阳极开裂'],['CED Discoloration','电泳异色']],
+'机加工 CNC':[['Cutter Mark','刀印;大面刀纹'],['Cutter Line','线状刀痕'],['Chatter Mark','振刀纹'],['CNC Step','CNC台阶'],['Over Cutting','过切;过铣'],['Under Cutting','多肉;少铣'],['CNC Milling NG','CNC加铣不良'],['Interrupted Milling Mark','重复加工'],['Missed Machining','漏机加工'],['Stamping Mark','冲压印'],['Screw Hole NG','螺孔加工不良'],['Milling Mark','盘刀纹']],
+'镭雕 Laser':[['Laser Shift','镭雕偏位'],['Laser Climbing','镭雕爬墙'],['Laser Area Shortage','镭雕面不足'],['Laser Discoloration','镭雕区域异色'],['Missed Laser','漏镭雕'],['Double Laser','镭雕重影'],['Over Laser','过镭雕'],['Laser Text Wrong','镭雕内容错误'],['Laser Artwork Wrong','镭雕文案错误'],['Extra Laser','多镭雕']],
+'光学孔 Locating':[['Locating Hole Discolor','定位孔异色'],['Locating Pin Discolor','定位柱异色']],
+'标示 Labeling':[['Wrong / Mixed Parts','混;错料'],['Label Info. Error','标签错误'],['Wrong 7E / 4E Code','7E/4E码错误'],['Repeated SN','SN重码'],['SN w/ Illegal Code','非法条码字符']],
+'组装 Assembly':[['Bubble','气泡'],['Wrinkle','褶皱'],['Upwarp','翘起'],['Lacking Materials','缺料;结构不完整'],['Wrong Component','组件错误'],['Component Peel Off','组件脱落'],['Component Rust','组件生锈'],['Component Missing','缺件;掉件'],['Wrong Direction','方向错误'],['Multiple Assembly','重复组装'],['Assembly Shift','组偏'],['Low Adhesion','失粘;粘性不足'],['Component Deformation','组件变形'],['Component Incoming NG','组件来料不良'],['Resistance NG','阻抗不良'],['Screw Floating','螺丝高翘;未锁到位'],['Screw Strip','螺丝滑牙'],['Screw Recess Strip','螺丝头滑穴']],
+'NDA问题 NDA':[['Color Issue','颜色问题'],['Gloss Issue','光泽问题'],['Texture Issue','面粗问题']],
+'其他 Others':[['Screw Hole Yellow Mark','螺孔发黄'],['Rainbow','彩虹印'],['R-Angle Nonuniform','R角/倒角不均匀'],['Oreo','奥利奥/夹心线'],['Electric Burnt Mark','电焦痕'],['Boss Tilt','螺柱倾斜'],['Transition Shadow','过渡线'],['Zebra Stripe','斑马纹异色'],['Shadow Mark / Line','暗痕/线']]
+};
+var DEFECT_CATS_DIM = {
+  '尺寸偏差 Out of Spec':[
+    ['偏大 Over Size','尺寸超出上限规格（+TOL）'],
+    ['偏小 Under Size','尺寸低于下限规格（-TOL）'],
+    ['偏上限 Near Upper Limit','尺寸接近上限，有超差风险'],
+    ['偏下限 Near Lower Limit','尺寸接近下限，有超差风险'],
+    ['厚度不均 Uneven Thickness','截面厚度不一致，超出公差范围'],
+    ['孔径偏差 Hole Diameter NG','孔径过大或过小，影响配合'],
+    ['外径/内径偏差 OD/ID NG','外径或内径超出规格'],
+    ['高度/深度偏差 Height/Depth NG','高度或深度不符图纸要求'],
+    ['平面度 Flatness NG','表面不平整，超出平面度公差'],
+    ['直线度 Straightness NG','零件弯曲或不直，超出公差']
+  ],
+  '配合/间隙 Fit & Gap':[
+    ['组装间隙过大 Gap Too Large','组装后零件间隙超出规格上限'],
+    ['组装间隙过小 Gap Too Small','组装后零件间隙低于规格下限，卡死'],
+    ['断差/段差 Step / Offset NG','相邻面高度差超出规格'],
+    ['对位偏移 Alignment Offset','零件组装后对位不正，超出容差'],
+    ['配合干涉 Interference Fit NG','零件间配合过紧导致卡死或损伤'],
+    ['螺纹尺寸偏差 Thread Dimension NG','螺纹牙型或节距不符规格']
+  ],
+  '形位公差 GD&T':[
+    ['圆度 Roundness NG','圆形截面不圆，超出圆度公差'],
+    ['圆柱度 Cylindricity NG','圆柱面形状偏差超出公差'],
+    ['垂直度 Perpendicularity NG','面或轴线不垂直，超出公差'],
+    ['平行度 Parallelism NG','面或轴线不平行，超出公差'],
+    ['位置度 Position NG','孔位或特征位置偏移超出公差'],
+    ['同轴度 Concentricity NG','轴线偏心，超出同轴度公差'],
+    ['轮廓度 Profile NG','轮廓形状偏差超出公差范围']
+  ]
+};
+var DEFECT_CATS_FUNC = {
+  'Trackpad':[
+    ['无反应 No Response','触控板完全无反应，光标无法移动'],
+    ['光标漂移 Cursor Drift','光标自动漂移或异常跳跃'],
+    ['功能异常 Abnormal Function','点击/手势/滚动功能异常']
+  ],
+  'Keyboard':[
+    ['无反应 No Response','按键按压后无任何输入'],
+    ['卡键 Key Stuck','按键卡住无法弹回'],
+    ['背光不亮 Backlight Dead','背光完全无亮起或局部熄灭']
+  ],
+  'Speaker':[
+    ['无声 No Sound','完全无音频输出'],
+    ['破音/杂音 Distortion / Noise','发出爆音、杂音或严重失真'],
+    ['声压不足 SPL Low','音量低于规格，频响曲线(FR)不符']
+  ],
+  'Microphone':[
+    ['无法收音 No Audio Input','完全无拾音，录音全静音'],
+    ['底噪过高 High Noise Floor','静音环境底噪超出规格'],
+    ['音质异常 Audio Abnormal','录音失真、断音或灵敏度不足']
+  ],
+  'Battery':[
+    ['无法充电 Cannot Charge','连接充电器后电量无变化'],
+    ['容量不足 Capacity NG','实测容量低于规格值'],
+    ['鼓胀/漏液 Swelling / Leak','外观鼓胀或有漏液，安全风险']
+  ],
+  'Camera':[
+    ['无画面 No Image / Black Screen','相机无法启动或画面全黑'],
+    ['对焦失败 Autofocus Fail','AF无法对准目标'],
+    ['画质异常 Image Quality NG','坏点/模糊/色偏/ISP异常/镜头污染']
+  ],
+  'Mesa (Fingerprint)':[
+    ['无法识别 Not Recognized','按压后无法解锁或识别率为零'],
+    ['识别率不足 Recognition Rate NG','识别成功率低于规格'],
+    ['无响应 No Response','按压Mesa设备完全无反应']
+  ],
+  'Flex (FPC)':[
+    ['开路 Open Circuit','线路断裂，信号无法传输'],
+    ['短路 Short Circuit','线路间发生短路'],
+    ['接触不良 Poor Contact','连接器接触不稳，信号时断时续']
+  ],
+  'Adapter':[
+    ['无输出 No Power Output','连接设备后无电压/电流输出'],
+    ['输出异常 Output NG','电压/电流不在规格范围内'],
+    ['发热异常 Abnormal Heat','正常负载下温升超出规格']
+  ],
+  'Fan':[
+    ['不转 Not Spinning','通电后风扇完全不转'],
+    ['转速异常 RPM NG','转速过低/过高或无法调速'],
+    ['异音 Abnormal Noise','运转时产生异音、碰撞声或轴承杂音']
+  ],
+  'Antenna':[
+    ['无信号 No Signal','无任何Wi-Fi / BT / LTE信号'],
+    ['信号强度不足 Signal Strength NG','RSSI低于规格，吞吐量不达标'],
+    ['频段缺失 Band Missing','特定频段无法工作']
+  ]
+};
+var DEFECT_L1_LABELS = {
+  cosmetic:'👁️ 外观 Cosmetic',
+  dimension:'📐 尺寸 Dimension',
+  function:'⚡ 功能 Function'
+};
+var _defectL1='',_defectL2='';
+
+function defectOpenL1(type, el){
+  try{
+    _defectL1=type;
+    var btns=document.getElementById('defectL1').querySelectorAll('.io');
+    for(var i=0;i<btns.length;i++) btns[i].className='io';
+    el.className='io picked';
+    document.getElementById('defectL1').style.display='none';
+    var cats=DEFECT_L1_MAP[type];
+    var grid=document.getElementById('defectL2Grid');
+    grid.innerHTML='';
+    document.getElementById('defectL2Title').textContent=DEFECT_L1_LABELS[type];
+    for(var i=0;i<cats.length;i++){
+      var k=cats[i];
+      // Accept cats from any source
+      var hasData=DEFECT_CATS[k]||(DEFECT_CATS_DIM&&DEFECT_CATS_DIM[k])||(DEFECT_CATS_FUNC&&DEFECT_CATS_FUNC[k]);
+      if(!hasData) continue;
+      var sp=k.indexOf(' ');
+      var cn,en;
+      if(sp<0){cn=k;en='';}else{cn=k.substring(0,sp);en=k.substring(sp+1);}
+      var b=document.createElement('div');
+      b.className='io';b.style.cssText='padding:12px 8px;';
+      b.innerHTML='<div class="iz" style="font-size:13px">'+cn+'</div>'+(en?'<div class="ie">'+en+'</div>':'');
+      (function(key,btn){btn.onclick=function(){defectOpenL2(key,btn);};})(k,b);
+      grid.appendChild(b);
+    }
+    document.getElementById('defectL2').style.display='block';
+  }catch(x){}
+}
+
+function defectOpenL2(cat, el){
+  try{
+    _defectL2=cat;
+    var btns=document.getElementById('defectL2Grid').querySelectorAll('.io');
+    for(var i=0;i<btns.length;i++) btns[i].className='io';
+    el.className='io picked';
+    document.getElementById('defectL2').style.display='none';
+    // Determine which data source to use
+    var items=null;
+    if(DEFECT_CATS[cat]) items=DEFECT_CATS[cat];
+    else if(DEFECT_CATS_DIM&&DEFECT_CATS_DIM[cat]) items=DEFECT_CATS_DIM[cat];
+    else if(DEFECT_CATS_FUNC&&DEFECT_CATS_FUNC[cat]) items=DEFECT_CATS_FUNC[cat];
+    if(!items) return;
+    var grid=document.getElementById('defectL3Grid');
+    grid.innerHTML='';
+    document.getElementById('defectL3Title').textContent=cat;
+    for(var i=0;i<items.length;i++){
+      var en=items[i][0];var cn=items[i][1];
+      var b=document.createElement('div');
+      b.className='io';b.style.cssText='padding:10px 6px;';
+      b.innerHTML='<div class="iz" style="font-size:11px">'+en+'</div><div class="ie">'+cn+'</div>';
+      var val=en+' ('+cn+')';
+      (function(v,btn){btn.onclick=function(){defectPickL3(v,btn);};})(val,b);
+      grid.appendChild(b);
+    }
+    document.getElementById('defectL3').style.display='block';
+  }catch(x){}
+}
+
+function defectPickL3(val, el){
+  try{
+    var btns=document.getElementById('defectL3Grid').querySelectorAll('.io');
+    for(var i=0;i<btns.length;i++) btns[i].className='io';
+    el.className='io picked';
+    document.getElementById('defectType').value=val;
+    // Hide sub-layers, keep L1 visible so the picker area stays rendered
+    document.getElementById('defectL3').style.display='none';
+    document.getElementById('defectL2').style.display='none';
+    document.getElementById('defectL1').style.display='block';
+    // Gray out L1
+    document.getElementById('defectL1').style.opacity='0.3';
+    // Reset L1 button styles
+    var l1btns=document.getElementById('defectL1').querySelectorAll('.io');
+    for(var i=0;i<l1btns.length;i++) l1btns[i].className='io';
+    // Show summary (覆蓋模式)
+    var sc=document.getElementById('defectSummaryCard');
+    var st=document.getElementById('defectSummaryText');
+    if(sc&&st){sc.style.display='block';st.textContent=val;}
+    ct();
+  }catch(x){}
+}
+
+function defectBackToL1(){
+  try{
+    document.getElementById('defectL2').style.display='none';
+    document.getElementById('defectL1').style.display='block';
+    _defectL1='';
+  }catch(x){}
+}
+
+function defectBackToL2(){
+  try{
+    document.getElementById('defectL3').style.display='none';
+    document.getElementById('defectL2').style.display='block';
+    _defectL2='';
+  }catch(x){}
+}
+
+function defectResetAll(){
+  try{
+    document.getElementById('defectType').value='';
+    document.getElementById('defectSummaryCard').style.display='none';
+    document.getElementById('defectL3').style.display='none';
+    document.getElementById('defectL2').style.display='none';
+    document.getElementById('defectL1').style.display='block';
+    document.getElementById('defectL1').style.opacity='1';
+    var btns=document.getElementById('defectL1').querySelectorAll('.io');
+    for(var i=0;i<btns.length;i++) btns[i].className='io';
+    _defectL1='';_defectL2='';
+    ct();
+  }catch(x){}
+}
+</script>
+
+
+
+
+
+
+
+<script>
 doInit();
 </script>
 </body>
