@@ -132,6 +132,12 @@ select{cursor:pointer;padding-right:30px}
 .bt-g{background:var(--ok);color:#fff}
 
 /* WELCOME - simple, no fancy transitions */
+#pwdPage{position:fixed;top:0;left:0;right:0;bottom:0;z-index:650;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
+#pwdPage h2{font-size:22px;font-weight:800;margin:16px 0 4px}
+#pwdPage .ws{font-size:12px;color:var(--dim);margin-bottom:8px}
+#pwdPage input{width:100%;max-width:260px;padding:13px;border:2px solid var(--bdr);border-radius:var(--r);font-size:18px;text-align:center;margin-bottom:12px;font-family:inherit}
+#pwdPage input:focus{outline:none;border-color:var(--acc)}
+#pwdBtn{padding:14px 36px;border:none;border-radius:var(--r);background:var(--acc);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:block;width:100%;max-width:260px}
 #wel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
 #wel h2{font-size:22px;font-weight:800;margin:16px 0 4px}
 #wel .ws{font-size:12px;color:var(--dim);margin-bottom:28px}
@@ -238,8 +244,19 @@ select{cursor:pointer;padding-right:30px}
 </div>
 </noscript>
 
+<!-- ===== PASSWORD ===== -->
+<div id="pwdPage">
+  <div style="font-size:56px;margin-bottom:4px">🔐</div>
+  <h2>IQC 原材復判系统</h2>
+  <div class="ws">Raw Material Re-judgment System</div>
+  <div style="margin-top:20px;font-size:12px;color:var(--dim)">请输入密码 Please enter password</div>
+  <input type="password" id="pwdInput" placeholder="密码 Password" style="margin-top:8px;text-align:center;letter-spacing:3px">
+  <button id="pwdBtn" onclick="checkPwd()">进入系统 Enter</button>
+  <div id="pwdErr" style="display:none;margin-top:10px;font-size:12px;color:var(--ng);font-weight:600">密码错误 Incorrect password</div>
+</div>
+
 <!-- ===== WELCOME ===== -->
-<div id="wel">
+<div id="wel" style="display:none">
   <div style="font-size:56px;margin-bottom:4px">📦</div>
   <h2>IQC 原材復判培训系统</h2>
   <div class="ws">Raw Material Re-judgment System</div>
@@ -465,21 +482,42 @@ select{cursor:pointer;padding-right:30px}
     </div>
   </div>
 
-  <div class="card">
-    <div class="dv" style="margin-top:0">分布分析 Distribution Analysis</div>
-    <div class="field"><div class="lb"><span class="lb-z">集中性</span><span class="lb-e">Defect Concentration / Distribution</span><span class="tip-btn" onclick="showTip('focus')">?</span></div>
-      <div class="ig c3" id="g_focus">
-        <div class="io" onclick="pIo(this,'focus','集中特定批')"><div class="iz">集中特定批</div><div class="ie">Specific Lot Only</div></div>
-        <div class="io" onclick="pIo(this,'focus','随机发生')"><div class="iz">随机</div><div class="ie">Random Occurrence</div></div>
-        <div class="io" onclick="pIo(this,'focus','仅此批次')"><div class="iz">仅此批</div><div class="ie">This Lot Only</div></div>
+  <!-- IQC 抽检排查区块 -->
+  <div class="dv">IQC 抽检排查 IQC Inspection Check</div>
+  <div class="card" id="iqcCheckCard" style="background:linear-gradient(135deg,#eff4ff,#e8f4ff);border:1.5px solid var(--acc)">
+    <div style="font-size:11px;color:var(--acc);background:rgba(37,99,235,0.08);padding:8px 10px;border-radius:8px;margin-bottom:12px;line-height:1.6">
+      <b>⚠️ 重要排查逻辑 Important Check Logic</b><br>
+      若有 IQC 胶带/标签 → 此批经过 IQC 抽检 → 不能排除 IQC OP 操作造成不良<br>
+      若无 IQC 胶带/标签 → 可能未经抽检直接上线 → 指向产线或原材问题<br>
+      <span style="font-size:10px">If IQC tape present → batch was inspected by IQC → cannot rule out IQC OP handling issue</span>
+    </div>
+    
+    <div class="lb" style="margin-bottom:8px"><span class="lb-z">IQC 抽检确认项目</span><span class="lb-e">IQC Inspection Checklist</span></div>
+    <div class="ck" onclick="tCk(this,'iqcRecordChecked')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">已查 IQC 抽检记录</div><div style="font-size:10px;color:var(--dim)">Checked IQC inspection records</div></div></div>
+    <div class="ck" onclick="tCk(this,'iqcOpNormal')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">IQC OP 手法正常</div><div style="font-size:10px;color:var(--dim)">IQC OP handling was normal</div></div></div>
+    <div class="ck" onclick="tCk(this,'iqcQtyReasonable')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">抽检数量/位置合理</div><div style="font-size:10px;color:var(--dim)">Sample qty & location reasonable</div></div></div>
+    <div class="ck" onclick="tCk(this,'defectNotIqcArea')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">不良位置与 IQC 接触位置不符</div><div style="font-size:10px;color:var(--dim)">Defect location differs from IQC contact area</div></div></div>
+    
+    <div class="field" style="margin-top:12px">
+      <div class="lb"><span class="lb-z">IQC 环节排查结论</span><span class="lb-e">IQC Check Conclusion</span></div>
+      <div class="ig c3" id="g_iqcConclusion">
+        <div class="io" onclick="pIo(this,'iqcConclusion','可排除IQC造成')" style="border-color:var(--ok)">
+          <div class="iz" style="color:var(--ok)">✅ 可排除</div>
+          <div class="ie">IQC Ruled Out</div>
+        </div>
+        <div class="io" onclick="pIo(this,'iqcConclusion','不能排除IQC造成')" style="border-color:var(--warn)">
+          <div class="iz" style="color:var(--warn)">⚠️ 不能排除</div>
+          <div class="ie">Cannot Rule Out</div>
+        </div>
+        <div class="io" onclick="pIo(this,'iqcConclusion','高度怀疑IQC造成')" style="border-color:var(--ng)">
+          <div class="iz" style="color:var(--ng)">❌ 高度怀疑</div>
+          <div class="ie">Highly Suspect IQC</div>
+        </div>
       </div>
     </div>
-    <div class="field"><div class="lb"><span class="lb-z">跨线比对</span><span class="lb-e">Cross-line Comparison</span><span class="tip-btn" onclick="showTip('crossline')">?</span></div>
-      <div class="ig c3" id="g_crossline">
-        <div class="io" onclick="pIo(this,'crossline','其他线也有→来料')"><div class="iz">其他线也有</div><div class="ie">Found on Other Lines → Material</div></div>
-        <div class="io" onclick="pIo(this,'crossline','仅此线→制程')"><div class="iz">仅此线</div><div class="ie">This Line Only → Process</div></div>
-        <div class="io" onclick="pIo(this,'crossline','无法比对')"><div class="iz">无法比对</div><div class="ie">Unable to Compare</div></div>
-      </div>
+    <div class="field" style="margin-top:8px">
+      <div class="lb"><span class="lb-z">IQC 排查备注</span><span class="lb-e">IQC Check Notes</span></div>
+      <textarea id="iqcCheckNotes" placeholder="例：IQC OP 反映抽检时有掉落..." style="min-height:44px"></textarea>
     </div>
   </div>
 </div>
@@ -495,7 +533,7 @@ select{cursor:pointer;padding-right:30px}
         <input type="text" id="qpn" placeholder="" onchange="ct()"></div>
     </div>
     <div class="f2">
-      <div class="field"><div class="lb"><span class="lb-z">D/C 日期码<span class="req">*</span></span><span class="lb-e">Date Code (D/C)</span></div>
+      <div class="field"><div class="lb"><span class="lb-z">D/C 日期码<span class="req">*</span></span><span class="lb-e">Date Code (D/C)</span><span class="tip-btn" onclick="showTip('dc')">?</span></div>
         <input type="text" id="dc" placeholder="0309" onchange="ct()"></div>
       <div class="field"><div class="lb"><span class="lb-z">通报来源</span><span class="lb-e">Report Source / Reported By</span></div>
         <select id="reportSource"><option value="">— 选择 Select —</option><option>产线PE Line PE</option><option>产线OP Line Operator</option><option>QC巡检 QC Patrol</option><option>CQA</option><option>Inline OBA</option><option>测试站 Test Station</option><option>IQC巡查 IQC Patrol</option></select></div>
@@ -515,11 +553,16 @@ select{cursor:pointer;padding-right:30px}
   <div class="dv">防伪五项 Authentication</div>
   <div class="card">
     <div class="tg" data-key="origBox"><div class="tg-l"><div class="tg-z">原箱？<span class="tip-btn" onclick="showTip('origBox')">?</span></div><div class="tg-e">Original Packaging Box?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？<span class="tip-btn" onclick="showTip('iqcTape')">?</span></div><div class="tg-e">IQC Tape / Label Present?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
+    <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？<span class="tip-btn" onclick="showTip('iqcTape')">?</span></div><div class="tg-e">IQC Tape / Label Present?</div></div><div class="sw on" onclick="tSwIqcTape(this)"></div></div>
+    <!-- IQC 抽檢排查提醒 - 當有IQC胶带時顯示 -->
+    <div id="iqcCheckAlert" class="alt p" style="display:none;margin-top:8px;background:#eff4ff;border:1.5px solid var(--acc);border-radius:8px;padding:10px 12px">
+      <div style="font-size:11px;color:var(--acc);font-weight:700;margin-bottom:4px">⚠️ 有 IQC 胶带 → 需排查 IQC 抽检环节</div>
+      <div style="font-size:10px;color:var(--dim);line-height:1.5">此批经过 IQC 抽检，不能排除 IQC OP 操作造成不良的可能性，请在下方「IQC 抽检排查」区块进行确认。</div>
+    </div>
     <div class="tg" data-key="labelMatch"><div class="tg-l"><div class="tg-z">标签一致？<span class="tip-btn" onclick="showTip('labelMatch')">?</span></div><div class="tg-e">Labels Match (P/N, Qty, Vendor)?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
     <div class="tg" data-key="qtyMatch"><div class="tg-l"><div class="tg-z">数量吻合？<span class="tip-btn" onclick="showTip('qtyMatch')">?</span></div><div class="tg-e">Quantity Matches Label?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
     <div class="tg" data-key="packMatch"><div class="tg-l"><div class="tg-z">包装一致？<span class="tip-btn" onclick="showTip('packMatch')">?</span></div><div class="tg-e">Packaging Condition Matches Standard?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-    <div class="alt r" id="authAlt">⚠️ 非IQC标准放行状态！</div>
+    <div class="alt r" id="authAlt">⚠️ 非IQC标准放行状态！Non-standard IQC release!</div>
     <div style="margin-top:8px">
       <div class="tg" data-key="notExpired"><div class="tg-l"><div class="tg-z">保质期内？<span class="tip-btn" onclick="showTip('expiry')">?</span></div><div class="tg-e">Within Shelf Life / Expiry Date?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
       <div class="alt r" id="expAlt">⚠️ 零件超期！</div>
@@ -571,6 +614,25 @@ select{cursor:pointer;padding-right:30px}
       <div class="pills"><div class="pl" onclick="pPl(this,'nozzle')">是 Yes</div><div class="pl" onclick="pPl(this,'nozzle')">否 No</div></div>
       <div class="lb" style="margin-top:8px"><span class="lb-z">参数变更？</span><span class="lb-e">Machine Parameter Changed?</span></div>
       <div class="pills"><div class="pl" onclick="pPl(this,'param')">有 Yes</div><div class="pl" onclick="pPl(this,'param')">无 No</div><div class="pl" onclick="pPl(this,'param')">不确定 Uncertain</div></div>
+    </div>
+  </div>
+  
+  <!-- 分布分析区块 -->
+  <div class="dv">分布分析 Distribution Analysis</div>
+  <div class="card">
+    <div class="field"><div class="lb"><span class="lb-z">集中性</span><span class="lb-e">Defect Concentration / Distribution</span><span class="tip-btn" onclick="showTip('focus')">?</span></div>
+      <div class="ig c3" id="g_focus">
+        <div class="io" onclick="pIo(this,'focus','集中特定批')"><div class="iz">集中特定批</div><div class="ie">Specific Lot Only</div></div>
+        <div class="io" onclick="pIo(this,'focus','随机发生')"><div class="iz">随机</div><div class="ie">Random Occurrence</div></div>
+        <div class="io" onclick="pIo(this,'focus','仅此批次')"><div class="iz">仅此批</div><div class="ie">This Lot Only</div></div>
+      </div>
+    </div>
+    <div class="field"><div class="lb"><span class="lb-z">跨线比对</span><span class="lb-e">Cross-line Comparison</span><span class="tip-btn" onclick="showTip('crossline')">?</span></div>
+      <div class="ig c3" id="g_crossline">
+        <div class="io" onclick="pIo(this,'crossline','其他线也有→来料')"><div class="iz">其他线也有</div><div class="ie">Found on Other Lines → Material</div></div>
+        <div class="io" onclick="pIo(this,'crossline','仅此线→制程')"><div class="iz">仅此线</div><div class="ie">This Line Only → Process</div></div>
+        <div class="io" onclick="pIo(this,'crossline','无法比对')"><div class="iz">无法比对</div><div class="ie">Unable to Compare</div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -771,18 +833,59 @@ function $(id){return document.getElementById(id)}
 /* init: called at bottom of body via inline script */
 function doInit(){
   try{
-    var s=lsGet('iqc_eng');
-    if(s){$('wRt').style.display='block';$('rN').textContent=s}
-  }catch(x){}
-  try{
     startTS=new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
   }catch(x){startTS=new Date().toString()}
   try{
     var pr=$('prog');
     for(var i=0;i<totalP;i++){var d=document.createElement('div');d.className='prog-s';pr.appendChild(d)}
   }catch(x){}
+  // Check if password was saved
+  try{
+    var savedPwd = lsGet('iqc_pwd');
+    if(savedPwd === PWD_CORRECT){
+      // Password already verified, skip to welcome
+      $('pwdPage').style.display = 'none';
+      $('wel').style.display = '';
+      var s=lsGet('iqc_eng');
+      if(s){$('wRt').style.display='block';$('rN').textContent=s}
+    }
+  }catch(x){}
   updUI();
 }
+
+var PWD_CORRECT = 'QMHIQC';
+
+function checkPwd(){
+  try{
+    var pwd = $('pwdInput').value.trim().toUpperCase();
+    if(pwd === PWD_CORRECT){
+      // Save password to localStorage
+      lsSet('iqc_pwd', PWD_CORRECT);
+      $('pwdPage').style.display = 'none';
+      $('wel').style.display = '';
+      $('pwdErr').style.display = 'none';
+      // Check for saved name
+      var s=lsGet('iqc_eng');
+      if(s){$('wRt').style.display='block';$('rN').textContent=s}
+    } else {
+      $('pwdErr').style.display = 'block';
+      $('pwdInput').style.borderColor = 'var(--ng)';
+      $('pwdInput').value = '';
+    }
+  }catch(x){alert('Error: '+x.message)}
+}
+
+// Allow Enter key to submit password
+document.addEventListener('DOMContentLoaded', function(){
+  try{
+    var pwdInput = document.getElementById('pwdInput');
+    if(pwdInput){
+      pwdInput.addEventListener('keyup', function(e){
+        if(e.key === 'Enter') checkPwd();
+      });
+    }
+  }catch(x){}
+});
 
 function go(){
   try{
@@ -896,7 +999,28 @@ function pIoU(el,val,cls){try{var ios=document.querySelectorAll('#g_urgency .io'
 function pPl(el,key){try{var pls=el.parentElement.querySelectorAll('.pl');for(var i=0;i<pls.length;i++){pls[i].className='pl'}var isFirst=el===el.parentElement.children[0];el.className='pl '+(isFirst?'on':'off');D[key]=el.textContent.trim();ct()}catch(x){}}
 function tSw(el){try{var card=el.closest('.tg'),key=card.getAttribute('data-key');var on=el.className.indexOf('on')>=0;if(on){el.className='sw'}else{el.className='sw on'}TS[key]=on?0:1;card.className=on?'tg warn':'tg';
   var aa=$('authAlt');if(aa){var bad=!TS.origBox||!TS.iqcTape||!TS.labelMatch||!TS.qtyMatch||!TS.packMatch;aa.className='alt r'+(bad?' show':'')}
-  var ea=$('expAlt');if(ea){ea.className='alt r'+(!TS.notExpired?' show':'')}ct()}catch(x){}}
+  ct()}catch(x){}}
+function tSwIqcTape(el){
+  try{
+    var card=el.closest('.tg'),key='iqcTape';
+    var on=el.className.indexOf('on')>=0;
+    if(on){el.className='sw'}else{el.className='sw on'}
+    TS[key]=on?0:1;
+    card.className=on?'tg warn':'tg';
+    // Show/hide IQC check alert and card
+    var alert=$('iqcCheckAlert');
+    var checkCard=$('iqcCheckCard');
+    if(alert){alert.style.display=TS.iqcTape?'block':'none'}
+    if(checkCard){
+      if(TS.iqcTape){
+        checkCard.style.background='linear-gradient(135deg,#eff4ff,#e8f4ff)';
+        checkCard.style.borderColor='var(--acc)';
+      }else{
+        checkCard.style.background='var(--card2)';
+        checkCard.style.borderColor='var(--bdr)';
+      }
+    }
+    var aa=$('authAlt');if(aa){var bad=!TS.origBox||!TS.iqcTape||!TS.labelMatch||!TS.qtyMatch||!TS.packMatch;aa.className='alt r'+(bad?' show':'')}  var ea=$('expAlt');if(ea){ea.className='alt r'+(!TS.notExpired?' show':'')}ct()}catch(x){}}
 function tCk(el,key){try{var on=el.className.indexOf('on')>=0;el.className=on?'ck':'ck on';CK[key]=on?0:1;el.querySelector('.cb').textContent=on?'':'✓';ct()}catch(x){}}
 function showSt(t){try{$('stM').style.display=(t==='m'||t==='b')?'block':'none';$('stA').style.display=(t==='a'||t==='b')?'block':'none'}catch(x){}}
 function tSwERS(el){try{var on=el.className.indexOf('on')>=0;if(on){el.className='sw';$('ersAlt').style.display='block';D.ersReady=0}else{el.className='sw on';$('ersAlt').style.display='none';D.ersReady=1}ct()}catch(x){}}
@@ -989,6 +1113,10 @@ function genRpt(){
     var authItems=[['原箱 Original Box','origBox'],['IQC胶带 IQC Tape','iqcTape'],['标签一致 Label Match','labelMatch'],['数量吻合 Qty Match','qtyMatch'],['包装一致 Pack Match','packMatch'],['保质期内 Not Expired','notExpired']];
     for(var i=0;i<authItems.length;i++){h+='<tr><td>'+authItems[i][0]+'</td><td>'+(TS[authItems[i][1]]?'✓ OK':'✗ NG')+'</td></tr>';}
     
+    h+='<tr class="rpt-section"><td colspan="2">🔍 IQC 抽检排查 IQC Inspection Check</td></tr>';
+    h+='<tr><td>IQC 环节排查结论</td><td>'+(D.iqcConclusion||'—')+'</td></tr>';
+    h+='<tr><td>IQC 排查备注</td><td>'+gv('iqcCheckNotes')+'</td></tr>';
+    
     h+='<tr class="rpt-section"><td colspan="2">📊 历史记录 History</td></tr>';
     h+='<tr><td>3个月内类似异常</td><td>'+(D.historyDefect||'—')+'</td></tr>';
     h+='<tr><td>历史备注</td><td>'+gv('historyNotes')+'</td></tr>';
@@ -1070,6 +1198,10 @@ function genPlainTextRpt(){
     txt+='防伪验证 Authentication:\n';
     txt+='  原箱: '+(TS.origBox?'OK':'NG')+' | IQC胶带: '+(TS.iqcTape?'OK':'NG')+' | 标签: '+(TS.labelMatch?'OK':'NG')+'\n';
     txt+='  数量: '+(TS.qtyMatch?'OK':'NG')+' | 包装: '+(TS.packMatch?'OK':'NG')+' | 保质期: '+(TS.notExpired?'OK':'NG')+'\n';
+    txt+=div+'\n';
+    txt+='IQC 抽检排查 IQC Inspection Check:\n';
+    txt+='  IQC排查结论: '+(D.iqcConclusion||'—')+'\n';
+    txt+='  IQC排查备注: '+gv('iqcCheckNotes')+'\n';
     txt+=div+'\n';
     txt+='历史记录 History:\n';
     txt+='  3个月内异常: '+(D.historyDefect||'—')+'\n';
@@ -1156,6 +1288,11 @@ var CASES=[
       why:'线别是区分「来料问题」与「制程问题」的第一道关键证据。若不良只发生在单一线别，则制程因素（操作手法、设备参数、治具状态）可能性高；若多条线使用同批料都出现相同不良，则强烈指向来料本身有问题。ResearchMFG指出：IQC人员通常需会同PE釐清是零件问题还是制程造成，线别资料是这个判断的起点。\nThe production line is the first key evidence to distinguish incoming material defect vs. process defect. If defects appear on multiple lines using the same lot, it strongly points to the raw material.',
       extra:'case:案例A：K11与K22同批料同时不良 → 指向来料，非单一线制程问题'
     },
+    dc:{
+      hdr:'💡 D/C日期码的重要性 Why is Date Code critical?',
+      why:'D/C（Date Code）日期码是追溯不良批次的核心信息，具有以下重要作用：\n\n1.【供应商追溯】让供应商快速定位当初的生产记录，锁定该不良批次的生产条件、作业员、设备参数等\n\n2.【责任排查】若怀疑是某个作业员故意造成的不良，可通过D/C查出该作业员接触过哪些批次\n\n3.【产线拦截】供应商可用D/C反查所有SN（序列号），让产线锁住这些SN不让其继续流入后段制程\n\n4.【范围评估】根据D/C判断受影响的批次范围，决定是否需要全面召回或隔离\n\nD/C (Date Code) is the core information for traceability:\n• Supplier can quickly find production records for that batch\n• Trace which operator handled which D/C batches\n• Lock down all SNs from that D/C to prevent further flow\n• Assess the scope of affected batches for recall/isolation',
+      extra:'warn:务必准确记录D/C，是供应商追溯和产线拦截的关键依据'
+    },
     defect:{
       hdr:'💡 不良现象如何影响分析方向？ How does defect type set the investigation direction?',
       why:'业界将不良现象标准分为三大类：\n1. 外观不良 Cosmetic：刮伤、压伤、变色、污染等，影响产品外观\n2. 尺寸不良 Dimension：零件尺寸超出规格，影响组装匹配性\n3. 功能不良 Function：开路、短路、电气特性失效，影响产品功能\n正确分类决定后续检验工具与分析方向：外观类→目视/放大镜；尺寸类→卡尺/光学量测；功能类→电气测试仪。分类不正确会导致分析走错方向，也难以向供应商举证追责。\n\nDefects are classified into three categories:\n1. Cosmetic: Scratch, Dent, Discoloration, Contamination\n2. Dimension: Part dimensions out of specification — affects assembly fit\n3. Function: Open, Short, electrical failure — affects product functionality\nCorrect classification determines the right inspection tool and analysis path.',
@@ -1192,9 +1329,9 @@ var CASES=[
       extra:'warn:换箱/封条破损 → 立即暂停使用，启动紧急调查，不得特采放行'
     },
     iqcTape:{
-      hdr:'💡 IQC胶带/标签代表什么？ What does the IQC tape/label prove?',
-      why:'IQC胶带（或PASS标签）是该批料「已通过IQC进料检验正式放行」的唯一凭证。若产线发现某批料无IQC封条，代表该批料可能绕过IQC检验直接流入产线，属于严重的品质系统漏洞。IQC规范中明确：所有外购料须盖有「IQC PASS」章或贴有放行标签后才能入库使用。无标签者直接视为未检验品处理。\nThe IQC tape or PASS label is the only proof that a lot has officially passed incoming inspection and been released. Parts without IQC seal found on the line represent a serious quality system breach — they may have bypassed inspection entirely.',
-      extra:'warn:无IQC胶带/标签 → 立即隔离，追查来源，该批料不得继续使用'
+      hdr:'💡 IQC胶带/标签的排查逻辑 IQC Tape Logic',
+      why:'IQC胶带（或PASS标签）代表该批料已经过IQC抽检放行。这是判断不良来源的关键线索：\n\n【有IQC胶带】→ 此批经过IQC抽检 → 不能排除IQC OP在抽检时操作不当造成不良的可能性 → 需要查阅IQC抽检记录，确认抽检手法、数量、接触位置是否正常。\n\n【无IQC胶带】→ 可能未经抽检直接上线（品质系统漏洞），或是产线/原材本身问题 → 需追查该批料为何没有经过IQC抽检。\n\nIQC tape proves the lot passed incoming inspection. Key logic:\n• HAS tape → IQC inspected → cannot rule out IQC OP handling damage → check IQC records\n• NO tape → may have bypassed inspection → trace why it was not inspected',
+      extra:'warn:有IQC胶带时，务必检查IQC抽检记录，排除或确认IQC环节造成的可能性'
     },
     labelMatch:{
       hdr:'💡 标签一致性检查的意义是什么？ Why check label consistency?',
