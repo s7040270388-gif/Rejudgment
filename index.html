@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>IQC 原材復判培训系统 v10</title>
+<title>IQC 原材復判培训系统 v11</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--bg:#f5f6f8;--card:#fff;--card2:#f8f9fb;--bdr:#e2e4e9;--txt:#1c1e24;--dim:#60656f;--mut:#a0a5b0;--acc:#2563eb;--accL:#eff4ff;--ok:#16a34a;--okL:#f0fdf4;--ng:#dc2626;--ngL:#fef2f2;--ngB:rgba(220,38,38,.12);--warn:#d97706;--warnL:#fffbeb;--r:14px;--rs:10px;--sh:0 1px 3px rgba(0,0,0,.05)}
@@ -223,9 +223,64 @@ select{cursor:pointer;padding-right:30px}
 .page-tip-box p{font-size:13px;line-height:1.7;color:var(--txt);margin-bottom:8px}
 .page-tip-box .pt-case{background:var(--accL);border-radius:8px;padding:10px;font-size:12px;line-height:1.6;margin-bottom:8px}
 .page-tip-box .pt-key{font-weight:700;color:var(--ng)}
+
+/* ===== v11 NEW FEATURES ===== */
+.ac-wrap{position:relative}
+.ac-list{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1.5px solid var(--acc);border-top:none;border-radius:0 0 var(--rs) var(--rs);z-index:80;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.12);display:none}
+.ac-list.show{display:block}
+.ac-item{padding:9px 12px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--bdr);color:var(--txt)}
+.ac-item:last-child{border-bottom:none}
+.ac-item:hover,.ac-item:active{background:var(--accL);color:var(--acc)}
+.draft-badge{font-size:10px;color:var(--ok);background:var(--okL);padding:2px 8px;border-radius:10px;font-weight:600;display:none;margin-left:6px}
+.draft-badge.show{display:inline}
+.voice-btn{width:38px;height:38px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:var(--card2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:18px}
+.voice-btn.recording{background:var(--ngL);border-color:var(--ng)}
+@keyframes pulse-rec{0%,100%{opacity:1}50%{opacity:.5}}
+.voice-row{display:flex;gap:6px;align-items:flex-start}
+.voice-row textarea{flex:1}
+.scan-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border:1.5px solid var(--acc);border-radius:20px;background:var(--accL);color:var(--acc);font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;user-select:none}
+.eml-pop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:300;background:rgba(0,0,0,.45)}
+.eml-pop.show{display:block}
+.eml-box{position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:16px 14px 40px}
+.eml-box .mh{width:32px;height:4px;background:var(--bdr);border-radius:4px;margin:0 auto 14px}
+.eml-sec{background:var(--card2);border:1px solid var(--bdr);border-radius:var(--rs);padding:12px;margin-bottom:10px}
+.eml-sec-hdr{font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.eml-recipient-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.eml-recipient-row:last-child{margin-bottom:0}
+.role-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0;min-width:38px;text-align:center}
+.role-pe{background:#dbeafe;color:#1e40af}
+.role-mc{background:#fce7f3;color:#9d174d}
+.role-pmc{background:#ede9fe;color:#5b21b6}
+.role-pur{background:#d1fae5;color:#065f46}
+.role-sqe{background:#fee2e2;color:#991b1b}
+.eml-recipient-row input{flex:1;padding:7px 10px;border:1.5px solid var(--bdr);border-radius:8px;font-size:12px;font-family:inherit;background:var(--card);color:var(--txt)}
+.eml-recipient-row input:focus{outline:none;border-color:var(--acc)}
+.eml-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.eml-row label{font-size:11px;color:var(--dim);width:44px;flex-shrink:0;font-weight:600}
+.eml-row input{flex:1;padding:7px 10px;border:1.5px solid var(--bdr);border-radius:8px;font-size:12px;font-family:inherit;background:var(--card);color:var(--txt)}
+.eml-row input:focus{outline:none;border-color:var(--acc)}
+.eml-preview{background:#f8f9fb;border:1px solid var(--bdr);border-radius:var(--rs);padding:10px 12px;font-size:11px;line-height:1.7;color:var(--txt);white-space:pre-wrap;max-height:180px;overflow-y:auto;font-family:monospace;margin-top:8px}
+.eml-btn-main{width:100%;padding:14px;border:none;border-radius:var(--rs);background:var(--acc);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.eml-btn-sec{width:100%;padding:12px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:var(--card);color:var(--txt);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:6px}
+.airdrop-guide{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid var(--ok);border-radius:var(--rs);padding:12px;margin-top:10px}
+.airdrop-guide .ag-t{font-size:12px;font-weight:700;color:var(--ok);margin-bottom:6px}
+.airdrop-guide .ag-step{font-size:11px;color:#14532d;line-height:1.8}
+.draft-restore{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1.5px solid var(--warn);border-radius:var(--rs);padding:12px 14px;margin-bottom:12px;display:none}
+.draft-restore.show{display:block}
+.draft-restore-t{font-size:13px;font-weight:700;color:#92400e;margin-bottom:4px}
+.draft-restore-sub{font-size:11px;color:#78350f;margin-bottom:8px}
+.draft-restore-btns{display:flex;gap:8px}
+.dr-btn{flex:1;padding:10px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.dr-btn-yes{background:var(--warn);color:#fff}
+.dr-btn-no{background:var(--card2);color:var(--dim);border:1px solid var(--bdr)}
+.offline-bar{position:fixed;top:0;left:0;right:0;z-index:999;background:var(--ng);color:#fff;font-size:11px;font-weight:600;padding:5px 12px;text-align:center;display:none;transition:opacity .3s}
+.offline-bar.show{display:block}
 </style>
 </head>
 <body>
+
+<!-- Offline indicator -->
+<div class="offline-bar" id="offlineBar">📵 離線模式 — 填寫資料已自動儲存，恢復網路後可繼續</div>
 
 <!-- JS BLOCKED FALLBACK (Teams file preview doesn't run JS) -->
 <noscript>
@@ -269,7 +324,7 @@ select{cursor:pointer;padding-right:30px}
 <div class="top" id="top" style="display:none">
   <div class="top-row">
     <h1>IQC 原材復判培训系统</h1>
-    <div class="top-r"><span class="urg-p" id="urgP"></span><span class="filled-ct" id="fCt">0 filled</span></div>
+    <div class="top-r"><span class="urg-p" id="urgP"></span><span class="filled-ct" id="fCt">0 filled</span><span class="draft-badge" id="draftBadge">💾 已存</span></div>
   </div>
   <div class="prog" id="prog"></div>
   <div class="prog-info"><span id="pL">1/5</span><span id="pN"></span></div>
@@ -278,6 +333,16 @@ select{cursor:pointer;padding-right:30px}
 <div class="toast" id="toast"></div>
 
 <div class="main" id="mainC" style="display:none">
+
+<!-- Draft restore banner -->
+<div class="draft-restore" id="draftRestore">
+  <div class="draft-restore-t">📂 發現未完成草稿</div>
+  <div class="draft-restore-sub" id="draftRestoreSub">是否恢復上次填寫的資料？</div>
+  <div class="draft-restore-btns">
+    <button class="dr-btn dr-btn-yes" onclick="restoreDraft()">✅ 恢復草稿</button>
+    <button class="dr-btn dr-btn-no" onclick="discardDraft()">🗑️ 重新開始</button>
+  </div>
+</div>
 
 <!-- PAGE 1: 初步判定 + 机种/线别 -->
 <div class="page active" data-p="1">
@@ -298,9 +363,9 @@ select{cursor:pointer;padding-right:30px}
   <div class="card">
     <div class="f2">
       <div class="field"><div class="lb"><span class="lb-z">机种<span class="req">*</span></span><span class="lb-e">Project / Model Name</span><span class="tip-btn" onclick="showTip('model')">?</span></div>
-        <input type="text" id="model" placeholder="" oninput="this.value=this.value.toUpperCase();ct()"></div>
+        <div class="ac-wrap"><input type="text" id="model" placeholder="" oninput="this.value=this.value.toUpperCase();ct();acShow('model',this.value)" onblur="setTimeout(function(){acHide('model')},200)" autocomplete="off"><div class="ac-list" id="ac_model"></div></div></div>
       <div class="field"><div class="lb"><span class="lb-z">线别<span class="req">*</span></span><span class="lb-e">Production Line</span><span class="tip-btn" onclick="showTip('line')">?</span></div>
-        <input type="text" id="line" placeholder="" onchange="ct()"></div>
+        <div class="ac-wrap"><input type="text" id="line" placeholder="" onchange="ct()" oninput="acShow('line',this.value)" onblur="setTimeout(function(){acHide('line')},200)" autocomplete="off"><div class="ac-list" id="ac_line"></div></div></div>
     </div>
     <input type="hidden" id="materialType" value="N/A">
   </div>
@@ -402,11 +467,39 @@ select{cursor:pointer;padding-right:30px}
       <div class="lb"><span class="lb-z">不良现象<span class="req">*</span></span><span class="lb-e">Defect Symptom / Failure Mode</span><span class="tip-btn" onclick="showTip('defect')">?</span></div>
       <div id="defectPickerWrap" style="position:relative;min-height:120px">
 
+        <!-- 🔍 SEARCH BAR — always visible unless result shown -->
+        <div id="defectSearchBar" style="margin-bottom:10px">
+          <div style="position:relative">
+            <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none">🔍</span>
+            <input type="text" id="defectSearchInput"
+              placeholder="搜索不良现象... e.g. Scratch / 刮伤 / Open"
+              oninput="defectSearch(this.value)"
+              autocomplete="off"
+              style="width:100%;padding:11px 36px 11px 34px;border:1.5px solid var(--acc);border-radius:var(--rs);font-size:14px;font-family:inherit;background:var(--card);color:var(--txt)">
+            <span id="defectSearchClear" onclick="defectSearchClear()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:16px;cursor:pointer;color:var(--mut);padding:4px">✕</span>
+          </div>
+          <!-- Recent picks -->
+          <div id="defectRecentRow" style="display:none;margin-top:8px">
+            <div style="font-size:10px;color:var(--mut);font-weight:600;margin-bottom:5px">最近使用 Recent</div>
+            <div id="defectRecentChips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+          </div>
+        </div>
+
+        <!-- 🔍 SEARCH RESULTS layer -->
+        <div id="defectSearchResults" style="display:none">
+          <div style="font-size:10px;color:var(--mut);font-weight:600;margin-bottom:6px" id="defectSearchCount"></div>
+          <div id="defectSearchGrid" style="display:flex;flex-direction:column;gap:5px;max-height:320px;overflow-y:auto"></div>
+          <div id="defectSearchEmpty" style="display:none;text-align:center;padding:24px 0;color:var(--mut);font-size:13px">
+            😕 找不到符合的不良现象<br>
+            <span style="font-size:11px">请尝试其他关键字，或从下方分类选择</span>
+          </div>
+        </div>
+
         <!-- 不良现象已选摘要（覆蓋在選擇器正中央） -->
-        <div id="defectSummaryCard" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:90%;max-width:300px;padding:14px 16px;border-radius:12px;background:#fffbe6;border:2px solid #f59e0b;box-shadow:0 8px 24px rgba(0,0,0,0.15)">
+        <div id="defectSummaryCard" style="display:none;padding:14px 16px;border-radius:12px;background:#fffbe6;border:2px solid #f59e0b">
           <div style="font-size:11px;color:#92400e;font-weight:700;margin-bottom:6px">📋 已选不良现象 Selected Defect</div>
           <div id="defectSummaryText" style="font-size:13px;color:#dc2626;font-weight:700;margin-bottom:10px"></div>
-          <div style="text-align:center">
+          <div style="display:flex;gap:8px;justify-content:center">
             <span style="font-size:12px;color:var(--acc);cursor:pointer;background:var(--accL);padding:6px 16px;border-radius:16px;font-weight:600" onclick="defectResetAll()">重新选择 Reset</span>
           </div>
         </div>
@@ -483,41 +576,29 @@ select{cursor:pointer;padding-right:30px}
   </div>
 
   <!-- IQC 抽检排查区块 -->
-  <div class="dv">IQC 抽检排查 IQC Inspection Check</div>
+  <div class="dv">IQC 抽检迹象 IQC Inspection Evidence</div>
   <div class="card" id="iqcCheckCard" style="background:linear-gradient(135deg,#eff4ff,#e8f4ff);border:1.5px solid var(--acc)">
-    <div style="font-size:11px;color:var(--acc);background:rgba(37,99,235,0.08);padding:8px 10px;border-radius:8px;margin-bottom:12px;line-height:1.6">
-      <b>⚠️ 重要排查逻辑 Important Check Logic</b><br>
-      若有 IQC 胶带/标签 → 此批经过 IQC 抽检 → 不能排除 IQC OP 操作造成不良<br>
-      若无 IQC 胶带/标签 → 可能未经抽检直接上线 → 指向产线或原材问题<br>
-      <span style="font-size:10px">If IQC tape present → batch was inspected by IQC → cannot rule out IQC OP handling issue</span>
+    <div style="font-size:11px;color:var(--dim);background:var(--card2);padding:8px 10px;border-radius:8px;margin-bottom:12px;line-height:1.6">
+      💡 观察材料/包装上是否有 IQC 抽检过的迹象，用于判断此批是否经过 IQC 检验<br>
+      <span style="font-size:10px">Check if there are signs that IQC has inspected this batch</span>
     </div>
     
-    <div class="lb" style="margin-bottom:8px"><span class="lb-z">IQC 抽检确认项目</span><span class="lb-e">IQC Inspection Checklist</span></div>
-    <div class="ck" onclick="tCk(this,'iqcRecordChecked')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">已查 IQC 抽检记录</div><div style="font-size:10px;color:var(--dim)">Checked IQC inspection records</div></div></div>
-    <div class="ck" onclick="tCk(this,'iqcOpNormal')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">IQC OP 手法正常</div><div style="font-size:10px;color:var(--dim)">IQC OP handling was normal</div></div></div>
-    <div class="ck" onclick="tCk(this,'iqcQtyReasonable')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">抽检数量/位置合理</div><div style="font-size:10px;color:var(--dim)">Sample qty & location reasonable</div></div></div>
-    <div class="ck" onclick="tCk(this,'defectNotIqcArea')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">不良位置与 IQC 接触位置不符</div><div style="font-size:10px;color:var(--dim)">Defect location differs from IQC contact area</div></div></div>
+    <div class="lb" style="margin-bottom:8px"><span class="lb-z">现场观察 IQC 迹象</span><span class="lb-e">On-site IQC Evidence Check</span></div>
+    <div class="ck" onclick="tCkIqc(this,'hasIqcTape')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">有 IQC 封箱胶带</div><div style="font-size:10px;color:var(--dim)">IQC sealing tape found on box</div></div></div>
+    <div class="ck" onclick="tCkIqc(this,'hasIqcLabel')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">有 IQC PASS Label</div><div style="font-size:10px;color:var(--dim)">IQC PASS label found</div></div></div>
+    <div class="ck" onclick="tCkIqc(this,'hasReinspectLabel')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">有 Re-inspect Label</div><div style="font-size:10px;color:var(--dim)">Re-inspection label found</div></div></div>
+    <div class="ck" onclick="tCkIqc(this,'hasTrayTrace')"><div class="cb"></div><div><div style="font-size:13px;font-weight:600">Tray 上有 OP 检验残留迹象</div><div style="font-size:10px;color:var(--dim)">Tray shows signs of OP inspection (marks, residue)</div></div></div>
     
-    <div class="field" style="margin-top:12px">
-      <div class="lb"><span class="lb-z">IQC 环节排查结论</span><span class="lb-e">IQC Check Conclusion</span></div>
-      <div class="ig c3" id="g_iqcConclusion">
-        <div class="io" onclick="pIo(this,'iqcConclusion','可排除IQC造成')" style="border-color:var(--ok)">
-          <div class="iz" style="color:var(--ok)">✅ 可排除</div>
-          <div class="ie">IQC Ruled Out</div>
-        </div>
-        <div class="io" onclick="pIo(this,'iqcConclusion','不能排除IQC造成')" style="border-color:var(--warn)">
-          <div class="iz" style="color:var(--warn)">⚠️ 不能排除</div>
-          <div class="ie">Cannot Rule Out</div>
-        </div>
-        <div class="io" onclick="pIo(this,'iqcConclusion','高度怀疑IQC造成')" style="border-color:var(--ng)">
-          <div class="iz" style="color:var(--ng)">❌ 高度怀疑</div>
-          <div class="ie">Highly Suspect IQC</div>
-        </div>
+    <!-- 动态提醒区域 -->
+    <div id="iqcReminder" style="display:none;margin-top:12px"></div>
+    
+    <!-- 固定提醒：回去要查IQC记录 -->
+    <div style="margin-top:12px;background:#dbeafe;border:1px solid var(--acc);border-radius:8px;padding:10px 12px">
+      <div style="font-size:11px;color:var(--acc);font-weight:600">📋 调查结束后提醒 Post-investigation Reminder</div>
+      <div style="font-size:11px;color:#1e40af;margin-top:4px;line-height:1.5">
+        无论判定结果如何，请回去后查询此批是否有经过 IQC 抽检记录<br>
+        <span style="font-size:10px;color:#3b82f6">Regardless of verdict, check IQC inspection records after returning</span>
       </div>
-    </div>
-    <div class="field" style="margin-top:8px">
-      <div class="lb"><span class="lb-z">IQC 排查备注</span><span class="lb-e">IQC Check Notes</span></div>
-      <textarea id="iqcCheckNotes" placeholder="例：IQC OP 反映抽检时有掉落..." style="min-height:44px"></textarea>
     </div>
   </div>
 </div>
@@ -528,13 +609,15 @@ select{cursor:pointer;padding-right:30px}
   <div class="card">
     <div class="f2">
       <div class="field"><div class="lb"><span class="lb-z">主厂商<span class="req">*</span></span><span class="lb-e">Primary Vendor / Supplier</span></div>
-        <input type="text" id="vendor" placeholder="" onchange="ct()"></div>
+        <div class="ac-wrap"><input type="text" id="vendor" placeholder="" onchange="ct()" oninput="acShow('vendor',this.value)" onblur="setTimeout(function(){acHide('vendor')},200)" autocomplete="off"><div class="ac-list" id="ac_vendor"></div></div></div>
       <div class="field"><div class="lb"><span class="lb-z">P/N 料号<span class="req">*</span></span><span class="lb-e">Part Number (P/N)</span></div>
-        <input type="text" id="qpn" placeholder="" onchange="ct()"></div>
+        <div class="ac-wrap"><input type="text" id="qpn" placeholder="" onchange="ct()" oninput="acShow('qpn',this.value)" onblur="setTimeout(function(){acHide('qpn')},200)" autocomplete="off"><div class="ac-list" id="ac_qpn"></div></div>
+        <div class="scan-btn" onclick="startScan('qpn')">📷 掃描 P/N</div></div>
     </div>
     <div class="f2">
       <div class="field"><div class="lb"><span class="lb-z">D/C 日期码<span class="req">*</span></span><span class="lb-e">Date Code (D/C)</span><span class="tip-btn" onclick="showTip('dc')">?</span></div>
-        <input type="text" id="dc" placeholder="0309" onchange="ct()"></div>
+        <div class="ac-wrap"><input type="text" id="dc" placeholder="0309" onchange="ct()" oninput="acShow('dc',this.value)" onblur="setTimeout(function(){acHide('dc')},200)" autocomplete="off"><div class="ac-list" id="ac_dc"></div></div>
+        <div class="scan-btn" onclick="startScan('dc')">📷 掃描 D/C</div></div>
       <div class="field"><div class="lb"><span class="lb-z">通报来源</span><span class="lb-e">Report Source / Reported By</span></div>
         <select id="reportSource"><option value="">— 选择 Select —</option><option>产线PE Line PE</option><option>产线OP Line Operator</option><option>QC巡检 QC Patrol</option><option>CQA</option><option>Inline OBA</option><option>测试站 Test Station</option><option>IQC巡查 IQC Patrol</option></select></div>
     </div>
@@ -543,21 +626,27 @@ select{cursor:pointer;padding-right:30px}
   <div class="card">
     <div class="lb"><span class="lb-z">产线材料放置状况</span><span class="lb-e">Material Placement Status on Line</span><span class="tip-btn" onclick="showTip('placement')">?</span></div>
     <div class="chips" id="g_placement">
-      <div class="ch" onclick="pCh(this,'placement')">错盘 Wrong Tray</div>
-      <div class="ch" onclick="pCh(this,'placement')">散乱 Scattered</div>
+      <div class="ch" onclick="pCh(this,'placement')">标准料架 Standard Rack</div>
+      <div class="ch" onclick="pCh(this,'placement')">原箱未拆 Unopened Box</div>
+      <div class="ch" onclick="pCh(this,'placement')">错盘/混料 Wrong Tray/Mixed</div>
+      <div class="ch" onclick="pCh(this,'placement')">散乱放置 Scattered</div>
       <div class="ch" onclick="pCh(this,'placement')">放桌面 On Desk</div>
       <div class="ch" onclick="pCh(this,'placement')">堆叠挤压 Stacked/Crushed</div>
-      <div class="ch" onclick="pCh(this,'placement')">未开箱 Unopened</div>
+      <div class="ch" onclick="pCh(this,'placement')">落地/脚边 On Floor</div>
+      <div class="ch" onclick="pCh(this,'placement')">暴露无遮蔽 Exposed</div>
+      <div class="ch" onclick="pCh(this,'placement')">靠近热源 Near Heat</div>
+      <div class="ch" onclick="pCh(this,'placement')">潮湿环境 Humid Area</div>
+      <div class="ch" onclick="pCh(this,'placement')">静电区外 Outside ESD Zone</div>
     </div>
   </div>
-  <div class="dv">防伪五项 Authentication</div>
+  <div class="dv">原材状态 Material Condition</div>
   <div class="card">
     <div class="tg" data-key="origBox"><div class="tg-l"><div class="tg-z">原箱？<span class="tip-btn" onclick="showTip('origBox')">?</span></div><div class="tg-e">Original Packaging Box?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
     <div class="tg" data-key="iqcTape"><div class="tg-l"><div class="tg-z">IQC 胶带/标签？<span class="tip-btn" onclick="showTip('iqcTape')">?</span></div><div class="tg-e">IQC Tape / Label Present?</div></div><div class="sw on" onclick="tSwIqcTape(this)"></div></div>
     <!-- IQC 抽檢排查提醒 - 當有IQC胶带時顯示 -->
     <div id="iqcCheckAlert" class="alt p" style="display:none;margin-top:8px;background:#eff4ff;border:1.5px solid var(--acc);border-radius:8px;padding:10px 12px">
       <div style="font-size:11px;color:var(--acc);font-weight:700;margin-bottom:4px">⚠️ 有 IQC 胶带 → 需排查 IQC 抽检环节</div>
-      <div style="font-size:10px;color:var(--dim);line-height:1.5">此批经过 IQC 抽检，不能排除 IQC OP 操作造成不良的可能性，请在下方「IQC 抽检排查」区块进行确认。</div>
+      <div style="font-size:10px;color:var(--dim);line-height:1.5">此批经过 IQC 抽检，不能排除 IQC OP 操作造成不良的可能性。</div>
     </div>
     <div class="tg" data-key="labelMatch"><div class="tg-l"><div class="tg-z">标签一致？<span class="tip-btn" onclick="showTip('labelMatch')">?</span></div><div class="tg-e">Labels Match (P/N, Qty, Vendor)?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
     <div class="tg" data-key="qtyMatch"><div class="tg-l"><div class="tg-z">数量吻合？<span class="tip-btn" onclick="showTip('qtyMatch')">?</span></div><div class="tg-e">Quantity Matches Label?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
@@ -565,7 +654,7 @@ select{cursor:pointer;padding-right:30px}
     <div class="alt r" id="authAlt">⚠️ 非IQC标准放行状态！Non-standard IQC release!</div>
     <div style="margin-top:8px">
       <div class="tg" data-key="notExpired"><div class="tg-l"><div class="tg-z">保质期内？<span class="tip-btn" onclick="showTip('expiry')">?</span></div><div class="tg-e">Within Shelf Life / Expiry Date?</div></div><div class="sw on" onclick="tSw(this)"></div></div>
-      <div class="alt r" id="expAlt">⚠️ 零件超期！</div>
+      <div class="alt r" id="expAlt">⚠️ 零件超期！Parts expired!</div>
     </div>
   </div>
   <div class="dv">批次库存状况 Lot Inventory Status</div>
@@ -755,8 +844,12 @@ select{cursor:pointer;padding-right:30px}
     <div class="ck" onclick="tCk(this,'monitor')"><div class="cb"></div><div><div style="font-size:13px;font-weight:700">持续监控</div><div style="font-size:11px;color:var(--dim)">Continue Monitoring</div></div></div>
   </div>
   <div class="card">
-    <div class="field"><div class="lb"><span class="lb-z">补充备注</span><span class="lb-e">Additional Remarks</span></div>
-      <textarea id="remarks" placeholder="例 OP表示昨天换过治具... e.g. Operator mentioned jig was changed yesterday..."></textarea></div>
+    <div class="field"><div class="lb"><span class="lb-z">补充备注</span><span class="lb-e">Additional Remarks</span><span style="font-size:10px;color:var(--dim);margin-left:4px">長按🎙️語音輸入</span></div>
+      <div class="voice-row">
+        <textarea id="remarks" placeholder="例 OP表示昨天换过治具... e.g. Operator mentioned jig was changed yesterday..."></textarea>
+        <div class="voice-btn" id="voiceBtn" ontouchstart="startVoice()" ontouchend="stopVoice()" onmousedown="startVoice()" onmouseup="stopVoice()">🎙️</div>
+      </div>
+    </div>
   </div>
   <div class="card" style="background:linear-gradient(135deg,#eff4ff,#e8f4ff);border:1.5px solid var(--acc)">
     <div class="lb" style="margin-bottom:8px"><span class="lb-z" style="color:var(--acc)">📂 T0 IQC 抽验记录查询</span><span class="lb-e">T0 IQC Inspection Record Check</span></div>
@@ -806,7 +899,8 @@ select{cursor:pointer;padding-right:30px}
     <div class="rw" id="rW"></div>
     <div class="sb">
       <button class="teams-btn" onclick="shareToTeams()">💬 发送到 Teams</button>
-      <button onclick="cpRpt()">📋 复制 Copy</button>
+      <button onclick="openEml()" style="background:var(--acc);color:#fff;border:none;border-radius:var(--rs);padding:12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">📧 生成郵件 / 下載 .eml</button>
+      <button onclick="cpRpt()">📋 复制纯文字摘要</button>
       <button onclick="clMod()" style="text-align:center;color:var(--mut)">关闭 Close</button>
     </div>
   </div>
@@ -1022,6 +1116,44 @@ function tSwIqcTape(el){
     }
     var aa=$('authAlt');if(aa){var bad=!TS.origBox||!TS.iqcTape||!TS.labelMatch||!TS.qtyMatch||!TS.packMatch;aa.className='alt r'+(bad?' show':'')}  var ea=$('expAlt');if(ea){ea.className='alt r'+(!TS.notExpired?' show':'')}ct()}catch(x){}}
 function tCk(el,key){try{var on=el.className.indexOf('on')>=0;el.className=on?'ck':'ck on';CK[key]=on?0:1;el.querySelector('.cb').textContent=on?'':'✓';ct()}catch(x){}}
+
+// IQC 迹象勾選專用
+var IQC_EVID = {hasIqcTape:0, hasIqcLabel:0, hasReinspectLabel:0, hasTrayTrace:0};
+function tCkIqc(el,key){
+  try{
+    var on=el.className.indexOf('on')>=0;
+    el.className=on?'ck':'ck on';
+    IQC_EVID[key]=on?0:1;
+    el.querySelector('.cb').textContent=on?'':'✓';
+    updateIqcReminder();
+    ct();
+  }catch(x){}
+}
+
+function updateIqcReminder(){
+  try{
+    var rem=$('iqcReminder');
+    if(!rem) return;
+    
+    var hasAnyIqcSign = IQC_EVID.hasIqcTape || IQC_EVID.hasIqcLabel || IQC_EVID.hasReinspectLabel || IQC_EVID.hasTrayTrace;
+    var html = '';
+    
+    if(hasAnyIqcSign){
+      // 有IQC迹象 → 提醒不能排除IQC OP造成
+      html = '<div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;padding:10px 12px">';
+      html += '<div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:4px">⚠️ 此批有 IQC 抽检迹象</div>';
+      html += '<div style="font-size:11px;color:#78350f;line-height:1.6">';
+      html += '• 不能排除 IQC OP 操作造成不良的可能性<br>';
+      html += '• 回去后需确认 IQC 抽检手法是否正常<br>';
+      html += '<span style="font-size:10px;color:#a16207">Cannot rule out IQC OP handling issue</span>';
+      html += '</div></div>';
+    }
+    
+    rem.innerHTML = html;
+    rem.style.display = html ? 'block' : 'none';
+  }catch(x){}
+}
+
 function showSt(t){try{$('stM').style.display=(t==='m'||t==='b')?'block':'none';$('stA').style.display=(t==='a'||t==='b')?'block':'none'}catch(x){}}
 function tSwERS(el){try{var on=el.className.indexOf('on')>=0;if(on){el.className='sw';$('ersAlt').style.display='block';D.ersReady=0}else{el.className='sw on';$('ersAlt').style.display='none';D.ersReady=1}ct()}catch(x){}}
 function tP(j){try{document.querySelectorAll('.ps')[j].querySelector('input').click()}catch(x){}}
@@ -1109,13 +1241,19 @@ function genRpt(){
     h+='<tr><td>分布情况 Distribution</td><td>'+(D.focus||'—')+'</td></tr>';
     h+='<tr><td>跨线比对 Cross-line</td><td>'+(D.crossline||'—')+'</td></tr>';
     
-    h+='<tr class="rpt-section"><td colspan="2">✅ 防伪验证 Authentication</td></tr>';
+    h+='<tr class="rpt-section"><td colspan="2">✅ 原材状态 Material Condition</td></tr>';
     var authItems=[['原箱 Original Box','origBox'],['IQC胶带 IQC Tape','iqcTape'],['标签一致 Label Match','labelMatch'],['数量吻合 Qty Match','qtyMatch'],['包装一致 Pack Match','packMatch'],['保质期内 Not Expired','notExpired']];
     for(var i=0;i<authItems.length;i++){h+='<tr><td>'+authItems[i][0]+'</td><td>'+(TS[authItems[i][1]]?'✓ OK':'✗ NG')+'</td></tr>';}
     
-    h+='<tr class="rpt-section"><td colspan="2">🔍 IQC 抽检排查 IQC Inspection Check</td></tr>';
-    h+='<tr><td>IQC 环节排查结论</td><td>'+(D.iqcConclusion||'—')+'</td></tr>';
-    h+='<tr><td>IQC 排查备注</td><td>'+gv('iqcCheckNotes')+'</td></tr>';
+    h+='<tr class="rpt-section"><td colspan="2">🔍 IQC 抽检迹象 IQC Evidence</td></tr>';
+    var iqcEvidItems=[];
+    if(IQC_EVID.hasIqcTape) iqcEvidItems.push('IQC封箱胶带');
+    if(IQC_EVID.hasIqcLabel) iqcEvidItems.push('IQC PASS Label');
+    if(IQC_EVID.hasReinspectLabel) iqcEvidItems.push('Re-inspect Label');
+    if(IQC_EVID.hasTrayTrace) iqcEvidItems.push('Tray有OP检验迹象');
+    h+='<tr><td>现场观察迹象</td><td>'+(iqcEvidItems.length?iqcEvidItems.join(', '):'无IQC迹象')+'</td></tr>';
+    var iqcStatus = (IQC_EVID.hasIqcTape||IQC_EVID.hasIqcLabel||IQC_EVID.hasReinspectLabel||IQC_EVID.hasTrayTrace)?'有IQC迹象→需查记录':'无明显迹象';
+    h+='<tr><td>IQC 排查状态</td><td>'+iqcStatus+'</td></tr>';
     
     h+='<tr class="rpt-section"><td colspan="2">📊 历史记录 History</td></tr>';
     h+='<tr><td>3个月内类似异常</td><td>'+(D.historyDefect||'—')+'</td></tr>';
@@ -1195,13 +1333,19 @@ function genPlainTextRpt(){
     txt+='  分布情况: '+(D.focus||'—')+'\n';
     txt+='  跨线比对: '+(D.crossline||'—')+'\n';
     txt+=div+'\n';
-    txt+='防伪验证 Authentication:\n';
+    txt+='原材状态 Material Condition:\n';
     txt+='  原箱: '+(TS.origBox?'OK':'NG')+' | IQC胶带: '+(TS.iqcTape?'OK':'NG')+' | 标签: '+(TS.labelMatch?'OK':'NG')+'\n';
     txt+='  数量: '+(TS.qtyMatch?'OK':'NG')+' | 包装: '+(TS.packMatch?'OK':'NG')+' | 保质期: '+(TS.notExpired?'OK':'NG')+'\n';
     txt+=div+'\n';
-    txt+='IQC 抽检排查 IQC Inspection Check:\n';
-    txt+='  IQC排查结论: '+(D.iqcConclusion||'—')+'\n';
-    txt+='  IQC排查备注: '+gv('iqcCheckNotes')+'\n';
+    txt+='IQC 抽检迹象 IQC Evidence:\n';
+    var iqcEvidList=[];
+    if(IQC_EVID.hasIqcTape) iqcEvidList.push('IQC封箱胶带');
+    if(IQC_EVID.hasIqcLabel) iqcEvidList.push('IQC PASS Label');
+    if(IQC_EVID.hasReinspectLabel) iqcEvidList.push('Re-inspect Label');
+    if(IQC_EVID.hasTrayTrace) iqcEvidList.push('Tray有OP检验迹象');
+    txt+='  现场迹象: '+(iqcEvidList.length?iqcEvidList.join(', '):'无IQC迹象')+'\n';
+    var iqcSt=(IQC_EVID.hasIqcTape||IQC_EVID.hasIqcLabel||IQC_EVID.hasReinspectLabel||IQC_EVID.hasTrayTrace)?'有IQC迹象→需查记录':'无明显迹象';
+    txt+='  排查状态: '+iqcSt+'\n';
     txt+=div+'\n';
     txt+='历史记录 History:\n';
     txt+='  3个月内异常: '+(D.historyDefect||'—')+'\n';
@@ -1232,7 +1376,7 @@ function cpRpt(){
   try{
     var txt=genPlainTextRpt();
     var ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(ta);ta.focus();ta.select();
-    document.execCommand('copy');document.body.removeChild(ta);toast('已复制!');
+    document.execCommand('copy');document.body.removeChild(ta);toast('已复制纯文字摘要!');
   }catch(x){toast('复制失败')}
 }
 function shareToTeams(){
@@ -1247,6 +1391,394 @@ function shareToTeams(){
     }catch(e){toast('请手动复制报告')}
   }
 }
+
+/* ══════════════════════════════════════════
+   v11 NEW FEATURES
+   ══════════════════════════════════════════ */
+
+/* ── 1. DRAFT AUTO-SAVE ── */
+var _draftTimer=null;
+var DRAFT_KEY='iqc_draft_v11';
+
+function saveDraft(){
+  try{
+    var draft={
+      D:D, TS:TS, CK:CK, IQC_EVID:IQC_EVID,
+      cur:cur,
+      model:gv('model'), line:gv('line'),
+      vendor:gv('vendor'), qpn:gv('qpn'), dc:gv('dc'),
+      reportSource:($('reportSource')?$('reportSource').value:''),
+      peEngineer:gv('peEngineer'), vendor2:gv('vendor2'),
+      lc:gv('lc'), productionDate:gv('productionDate'),
+      inputQty:($('inputQty')?$('inputQty').value:'0'),
+      defectQty:($('defectQty')?$('defectQty').value:'0'),
+      newBoxSample:gv('newBoxSample'), newBoxDefect:gv('newBoxDefect'),
+      historyNotes:gv('historyNotes'), remarks:gv('remarks'),
+      sameLotBoxes:($('sameLotBoxes')?$('sameLotBoxes').value:'0'),
+      ts:new Date().getTime()
+    };
+    lsSet(DRAFT_KEY, JSON.stringify(draft));
+    var b=$('draftBanner');
+    if(b){b.classList.add('show');clearTimeout(_draftTimer);_draftTimer=setTimeout(function(){b.classList.remove('show')},2000);}
+  }catch(x){}
+}
+
+function checkDraft(){
+  try{
+    var raw=lsGet(DRAFT_KEY);
+    if(!raw) return;
+    var d=JSON.parse(raw);
+    if(!d||!d.ts) return;
+    var age=(new Date().getTime()-d.ts)/1000/60;
+    if(age>480) return; // ignore drafts older than 8 hours
+    var rb=$('restoreBar');
+    if(rb){
+      var mins=Math.round(age);
+      var timeStr=mins<1?'刚才':mins<60?mins+'分钟前':Math.round(mins/60)+'小时前';
+      var msg=rb.querySelector('#restoreMsg');
+      if(msg) msg.textContent='🗂️ 发现 '+timeStr+' 的草稿 ('+( d.model||'未知机种')+'/'+(d.qpn||'未知料号')+')，是否继续？';
+      rb.classList.add('show');
+    }
+  }catch(x){}
+}
+
+function restoreDraft(){
+  try{
+    var raw=lsGet(DRAFT_KEY);
+    if(!raw) return;
+    var d=JSON.parse(raw);
+    D=d.D||{}; TS=d.TS||{origBox:1,iqcTape:1,labelMatch:1,qtyMatch:1,packMatch:1,notExpired:1}; CK=d.CK||{}; IQC_EVID=d.IQC_EVID||{};
+    cur=d.cur||1;
+    var fMap={model:d.model,line:d.line,vendor:d.vendor,qpn:d.qpn,dc:d.dc,peEngineer:d.peEngineer,vendor2:d.vendor2,lc:d.lc,productionDate:d.productionDate,historyNotes:d.historyNotes,remarks:d.remarks,newBoxSample:d.newBoxSample,newBoxDefect:d.newBoxDefect};
+    for(var k in fMap){try{if($(k)&&fMap[k]&&fMap[k]!=='—')$(k).value=fMap[k];}catch(e){}}
+    if($('inputQty')&&d.inputQty)$('inputQty').value=d.inputQty;
+    if($('defectQty')&&d.defectQty)$('defectQty').value=d.defectQty;
+    if($('sameLotBoxes')&&d.sameLotBoxes)$('sameLotBoxes').value=d.sameLotBoxes;
+    if($('reportSource')&&d.reportSource)$('reportSource').value=d.reportSource;
+    $('restoreBar').classList.remove('show');
+    updUI(); calcFR(); ct();
+    toast('草稿已还原，继续填写！');
+  }catch(x){toast('草稿还原失败');}
+}
+
+function discardDraft(){
+  try{lsSet(DRAFT_KEY,'');$('restoreBar').classList.remove('show');}catch(x){}
+}
+
+/* Patch ct() to trigger draft save */
+var _origCt=ct;
+ct=function(){try{_origCt();}catch(x){}try{saveDraft();}catch(x){}};
+
+/* ── 2. AUTOCOMPLETE ── */
+var AC_HISTORY={model:[],line:[],vendor:[],qpn:[]};
+var AC_DEFAULTS={
+  vendor:['PNE','Murata','TDK','Yageo','Samsung','AVX','TE Connectivity','Foxconn','Amphenol','Molex'],
+  line:['K11','K12','K13','K21','K22','K23','B11','B12','SMT-A','SMT-B','FATP-1','FATP-2']
+};
+
+function acLoadHistory(){
+  try{
+    var raw=lsGet('iqc_ac_v11');
+    if(raw) AC_HISTORY=JSON.parse(raw);
+  }catch(x){}
+}
+
+function acSave(key,val){
+  try{
+    if(!val||val==='—') return;
+    val=val.trim();
+    if(!val) return;
+    if(!AC_HISTORY[key]) AC_HISTORY[key]=[];
+    var arr=AC_HISTORY[key];
+    var idx=arr.indexOf(val);
+    if(idx>=0) arr.splice(idx,1);
+    arr.unshift(val);
+    if(arr.length>20) arr=arr.slice(0,20);
+    AC_HISTORY[key]=arr;
+    lsSet('iqc_ac_v11',JSON.stringify(AC_HISTORY));
+  }catch(x){}
+}
+
+function acShow(key,val){
+  try{
+    var drop=$('ac_'+key);
+    if(!drop) return;
+    val=(val||'').trim().toUpperCase();
+    var pool=(AC_HISTORY[key]||[]).concat(AC_DEFAULTS[key]||[]);
+    var seen={};var uniq=[];
+    for(var i=0;i<pool.length;i++){if(!seen[pool[i]]){seen[pool[i]]=1;uniq.push(pool[i]);}}
+    var matches=val?uniq.filter(function(x){return x.toUpperCase().indexOf(val)>=0;}):uniq.slice(0,8);
+    if(!matches.length){drop.classList.remove('show');return;}
+    drop.innerHTML=matches.map(function(m){
+      var hl=val?m.replace(new RegExp('('+val+')','gi'),'<mark>$1</mark>'):m;
+      return '<div class="ac-item" onmousedown="acPick(\''+key+'\',\''+m+'\')">'+hl+'</div>';
+    }).join('');
+    drop.classList.add('show');
+  }catch(x){}
+}
+
+function acHide(key){try{var d=$('ac_'+key);if(d)d.classList.remove('show');}catch(x){}}
+
+function acPick(key,val){
+  try{
+    var inp=$(key);if(inp){inp.value=key==='model'?val.toUpperCase():val;inp.dispatchEvent(new Event('change'));}
+    acHide(key);acSave(key,val);ct();
+  }catch(x){}
+}
+
+/* Save AC on page advance */
+var _origNext=next;
+next=function(){
+  try{
+    acSave('model',gv('model'));acSave('line',gv('line'));
+    acSave('vendor',gv('vendor'));acSave('qpn',gv('qpn'));
+  }catch(x){}
+  _origNext();
+};
+
+/* ── 3. QR / BARCODE SCANNER ── */
+var _scanTarget='';
+var _scanStream=null;
+var _scanInterval=null;
+
+function startScan(targetId){
+  try{
+    _scanTarget=targetId;
+    var ov=$('scanOverlay');ov.classList.add('show');
+    navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(stream){
+      _scanStream=stream;
+      var v=$('scanVideo');v.srcObject=stream;v.play();
+      // Try BarcodeDetector API first (Chrome/Safari iOS 17+)
+      if(window.BarcodeDetector){
+        var bd=new BarcodeDetector({formats:['qr_code','code_128','data_matrix','code_39','ean_13']});
+        _scanInterval=setInterval(function(){
+          try{
+            bd.detect(v).then(function(codes){
+              if(codes&&codes.length){onScanResult(codes[0].rawValue);}
+            });
+          }catch(e){}
+        },400);
+      } else {
+        // Fallback: prompt manual entry
+        setTimeout(function(){
+          stopScan();
+          var val=prompt('扫码不支持，请手动输入 '+targetId+':');
+          if(val&&$(targetId)){$(targetId).value=val.trim();ct();}
+        },500);
+      }
+    }).catch(function(){
+      stopScan();
+      var val=prompt('无法访问摄像头，请手动输入:');
+      if(val&&$(targetId)){$(targetId).value=val.trim();ct();}
+    });
+  }catch(x){stopScan();}
+}
+
+function onScanResult(val){
+  try{
+    if(!val) return;
+    stopScan();
+    if($(_scanTarget)){$(_scanTarget).value=val.trim();ct();}
+    acSave(_scanTarget,val.trim());
+    toast('✓ 扫码成功: '+val.trim());
+  }catch(x){}
+}
+
+function stopScan(){
+  try{
+    clearInterval(_scanInterval);_scanInterval=null;
+    if(_scanStream){_scanStream.getTracks().forEach(function(t){t.stop();});_scanStream=null;}
+    $('scanOverlay').classList.remove('show');
+  }catch(x){}
+}
+
+/* ── 4. SMART SKIP LOGIC ── */
+function updateSkipInfo(){
+  try{
+    var si=$('skipInfo5');if(!si) return;
+    if(D.crossline&&D.crossline.indexOf('仅此线')>=0){
+      si.textContent='💡 跨线比对显示「仅此线」→ 倾向制程问题，请重点确认新箱结果';
+      si.classList.add('show');
+    } else if(D.crossline&&D.crossline.indexOf('其他线')>=0){
+      si.textContent='💡 跨线比对显示「其他线也有」→ 倾向来料问题，预期新箱也有不良';
+      si.classList.add('show');
+    } else {
+      si.classList.remove('show');
+    }
+  }catch(x){}
+}
+
+var _origUpdUI=updUI;
+updUI=function(){
+  _origUpdUI();
+  try{updateSkipInfo();}catch(x){}
+};
+
+/* ── 5. VOICE INPUT ── */
+var _voiceRecog=null;
+var _voiceActive=false;
+
+function toggleVoice(){
+  try{
+    if(_voiceActive){stopVoice();return;}
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){toast('此浏览器不支持语音输入');return;}
+    _voiceRecog=new SR();
+    _voiceRecog.lang='zh-CN';
+    _voiceRecog.continuous=true;
+    _voiceRecog.interimResults=true;
+    var orig=($('remarks')?$('remarks').value:'');
+    _voiceRecog.onresult=function(e){
+      try{
+        var txt='';
+        for(var i=e.resultIndex;i<e.results.length;i++){txt+=e.results[i][0].transcript;}
+        if($('remarks'))$('remarks').value=orig+(orig?'\n':'')+txt;
+      }catch(xe){}
+    };
+    _voiceRecog.onerror=function(){stopVoice();};
+    _voiceRecog.onend=function(){stopVoice();};
+    _voiceRecog.start();
+    _voiceActive=true;
+    var btn=$('voiceBtn');if(btn){btn.textContent='🔴 录音中... 点击停止';btn.classList.add('recording');}
+  }catch(x){toast('语音输入启动失败');}
+}
+
+function stopVoice(){
+  try{
+    if(_voiceRecog){_voiceRecog.stop();_voiceRecog=null;}
+    _voiceActive=false;
+    var btn=$('voiceBtn');if(btn){btn.textContent='🎙️ 语音输入';btn.classList.remove('recording');}
+  }catch(x){}
+}
+
+/* ── 6. EMAIL — 寄給自己 → Mac 轉寄 ── */
+function genEmailBody(){
+  try{
+    var inp=parseInt($('inputQty').value)||0,def=parseInt($('defectQty').value)||0;
+    var fr=inp>0?(def/inp*100).toFixed(2)+'%':'N/A';
+    var VM={process:'制程問題 Process Issue',vendor:'來料異常 Material Issue',both:'複合因素 Combined'};
+    var UM={normal:'一般 Normal',urgent:'緊急 Urgent',stopline:'停線 Stop Line'};
+    var acts=[];
+    var actNames={isolate:'隔離庫存',sqe:'通報SQE',purchase:'通知採購',pmc:'通知PMC',mc:'通知MC',fae:'FAE到廠',rtv:'退貨RTV',twok:'2K OBA',monitor:'持續監控'};
+    var ckk=Object.keys(CK);
+    for(var i=0;i<ckk.length;i++){if(CK[ckk[i]])acts.push(actNames[ckk[i]]||ckk[i]);}
+    var body='Hi Team,\n\n以下為 IQC 產線復判報告，請查閱。\nIQC On-line Re-judgment Report\n\n';
+    body+='══════════════════════════════\n';
+    body+='【判定結果 Verdict】\n'+(VM[D.verdict]||'未判定')+'\n';
+    body+='【急迫程度 Urgency】'+(UM[D.urgency]||'—')+'\n';
+    body+='══════════════════════════════\n\n';
+    body+='■ 基本資訊\n';
+    body+='  線別: '+gv('line')+'  機種: '+gv('model')+'\n';
+    body+='  料號 P/N: '+gv('qpn')+'\n';
+    body+='  廠商 Vendor: '+gv('vendor')+'\n';
+    body+='  D/C: '+gv('dc')+'  L/C: '+gv('lc')+'\n';
+    body+='  不良現象: '+gv('defectType')+'\n\n';
+    body+='■ 數量\n';
+    body+='  投入: '+inp+'  不良: '+def+'  F/R: '+fr+'\n';
+    body+='  原材可能性: '+($('pPct')?$('pPct').textContent:'—')+'\n\n';
+    body+='■ 現場檢查\n';
+    body+='  組裝痕跡: '+(D.surface&&D.surface.length?D.surface.join(', '):'—')+'\n';
+    body+='  放置狀況: '+(D.placement||'—')+'\n';
+    body+='  跨線比對: '+(D.crossline||'—')+'\n';
+    body+='  良品比對: '+(D.compare&&D.compare.length?D.compare.join(', '):'—')+'\n\n';
+    body+='■ 原材狀態\n';
+    body+='  原箱:'+(TS.origBox?'✓':'✗')+' IQC膠帶:'+(TS.iqcTape?'✓':'✗')+' 標籤:'+(TS.labelMatch?'✓':'✗')+'\n';
+    body+='  數量:'+(TS.qtyMatch?'✓':'✗')+' 包裝:'+(TS.packMatch?'✓':'✗')+' 保質期:'+(TS.notExpired?'✓':'✗')+'\n\n';
+    body+='■ 後續動作\n';
+    if(acts.length){for(var i=0;i<acts.length;i++){body+='  • '+acts[i]+'\n';}}else{body+='  （無）\n';}
+    if(gv('remarks')&&gv('remarks')!=='—'){body+='\n■ 備注\n  '+gv('remarks')+'\n';}
+    body+='\n══════════════════════════════\n';
+    body+='IQC 工程師: '+gv('iqcEngineer')+'  PE: '+gv('peEngineer')+'\n';
+    body+='時間: '+startTS+' ~ '+endTS+'\n（IQC 復判系統 v11）\n';
+    return body;
+  }catch(x){return '郵件內容生成失敗';}
+}
+
+function genEmailSubject(){
+  try{
+    var urgPfx={normal:'[IQC]',urgent:'[緊急][IQC]',stopline:'[停線⚠️][IQC]'};
+    var verdPfx={process:'制程問題',vendor:'來料異常',both:'複合因素'};
+    return (urgPfx[D.urgency]||'[IQC]')+' '+(verdPfx[D.verdict]||'復判報告')+' '+gv('qpn')+' '+gv('vendor')+' '+gv('line');
+  }catch(x){return '[IQC] 復判報告';}
+}
+
+function openEml(){
+  try{
+    clMod();
+    var saved=lsGet('iqc_self_email');
+    if(saved&&$('emlSelfAddr'))$('emlSelfAddr').value=saved;
+    if($('emlSubjPreview'))$('emlSubjPreview').textContent=genEmailSubject();
+    if($('emlBodyPreview'))$('emlBodyPreview').textContent=genEmailBody();
+    _emlPreviewOpen=false;
+    if($('emlBodyPreview'))$('emlBodyPreview').style.display='none';
+    $('emlMod').className='mod show';
+  }catch(x){alert('openEml error: '+x.message);}
+}
+
+function closeEml(){try{$('emlMod').className='mod';}catch(x){}}
+
+function saveSelfEmail(){
+  try{
+    var v=$('emlSelfAddr')?$('emlSelfAddr').value.trim():'';
+    if(v){lsSet('iqc_self_email',v);toast('已記住信箱 ✓');}
+  }catch(x){}
+}
+
+function sendSelfEmail(){
+  try{
+    var to=$('emlSelfAddr')?$('emlSelfAddr').value.trim():'';
+    if(!to){
+      if($('emlSelfAddr'))$('emlSelfAddr').style.borderColor='var(--ng)';
+      toast('請先填入你的信箱');return;
+    }
+    lsSet('iqc_self_email',to);
+    var subj=encodeURIComponent(genEmailSubject());
+    var body=encodeURIComponent(genEmailBody());
+    window.location.href='mailto:'+encodeURIComponent(to)+'?subject='+subj+'&body='+body;
+    toast('正在開啟 Mail App...');
+  }catch(x){toast('開啟失敗，請使用複製功能');}
+}
+
+function copyEmlFull(){
+  try{
+    var full='主旨:\n'+genEmailSubject()+'\n\n正文:\n'+genEmailBody();
+    var ta=document.createElement('textarea');
+    ta.value=full;ta.style.cssText='position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    toast('已複製！在 Outlook 新郵件貼上即可');
+  }catch(x){toast('複製失敗');}
+}
+
+var _emlPreviewOpen=false;
+function toggleEmlPreview(){
+  try{
+    _emlPreviewOpen=!_emlPreviewOpen;
+    var p=$('emlBodyPreview');
+    if(p)p.style.display=_emlPreviewOpen?'block':'none';
+  }catch(x){}
+}
+
+/* ── INIT PATCHES ── */
+var _origDoInit=doInit;
+doInit=function(){
+  _origDoInit();
+  try{acLoadHistory();}catch(x){}
+  try{
+    // Check draft after brief delay (let password check run first)
+    setTimeout(function(){
+      try{
+        var savedPwd=lsGet('iqc_pwd');
+        var name=lsGet('iqc_eng');
+        if(savedPwd==='QMHIQC'&&name) checkDraft();
+      }catch(e){}
+    },800);
+  }catch(x){}
+};
+
+/* Auto-save on page input events */
+document.addEventListener('change',function(){try{saveDraft();}catch(x){}});
+
 </script>
 
 <!-- 💡 說明彈窗 -->
@@ -1269,6 +1801,78 @@ function shareToTeams(){
       <div class="ck" onclick="setCase(2);closeCasePicker()"><div class="cb" id="caseCk2"></div><div><div style="font-size:13px;font-weight:700">案例 C｜复合因素</div><div style="font-size:11px;color:var(--dim)">原材+制程同时存在问题</div></div></div>
     </div>
     <button class="tip-close" onclick="closeCasePicker()">关闭 Close</button>
+  </div>
+</div>
+
+<!-- ===== 📧 EMAIL MODAL ===== -->
+<div class="mod" id="emlMod" onclick="if(event.target===this)closeEml()" style="z-index:250">
+  <div class="mod-s" style="padding-bottom:40px">
+    <div class="mh"></div>
+    <div style="font-size:16px;font-weight:800;color:var(--acc);margin-bottom:4px">📧 生成邮件草稿</div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Email Draft Generator</div>
+
+    <!-- Step indicator -->
+    <div style="display:flex;gap:0;margin-bottom:16px;border-radius:10px;overflow:hidden;border:1.5px solid var(--bdr)">
+      <div id="emlStep1Ind" style="flex:1;padding:8px 4px;text-align:center;font-size:11px;font-weight:700;background:var(--acc);color:#fff">① 手機填好寄給自己</div>
+      <div style="flex:1;padding:8px 4px;text-align:center;font-size:11px;font-weight:700;background:var(--card2);color:var(--dim)">② Mac 收信後轉寄</div>
+    </div>
+
+    <!-- Self email field -->
+    <div style="background:var(--accL);border:1.5px solid var(--acc);border-radius:var(--rs);padding:12px 14px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--acc);margin-bottom:8px">📱 步驟 1：從手機寄給自己</div>
+      <div style="font-size:11px;color:var(--dim);margin-bottom:8px;line-height:1.6">
+        填入你自己的信箱（公司或個人皆可）<br>
+        點「寄給自己」→ 手機 Mail App 自動開啟帶好內容 → 直接送出
+      </div>
+      <div style="font-size:11px;font-weight:600;color:var(--txt);margin-bottom:4px">我的信箱 My Email</div>
+      <div style="display:flex;gap:6px">
+        <input type="email" id="emlSelfAddr" placeholder="yourname@company.com" style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;font-family:inherit;background:var(--card);color:var(--txt)">
+        <button onclick="saveSelfEmail()" style="padding:10px 12px;border:none;border-radius:var(--rs);background:var(--card2);color:var(--dim);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;border:1.5px solid var(--bdr)">記住</button>
+      </div>
+      <button onclick="sendSelfEmail()" style="width:100%;margin-top:10px;padding:14px;border:none;border-radius:var(--rs);background:var(--acc);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
+        📨 寄給自己（開啟 Mail App）
+      </button>
+    </div>
+
+    <!-- Step 2 instruction -->
+    <div style="background:var(--okL);border:1.5px solid var(--ok);border-radius:var(--rs);padding:12px 14px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--ok);margin-bottom:6px">💻 步驟 2：Mac Outlook 轉寄</div>
+      <div style="font-size:11px;color:#14532d;line-height:1.8">
+        ① Mac 打開 Outlook → 找到自己寄的信<br>
+        ② 點「轉寄 Forward」<br>
+        ③ 改收件人為 PE / SQE 等相關人員<br>
+        ④ 送出即完成 ✓
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div style="display:flex;align-items:center;gap:8px;margin:4px 0 12px;font-size:10px;color:var(--mut)">
+      <div style="flex:1;height:1px;background:var(--bdr)"></div>
+      <span>或者 / OR</span>
+      <div style="flex:1;height:1px;background:var(--bdr)"></div>
+    </div>
+
+    <!-- Copy fallback -->
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">📋 備用方案：複製郵件內容</div>
+      <div style="font-size:11px;color:var(--dim);margin-bottom:8px;line-height:1.5">複製後，在 Mac Outlook 新增郵件 → Cmd+V 貼上</div>
+      <button onclick="copyEmlFull()" style="width:100%;padding:12px;border:1.5px solid var(--ok);border-radius:var(--rs);background:var(--okL);color:var(--ok);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">
+        📋 複製完整郵件內容（貼到 Outlook）
+      </button>
+    </div>
+
+    <!-- Subject preview -->
+    <div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:4px">主旨預覽 Subject Preview</div>
+    <div id="emlSubjPreview" style="background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--txt);font-weight:600;margin-bottom:10px;word-break:break-all"></div>
+
+    <!-- Body preview (collapsible) -->
+    <div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
+      <span>郵件正文預覽</span>
+      <span onclick="toggleEmlPreview()" style="color:var(--acc);cursor:pointer;font-size:11px">展開 ▾</span>
+    </div>
+    <div id="emlBodyPreview" style="display:none;background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.7;color:var(--txt);white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
+
+    <button onclick="closeEml()" style="width:100%;padding:12px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:var(--card2);color:var(--dim);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">關閉 Close</button>
   </div>
 </div>
 
@@ -1664,6 +2268,201 @@ function evidResetAll(){
 }
 
 /* ─── Defect Picker (Three-Level Immersive) ─── */
+/* ══════════════════════════════════════════
+   DEFECT SEARCH — 即時全文搜尋
+   ══════════════════════════════════════════ */
+
+var _defectSearchIndex = null; // built lazily on first search
+
+function defectBuildIndex(){
+  if(_defectSearchIndex) return;
+  _defectSearchIndex = [];
+  // Helper to add items from a category map
+  function addFromMap(map, l1Label){
+    var keys = Object.keys(map);
+    for(var k=0; k<keys.length; k++){
+      var cat = keys[k];
+      var items = map[cat];
+      for(var i=0; i<items.length; i++){
+        var en = items[i][0], cn = items[i][1];
+        var displayVal = en + ' (' + cn + ')';
+        _defectSearchIndex.push({
+          en: en, cn: cn,
+          cat: cat, l1: l1Label,
+          val: displayVal,
+          searchText: (en + ' ' + cn + ' ' + cat + ' ' + l1Label).toUpperCase()
+        });
+      }
+    }
+  }
+  addFromMap(DEFECT_CATS, '外观 Cosmetic');
+  addFromMap(DEFECT_CATS_DIM, '尺寸 Dimension');
+  addFromMap(DEFECT_CATS_FUNC, '功能 Function');
+}
+
+var _defectRecentKey = 'iqc_defect_recent';
+var _defectRecentList = [];
+
+function defectLoadRecent(){
+  try{
+    var r = lsGet(_defectRecentKey);
+    if(r) _defectRecentList = JSON.parse(r);
+  }catch(x){ _defectRecentList = []; }
+}
+
+function defectSaveRecent(val){
+  try{
+    var arr = _defectRecentList.filter(function(x){ return x !== val; });
+    arr.unshift(val);
+    if(arr.length > 6) arr = arr.slice(0,6);
+    _defectRecentList = arr;
+    lsSet(_defectRecentKey, JSON.stringify(arr));
+  }catch(x){}
+}
+
+function defectRenderRecent(){
+  try{
+    defectLoadRecent();
+    var row = document.getElementById('defectRecentRow');
+    var chips = document.getElementById('defectRecentChips');
+    if(!row || !chips) return;
+    if(!_defectRecentList.length){ row.style.display='none'; return; }
+    row.style.display = 'block';
+    chips.innerHTML = _defectRecentList.map(function(val){
+      var label = val.split(' (')[0]; // show just English name
+      return '<div onclick="defectPickFromSearch(\''+val.replace(/'/g,"\\'")+'\')" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:var(--card2);border:1.5px solid var(--bdr);border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;color:var(--txt)">⏱ '+label+'</div>';
+    }).join('');
+  }catch(x){}
+}
+
+function defectSearch(q){
+  try{
+    var clearBtn = document.getElementById('defectSearchClear');
+    var resultsDiv = document.getElementById('defectSearchResults');
+    var l1 = document.getElementById('defectL1');
+    var l2 = document.getElementById('defectL2');
+    var l3 = document.getElementById('defectL3');
+    var summaryCard = document.getElementById('defectSummaryCard');
+
+    q = (q||'').trim();
+
+    if(clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+
+    // If already picked, don't interfere
+    if(summaryCard && summaryCard.style.display !== 'none') return;
+
+    if(!q){
+      // Back to L1 view
+      if(resultsDiv) resultsDiv.style.display = 'none';
+      if(l1) l1.style.display = 'block';
+      if(l2) l2.style.display = 'none';
+      if(l3) l3.style.display = 'none';
+      defectRenderRecent();
+      return;
+    }
+
+    // Build index if needed
+    defectBuildIndex();
+
+    // Hide L1/L2/L3, show results
+    if(l1) l1.style.display = 'none';
+    if(l2) l2.style.display = 'none';
+    if(l3) l3.style.display = 'none';
+    if(resultsDiv) resultsDiv.style.display = 'block';
+
+    var qUp = q.toUpperCase();
+    var tokens = qUp.split(/\s+/);
+
+    // Score each item
+    var scored = [];
+    for(var i=0; i<_defectSearchIndex.length; i++){
+      var item = _defectSearchIndex[i];
+      var score = 0;
+      for(var t=0; t<tokens.length; t++){
+        if(!tokens[t]) continue;
+        if(item.en.toUpperCase().indexOf(tokens[t]) === 0) score += 10; // starts with
+        else if(item.en.toUpperCase().indexOf(tokens[t]) >= 0) score += 6;
+        if(item.cn.toUpperCase().indexOf(tokens[t]) >= 0) score += 5;
+        if(item.cat.toUpperCase().indexOf(tokens[t]) >= 0) score += 2;
+      }
+      if(score > 0) scored.push({item:item, score:score});
+    }
+    scored.sort(function(a,b){ return b.score - a.score; });
+
+    var countEl = document.getElementById('defectSearchCount');
+    var grid = document.getElementById('defectSearchGrid');
+    var empty = document.getElementById('defectSearchEmpty');
+
+    if(!scored.length){
+      if(grid) grid.innerHTML = '';
+      if(empty) empty.style.display = 'block';
+      if(countEl) countEl.textContent = '';
+      return;
+    }
+
+    if(empty) empty.style.display = 'none';
+    if(countEl) countEl.textContent = '找到 ' + scored.length + ' 个结果 ' + scored.length + ' results';
+
+    // Render top 30
+    var show = scored.slice(0, 30);
+    if(grid){
+      grid.innerHTML = show.map(function(s){
+        var item = s.item;
+        // Highlight match in english name
+        var enHl = item.en.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'), '<mark style="background:transparent;color:var(--acc);font-weight:700">$1</mark>');
+        var safeVal = item.val.replace(/'/g,"\\'");
+        return '<div onclick="defectPickFromSearch(\''+safeVal+'\')" style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1.5px solid var(--bdr);border-radius:var(--rs);cursor:pointer;gap:8px" onmouseenter="this.style.borderColor=\'var(--acc)\';this.style.background=\'var(--accL)\'" onmouseleave="this.style.borderColor=\'var(--bdr)\';this.style.background=\'var(--card)\'">'
+          +'<div style="flex:1;min-width:0">'
+          +'<div style="font-size:13px;font-weight:700;color:var(--txt)">'+enHl+'</div>'
+          +'<div style="font-size:11px;color:var(--dim);margin-top:1px">'+item.cn+'</div>'
+          +'</div>'
+          +'<div style="flex-shrink:0;text-align:right">'
+          +'<div style="font-size:9px;color:var(--mut);background:var(--card2);padding:2px 6px;border-radius:8px;white-space:nowrap">'+item.l1+'</div>'
+          +'<div style="font-size:9px;color:var(--dim);margin-top:2px;white-space:nowrap">'+item.cat+'</div>'
+          +'</div>'
+          +'</div>';
+      }).join('');
+    }
+  }catch(x){}
+}
+
+function defectPickFromSearch(val){
+  try{
+    // Set hidden field
+    document.getElementById('defectType').value = val;
+    // Save to recent
+    defectSaveRecent(val);
+    // Show summary card
+    var sc = document.getElementById('defectSummaryCard');
+    var st = document.getElementById('defectSummaryText');
+    if(sc && st){ st.textContent = val; sc.style.display = 'block'; }
+    // Hide search UI
+    var resultsDiv = document.getElementById('defectSearchResults');
+    var searchBar = document.getElementById('defectSearchBar');
+    if(resultsDiv) resultsDiv.style.display = 'none';
+    if(searchBar) searchBar.style.display = 'none';
+    // Hide L1/L2/L3
+    var l1=document.getElementById('defectL1');
+    var l2=document.getElementById('defectL2');
+    var l3=document.getElementById('defectL3');
+    if(l1) l1.style.display='none';
+    if(l2) l2.style.display='none';
+    if(l3) l3.style.display='none';
+    ct();
+  }catch(x){}
+}
+
+function defectSearchClear(){
+  try{
+    var inp = document.getElementById('defectSearchInput');
+    if(inp){ inp.value = ''; inp.focus(); }
+    defectSearch('');
+  }catch(x){}
+}
+
+/* Patch defectResetAll to also show search bar again */
+var _origDefectResetAll = null; // will be patched after defectResetAll is defined
+
 var DEFECT_L1_MAP = {
   cosmetic:['高频不良 Common','污染 Contamination','胶水 Adhesive','毛刺 Burr','打磨 Polish','痕迹 Marks','材质 Material','光学孔 Locating','标示 Labeling','NDA问题 NDA','其他 Others'],
   dimension:['尺寸偏差 Out of Spec','配合/间隙 Fit & Gap','形位公差 GD&T'],
@@ -1845,16 +2644,18 @@ function defectPickL3(val, el){
     for(var i=0;i<btns.length;i++) btns[i].className='io';
     el.className='io picked';
     document.getElementById('defectType').value=val;
-    // Hide sub-layers, keep L1 visible so the picker area stays rendered
+    // Save to recent
+    defectSaveRecent(val);
+    // Hide all layers
     document.getElementById('defectL3').style.display='none';
     document.getElementById('defectL2').style.display='none';
-    document.getElementById('defectL1').style.display='block';
-    // Gray out L1
-    document.getElementById('defectL1').style.opacity='0.3';
-    // Reset L1 button styles
-    var l1btns=document.getElementById('defectL1').querySelectorAll('.io');
-    for(var i=0;i<l1btns.length;i++) l1btns[i].className='io';
-    // Show summary (覆蓋模式)
+    document.getElementById('defectL1').style.display='none';
+    // Hide search bar too
+    var sb=document.getElementById('defectSearchBar');
+    var sr=document.getElementById('defectSearchResults');
+    if(sb) sb.style.display='none';
+    if(sr) sr.style.display='none';
+    // Show summary
     var sc=document.getElementById('defectSummaryCard');
     var st=document.getElementById('defectSummaryText');
     if(sc&&st){sc.style.display='block';st.textContent=val;}
@@ -1880,8 +2681,10 @@ function defectBackToL2(){
 
 function defectResetAll(){
   try{
+    // Clear value & summary
     document.getElementById('defectType').value='';
     document.getElementById('defectSummaryCard').style.display='none';
+    // Hide all layers
     document.getElementById('defectL3').style.display='none';
     document.getElementById('defectL2').style.display='none';
     document.getElementById('defectL1').style.display='block';
@@ -1889,9 +2692,27 @@ function defectResetAll(){
     var btns=document.getElementById('defectL1').querySelectorAll('.io');
     for(var i=0;i<btns.length;i++) btns[i].className='io';
     _defectL1='';_defectL2='';
+    // Restore search bar
+    var sb=document.getElementById('defectSearchBar');
+    var sr=document.getElementById('defectSearchResults');
+    var inp=document.getElementById('defectSearchInput');
+    var clr=document.getElementById('defectSearchClear');
+    if(sb) sb.style.display='block';
+    if(sr) sr.style.display='none';
+    if(inp) inp.value='';
+    if(clr) clr.style.display='none';
+    // Refresh recent chips
+    defectRenderRecent();
     ct();
   }catch(x){}
 }
+
+/* Init recent on page load */
+(function(){
+  try{ defectLoadRecent(); }catch(x){}
+  // Render recent after a tick (DOM ready)
+  setTimeout(function(){ try{ defectRenderRecent(); }catch(x){} }, 300);
+})();
 </script>
 
 
@@ -1902,6 +2723,33 @@ function defectResetAll(){
 
 <script>
 doInit();
+</script>
+
+<script>
+/* ── PWA: Service Worker (離線支援) ── */
+if('serviceWorker' in navigator){
+  try{
+    // Inline SW as blob URL since we're a single HTML file
+    var swCode=[
+      "var CACHE='iqc-v11';",
+      "self.addEventListener('install',function(e){",
+      "  e.waitUntil(caches.open(CACHE).then(function(c){",
+      "    return c.addAll([self.location.href]);",
+      "  }));",
+      "});",
+      "self.addEventListener('fetch',function(e){",
+      "  e.respondWith(",
+      "    caches.match(e.request).then(function(r){",
+      "      return r||fetch(e.request).catch(function(){return caches.match(e.request)});",
+      "    })",
+      "  );",
+      "});"
+    ].join('\n');
+    var swBlob=new Blob([swCode],{type:'application/javascript'});
+    var swUrl=URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swUrl).catch(function(){});
+  }catch(x){}
+}
 </script>
 </body>
 </html>
